@@ -4,7 +4,7 @@
 [![automation](https://github.com/ctuning/ck-guide-images/blob/master/ck-artifact-automated-and-reusable.svg)](https://cTuning.org/ae)
 
 Linux/MacOS: [![Travis Build Status](https://travis-ci.org/ctuning/ck-ml.svg)](https://travis-ci.org/ctuning/ck-ml)
-Windows: [![Windows Build status](https://ci.appveyor.com/api/projects/status/4ry307jh6tks9dg9?svg=true)](https://ci.appveyor.com/project/gfursin/ck-ml)
+Windows: [![Windows Build status](https://ci.appveyor.com/api/projects/status/gl53cle5dvkskvgr?svg=true)](https://ci.appveyor.com/project/gfursin/ck-ml)
 
 
 *There are numerous CK components spread across numerous GitHub repositories. 
