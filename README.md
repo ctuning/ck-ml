@@ -43,7 +43,7 @@ Install the CK framework as described [here](https://ck.readthedocs.io/en/latest
 
 Pull this repository:
 ```bash
-ck pull repo:ai
+ck pull repo:ck-ml
 ```
 Test the installation using the simple image corner detection program:
 
@@ -74,12 +74,12 @@ Read about the [CK concept and format](https://arxiv.org/abs/2011.01149).
 ## With Docker
 
 We have prepared a CK container with all CK components from this repository: 
-[[Docker](https://hub.docker.com/r/ctuning/ck-ai)], [[CK meta](https://github.com/ctuning/ck-ml/tree/main/docker/ck-ai)]
+[[Docker](https://hub.docker.com/r/ctuning/ck-ml)], [[CK meta](https://github.com/ctuning/ck-ml/tree/main/docker/ck-ml)]
 
 You can start it as follows:
 
 ```bash
-docker run --rm -it ctuning/ck-ai:ubuntu-20.04
+docker run --rm -it ctuning/ck-ml:ubuntu-20.04
 ```
 
 You can then prepare and run these [portable AI/ML workflows](https://cKnowledge.io/solutions) 
