@@ -1,0 +1,31 @@
+{
+  "auto_detect": "yes",
+  "customize": {
+    "check_that_exists": "yes",
+    "ck_version": 10,
+    "env_prefix": "CK_ENV_DATASET_TOKENIZATION_VOCAB",
+    "extra_search_dirs": {
+      "linux": [
+        "/datasets",
+        "/data"
+      ]
+    },
+    "limit_recursion_dir_search": {
+      "linux": 5
+    },
+    "soft_file_universal": "vocab.txt",
+    "version": "1.1"
+  },
+  "soft_name": "Tokenization vocabulary for BERT",
+  "tags": [
+    "dataset",
+    "tokenization",
+    "vocabulary",
+    "vocab",
+    "for.bert"
+  ],
+  "use_customize_script_from_another_entry": {
+    "data_uoa": "dataset.squad.original",
+    "module_uoa": "soft"
+  }
+}

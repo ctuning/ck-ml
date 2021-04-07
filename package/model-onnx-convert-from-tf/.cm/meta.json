@@ -1,0 +1,142 @@
+{
+  "check_exit_status": "yes",
+  "customize": {
+    "install_env": {
+      "CONVERSION_OPSET": "8",
+      "MODEL_IMAGE_HEIGHT": "224",
+      "MODEL_IMAGE_WIDTH": "224",
+      "MODEL_INPUT_LAYER_NAME": "input:0",
+      "MODEL_NORMALIZE_DATA": "YES",
+      "MODEL_SUBTRACT_MEAN": "0",
+      "MODEL_OUTPUT_LAYER_NAME": "MobilenetV1/Predictions/Reshape_1:0",
+      "PACKAGE_NAME": "converted_model.onnx",
+      "PACKAGE_VERSION": "1_1.0_224_2018_08_02",
+      "ML_MODEL_TO_CONVERT": "mobilenet_v1_1.0_224",
+      "ML_MODEL_DATA_LAYOUT": "NCHW"
+    },
+    "package_name": "ONNX-from-TF model (MLPerf MobileNet)",
+    "no_os_in_suggested_path": "yes",
+    "no_ver_in_suggested_path": "yes",
+    "skip_file_check": "yes"
+  },
+  "deps": {
+    "python": {
+      "local": "yes",
+      "name": "Python",
+      "sort": 10,
+      "tags": "compiler,python"
+    },
+    "lib-python-numpy": {
+      "local": "yes",
+      "name": "Python NumPy library",
+      "sort": 20,
+      "tags": "lib,python-package,numpy"
+    },
+    "lib-python-onnx": {
+      "local": "yes",
+      "name": "Python ONNX library",
+      "sort": 40,
+      "tags": "lib,python-package,onnx"
+    },
+    "lib-python-tf2onnx": {
+      "local": "yes",
+      "name": "Python TF-to-ONNX model conversion library",
+      "sort": 50,
+      "tags": "lib,python-package,tf2onnx"
+    },
+    "lib-tensorflow": {
+      "local": "yes",
+      "name": "TensorFlow library",
+      "sort": 30,
+      "tags": "lib,tensorflow"
+    },
+    "model-source": {
+      "local": "yes",
+      "name": "Original TensorFlow model",
+      "sort": 100,
+      "tags": "model,tf",
+      "update_tags_if_env" : {
+        "object-detection,mlperf,ssd-mobilenet":                                [ { "ML_MODEL_TO_CONVERT": "ssd-mobilenet" } ],
+        "image-classification,mlperf,mobilenet-v1,v1-1.0-224,non-quantized":    [ { "ML_MODEL_TO_CONVERT": "mobilenet_v1_1.0_224" } ],
+        "image-classification,mlperf,resnet":                                   [ { "ML_MODEL_TO_CONVERT": "resnet50_v1" } ]
+      }
+    }
+  },
+  "end_full_path_universal": "converted_model.onnx",
+  "only_for_host_os_tags": [],
+  "only_for_target_os_tags": [],
+  "process_script": "install",
+  "soft_uoa": "bcaac306e9041879",
+  "suggested_path": "model-onnx-converted-from-tf",
+  "tags": [
+    "model",
+    "onnx",
+    "mlperf",
+    "converted",
+    "converted-from-tf"
+  ],
+  "variations": {
+    "mobilenet": {
+      "extra_tags": [ "image-classification" ],
+      "extra_env": {
+        "ML_MODEL_TO_CONVERT": "mobilenet_v1_1.0_224",
+        "MODEL_INPUT_LAYER_NAME": "input:0",
+        "MODEL_NORMALIZE_DATA": "YES",
+        "MODEL_SUBTRACT_MEAN": "0",
+        "MODEL_OUTPUT_LAYER_NAME": "MobilenetV1/Predictions/Reshape_1:0",
+        "PACKAGE_VERSION": "1_1.0_224_2018_08_02"
+      },
+      "extra_customize": {
+        "package_name": "ONNX-from-TF model (MLPerf MobileNet)"
+      }
+    },
+    "resnet": {
+      "extra_tags": [ "image-classification" ],
+      "extra_env": {
+        "ML_MODEL_TO_CONVERT": "resnet50_v1",
+        "ML_MODEL_GIVEN_CHANNEL_MEANS": "123.68 116.78 103.94",
+        "MODEL_INPUT_LAYER_NAME": "input_tensor:0",
+        "MODEL_NORMALIZE_DATA": "0",
+        "MODEL_SUBTRACT_MEAN": "YES",
+        "MODEL_OUTPUT_LAYER_NAME": "softmax_tensor:0",
+        "PACKAGE_VERSION": "1.5"
+      },
+      "extra_customize": {
+        "package_name": "ONNX-from-TF model (MLPerf ResNet)"
+      }
+    },
+    "ssd-mobilenet": {
+      "extra_tags": [ "object-detection" ],
+      "extra_env": {
+        "CONVERSION_OPSET": "10",
+        "ML_MODEL_TO_CONVERT": "ssd-mobilenet",
+        "MODEL_INPUT_LAYER_NAME": "image_tensor:0",
+        "MODEL_NAME": "MLPerf SSD-MobileNet",
+        "MODEL_NORMALIZE_DATA": "YES",
+        "MODEL_OUTPUT_LAYER_NAME": "num_detections:0,detection_classes:0,detection_boxes:0,detection_scores:0",
+        "ML_MODEL_DATA_LAYOUT": "NHWC",
+        "PACKAGE_VERSION": "1",
+        "MODEL_DATASET_TYPE": "coco",
+        "MODEL_IMAGE_HEIGHT": "300",
+        "MODEL_IMAGE_WIDTH": "300",
+        "MODEL_OUTPUT_LAYER_BBOXES": "detection_boxes:0",
+        "MODEL_OUTPUT_LAYER_LABELS": "detection_classes:0",
+        "MODEL_OUTPUT_LAYER_SCORES": "detection_scores:0",
+        "MODEL_CLASSES_LABELS": "flatlabels.txt"
+      },
+      "extra_customize": {
+        "package_name": "ONNX-from-TF model (MLPerf SSD-MobileNet)"
+      }
+    },
+    "nchw": {
+      "extra_env": {
+        "ML_MODEL_DATA_LAYOUT": "NCHW"
+      }
+    },
+    "nhwc": {
+      "extra_env": {
+        "ML_MODEL_DATA_LAYOUT": "NHWC"
+      }
+    }
+  }
+}

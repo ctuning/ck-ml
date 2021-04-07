@@ -1,0 +1,30 @@
+{
+  "check_exit_status": "yes",
+  "customize": {
+    "install_env": {
+      "PACKAGE_NAME": "dev-v1.1.json",
+      "PACKAGE_SKIP_CLEAN_PACKAGE": "YES",
+      "PACKAGE_SKIP_LINUX_MAKE": "YES",
+      "PACKAGE_URL": "https://raw.githubusercontent.com/rajpurkar/SQuAD-explorer/master/dataset",
+      "PACKAGE_WGET": "YES"
+    },
+    "no_os_in_suggested_path": "yes",
+    "no_ver_in_suggested_path": "yes",
+    "version": "1.1"
+  },
+  "end_full_path_universal": "dev-v1.1.json",
+  "process_script": "install",
+  "soft_uoa": "a344284bf73f36d0",
+  "suggested_path": "dataset-squad-1.1-original-downloaded",
+  "tags": [
+    "dataset",
+    "squad",
+    "orig",
+    "original",
+    "downloaded"
+  ],
+  "use_scripts_from_another_entry": {
+    "data_uoa": "download-and-install-package",
+    "module_uoa": "script"
+  }
+}

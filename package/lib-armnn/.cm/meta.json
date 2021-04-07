@@ -1,0 +1,313 @@
+{
+  "customize": {
+    "extra_dir": "",
+    "git_src_dir": "src",
+    "install_env": {
+      "ONNX_SRC_URL": "https://github.com/onnx/onnx.git",
+      "PACKAGE_BUILD_TYPE": "skip", 
+      "PACKAGE_GIT": "YES", 
+      "PACKAGE_PATCH": "YES",
+      "PACKAGE_PATCH_LIST": "\\$<<ORIGINAL_PACKAGE_DIR>>$/patch.\\$<<CK_TARGET_OS_ID>>$/* \\$<<ORIGINAL_PACKAGE_DIR>>$/patch.variations/\\$<<PACKAGE_PATCH__REL_18_08__REMOVE_MALLOC>>$ \\$<<ORIGINAL_PACKAGE_DIR>>$/patch.variations/\\$<<PACKAGE_PATCH__REL_19_05__INSTALL_TFLITE_PARSER>>$ \\$<<ORIGINAL_PACKAGE_DIR>>$/patch.variations/\\$<<PACKAGE_PATCH__REL_19_08__NO_WERROR>>$ \\$<<ORIGINAL_PACKAGE_DIR>>$/patch.variations/\\$<<PACKAGE_PATCH__REL_20_05__NO_WERROR>>$ \\$<<ORIGINAL_PACKAGE_DIR>>$/patch.variations/\\$<<PACKAGE_PATCH__REL_20_05__HARDSWISH>>$",
+      "PACKAGE_PATCH__REL_18_08__REMOVE_MALLOC": "",
+      "PACKAGE_PATCH__REL_19_05__INSTALL_TFLITE_PARSER": "",
+      "PACKAGE_PATCH__REL_19_08__NO_WERROR": "",
+      "PACKAGE_PATCH__REL_20_05__NO_WERROR": "",
+      "PACKAGE_PATCH__REL_20_05__HARDSWISH": "",
+      "PACKAGE_SKIP_CLEAN_OBJ": "YES", 
+      "PACKAGE_SKIP_CLEAN_SRC_DIR": "YES", 
+      "PACKAGE_SUB_DIR": "src", 
+      "PACKAGE_URL": "https://github.com/arm-software/armnn",
+      "PACKAGE_VERSION": "release",
+      "USE_NEON": "NO",
+      "USE_OPENCL": "NO",
+      "USE_TF": "NO",
+      "USE_TFLITE": "NO",
+      "USE_ONNX": "NO",
+      "EXTRA_FLAGS": "-Werror",
+      "CK_ARMNN_CMAKE_VERBOSE": "OFF",
+      "CK_ARMNN_BUILD_TESTS": ""
+    }, 
+    "no_ver_in_suggested_path": "yes",
+    "use_git_revision": "yes"
+  }, 
+  "deps": {
+    "lib-boost": {
+      "local": "yes", 
+      "name": "Boost library", 
+      "skip_default": "yes", 
+      "add_dict": "yes",
+      "sort": 10, 
+      "tags": "lib,boost,for-armnn",
+      "update_tags_if_env": {
+        "shared": [ { "CK_TARGET_OS_ID": "android" } ]
+      },
+      "version_from": [
+        1,
+        64,
+        0
+      ],
+      "version_to": [
+        1,
+        66,
+        0
+      ]
+    }, 
+    "lib-protobuf": {
+      "local": "yes",
+      "name": "ProtoBuf library",
+      "only_for_target_os_tags": [
+        "android"
+      ],
+      "skip_default": "yes",
+      "sort": 20,
+      "tags": "lib,protobuf",
+      "update_tags_if_env" : {
+        "v3.5.1":       [ { "PACKAGE_VERSION": "18.08" } ],
+        "v3.5.1":       [ { "PACKAGE_VERSION": "18.11" } ],
+        "v3.5.1":       [ { "PACKAGE_VERSION": "19.02" } ],
+        "v3.5.1":       [ { "PACKAGE_VERSION": "19.05" } ],
+        "v3.5.1":       [ { "PACKAGE_VERSION": "19.08" } ],
+        "v3.5.1":       [ { "PACKAGE_VERSION": "20.05" } ],
+        "v3.5.1":       [ { "PACKAGE_VERSION": "20.08" } ],
+        "v3.12.4":      [ { "PACKAGE_VERSION": "20.11" } ],
+        "v3.12.4":      [ { "PACKAGE_VERSION": "21.02" } ]
+      }
+    },
+    "lib-protobuf-host": {
+      "force_target_as_host": "yes",
+      "local": "yes",
+      "name": "ProtoBuf host compiler",
+      "skip_default": "yes",
+      "sort": 25,
+      "tags": "lib,protobuf-host",
+      "update_tags_if_env" : {
+        "v3.5.1":       [ { "PACKAGE_VERSION": "18.08" } ],
+        "v3.5.1":       [ { "PACKAGE_VERSION": "18.11" } ],
+        "v3.5.1":       [ { "PACKAGE_VERSION": "19.02" } ],
+        "v3.5.1":       [ { "PACKAGE_VERSION": "19.05" } ],
+        "v3.5.1":       [ { "PACKAGE_VERSION": "19.08" } ],
+        "v3.5.1":       [ { "PACKAGE_VERSION": "20.05" } ],
+        "v3.5.1":       [ { "PACKAGE_VERSION": "20.08" } ],
+        "v3.12.4":      [ { "PACKAGE_VERSION": "20.11" } ],
+        "v3.12.4":      [ { "PACKAGE_VERSION": "21.02" } ]
+      }
+    },
+    "tensorflow-source": {
+      "force_target_as_host": "yes",
+      "enable_if_env": [
+        { "USE_TF":     ["on", "ON", "yes", "YES", "true", "TRUE", "1"] },
+        { "USE_TFLITE": ["on", "ON", "yes", "YES", "true", "TRUE", "1"] }
+      ],
+      "local": "yes", 
+      "name": "Tensorflow source", 
+      "sort": 30, 
+      "tags": "tensorflow,source",
+      "update_tags_if_env" : {
+        "rel.1.15":     [ { "PACKAGE_VERSION": "18.08" } ],
+        "rel.1.15":     [ { "PACKAGE_VERSION": "18.11" } ],
+        "rel.1.15":     [ { "PACKAGE_VERSION": "19.02" } ],
+        "rel.1.15":     [ { "PACKAGE_VERSION": "19.05" } ],
+        "rel.1.15":     [ { "PACKAGE_VERSION": "19.08" } ],
+        "rel.1.15":     [ { "PACKAGE_VERSION": "20.05" } ],
+        "rel.1.15":     [ { "PACKAGE_VERSION": "20.08" } ],
+        "rel.2.3":      [ { "PACKAGE_VERSION": "20.11" } ],
+        "rel.2.3":      [ { "PACKAGE_VERSION": "21.02" } ]
+      }
+    },
+    "lib-armcl-variation": {
+      "enable_if_env": [
+        { "USE_NEON":     ["on", "ON", "yes", "YES", "true", "TRUE", "1"] },
+        { "USE_OPENCL":   ["on", "ON", "yes", "YES", "true", "TRUE", "1"] }
+      ],
+      "local": "yes",
+      "name": "Arm Compute Library (either release or development version) with Neon or OpenCL support",
+      "sort": 40,
+      "tags": "lib,armcl,viascons",
+      "update_tags_if_env" : {
+        "rel.18.08":    [ { "PACKAGE_VERSION": "18.08" } ],
+        "rel.18.11":    [ { "PACKAGE_VERSION": "18.11" } ],
+        "rel.19.02":    [ { "PACKAGE_VERSION": "19.02" } ],
+        "rel.19.05":    [ { "PACKAGE_VERSION": "19.05" } ],
+        "rel.19.08":    [ { "PACKAGE_VERSION": "19.08" } ],
+        "rel.20.05":    [ { "PACKAGE_VERSION": "20.05" } ],
+        "rel.20.08":    [ { "PACKAGE_VERSION": "20.08" } ],
+        "rel.20.11":    [ { "PACKAGE_VERSION": "20.11" } ],
+        "rel.21.02":    [ { "PACKAGE_VERSION": "21.02" } ],
+        "release":      [ { "PACKAGE_VERSION": "release" } ],
+        "dev":          [ { "PACKAGE_VERSION": "dev" } ],
+        "neon":         [ { "USE_NEON":   ["on", "ON", "yes", "YES", "true", "TRUE", "1"] } ],
+        "opencl":       [ { "USE_OPENCL": ["on", "ON", "yes", "YES", "true", "TRUE", "1"] } ]
+      }
+    },
+    "lib-flatbuffers": {
+      "enable_if_env": [
+        { "USE_TFLITE": ["on", "ON", "yes", "YES", "true", "TRUE", "1"] }
+      ],
+      "local": "yes",
+      "name": "Google FlatBuffers library",
+      "sort": 50,
+      "tags": "lib,flatbuffers"
+    },
+    "compiler": {
+      "local": "yes",
+      "name": "C++ compiler",
+      "sort": 60,
+      "tags": "compiler,lang-cpp"
+    },
+    "cmake": {
+      "force_target_as_host": "yes",
+      "local": "yes",
+      "name": "CMake",
+      "sort": 70,
+      "tags": "cmake"
+    }
+  },
+  "end_full_path_universal": "install$#sep#$lib$#sep#$libarmnn$#file_ext_dll#$",
+  "need_cpu_info": "yes",
+  "only_for_host_os_tags": [
+    "linux"
+  ],
+  "only_for_target_os_tags": [
+    "linux",
+    "android"
+  ],
+  "process_script": "install",
+  "soft_uoa": "lib.armnn",
+  "suggested_path": "lib-armnn",
+  "tags": [
+    "lib",
+    "armnn"
+  ],
+  "variations": {
+    "release": {
+        "extra_env": {
+            "PACKAGE_VERSION": "release"
+        }
+    },
+    "rel.18.08": {
+        "extra_env": {
+            "PACKAGE_GIT_CHECKOUT": "v18.08",
+            "PACKAGE_VERSION": "18.08",
+            "PACKAGE_PATCH__REL_18_08__REMOVE_MALLOC": "rel.18.08_malloc-to-stdlib.patch",
+            "ONNX_BRANCH": "--branch rel-1.3.0",
+            "ONNX_BRANCH_comment": "have to downgrade ONNX version for compatibility (see https://github.com/ARM-software/armnn/issues/113)"
+        }
+    },
+    "rel.18.11": {
+        "extra_env": {
+            "PACKAGE_GIT_CHECKOUT": "v18.11",
+            "PACKAGE_VERSION": "18.11",
+            "PACKAGE_PATCH__REL_18_08__REMOVE_MALLOC": "rel.18.08_malloc-to-stdlib.patch",
+            "ONNX_BRANCH": "--branch rel-1.3.0",
+            "ONNX_BRANCH_comment": "have to downgrade ONNX version for compatibility (see https://github.com/ARM-software/armnn/issues/113)"
+        }
+    },
+    "rel.19.02": {
+        "extra_env": {
+            "PACKAGE_GIT_CHECKOUT": "v19.02",
+            "PACKAGE_VERSION": "19.02",
+            "PACKAGE_PATCH__REL_18_08__REMOVE_MALLOC": "rel.18.08_malloc-to-stdlib.patch",
+            "ONNX_BRANCH": "--branch rel-1.6.0"
+        }
+    },
+    "rel.19.05": {
+        "extra_env": {
+            "PACKAGE_GIT_CHECKOUT": "v19.05",
+            "PACKAGE_VERSION": "19.05",
+            "PACKAGE_PATCH__REL_18_08__REMOVE_MALLOC": "rel.18.08_malloc-to-stdlib.patch",
+            "PACKAGE_PATCH__REL_19_05__INSTALL_TFLITE_PARSER": "rel.19.05_install-tflite-parser.patch",
+            "ONNX_BRANCH": "--branch rel-1.6.0"
+        }
+    },
+    "rel.19.08": {
+        "extra_env": {
+            "PACKAGE_GIT_CHECKOUT": "v19.08",
+            "PACKAGE_PATCH__REL_19_08__NO_WERROR": "rel.19.08_no-werror.patch",
+            "PACKAGE_VERSION": "19.08",
+            "ONNX_BRANCH": "--branch rel-1.6.0"
+        }
+    },
+    "rel.20.05": {
+        "extra_env": {
+            "PACKAGE_GIT_CHECKOUT": "v20.05",
+            "PACKAGE_PATCH__REL_20_05__NO_WERROR": "rel.20.05_no-werror.patch",
+            "PACKAGE_PATCH__REL_20_05__HARDSWISH": "rel.20.05_hardswish.patch",
+            "PACKAGE_VERSION": "20.05",
+            "ONNX_BRANCH": "--branch rel-1.6.0"
+        }
+    },
+    "rel.20.08": {
+        "extra_env": {
+            "PACKAGE_GIT_CHECKOUT": "v20.08",
+            "PACKAGE_VERSION": "20.08",
+            "ONNX_BRANCH": "--branch rel-1.6.0"
+        }
+    },
+    "rel.20.11": {
+        "extra_env": {
+            "PACKAGE_GIT_CHECKOUT": "v20.11",
+            "PACKAGE_VERSION": "20.11",
+            "ONNX_BRANCH": "--branch rel-1.6.0"
+        }
+    },
+    "rel.21.02": {
+        "extra_env": {
+            "PACKAGE_GIT_CHECKOUT": "v21.02",
+            "PACKAGE_VERSION": "21.02",
+            "ONNX_BRANCH": "--branch rel-1.6.0"
+        }
+    },
+    "dev": {
+        "extra_env": {
+            "PACKAGE_URL": "https://review.mlplatform.org/ml/armnn",
+            "PACKAGE_PATCH__REL_20_05__NO_WERROR": "rel.20.05_no-werror.patch",
+            "PACKAGE_VERSION": "dev",
+            "ONNX_BRANCH": "--branch rel-1.7.0",
+            "ONNX_BRANCH_comment": "Deliberately setting a different ONNX branch from rel.20.05 as it seems to fail"
+        }
+    },
+    "neon": {
+        "extra_env": {
+            "USE_NEON": "YES"
+        }
+    },
+    "opencl": {
+        "extra_env": {
+            "USE_OPENCL": "YES"
+        }
+    },
+    "tf": {
+        "extra_env": {
+            "USE_TF": "YES"
+        }
+    },
+    "tflite": {
+        "extra_env": {
+            "USE_TFLITE": "YES"
+        }
+    },
+    "onnx": {
+        "extra_env": {
+            "USE_ONNX": "YES"
+        }
+    },
+    "with_tests": {
+        "extra_env": {
+            "CK_ARMNN_BUILD_TESTS": "YES"
+        }
+    },
+    "without_tests": {
+        "extra_env": {
+            "CK_ARMNN_BUILD_TESTS": "NO"
+        }
+    }
+  },
+  "use_preprocess_scripts_from_another_entry": {
+    "data_uoa": "process-compiler-for-cmake",
+    "module_uoa": "script"
+  },
+  "use_scripts_from_another_entry": {
+    "data_uoa": "download-and-install-package",
+    "module_uoa": "script"
+  }
+}

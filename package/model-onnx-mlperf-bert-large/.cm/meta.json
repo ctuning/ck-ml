@@ -1,0 +1,31 @@
+{
+  "check_exit_status": "yes",
+  "customize": {
+    "install_env": {
+      "PACKAGE_NAME": "model.onnx",
+      "PACKAGE_SKIP_CLEAN_PACKAGE": "YES",
+      "PACKAGE_SKIP_LINUX_MAKE": "YES",
+      "PACKAGE_URL": "https://zenodo.org/record/3733910/files",
+      "PACKAGE_WGET": "YES"
+    },
+    "no_os_in_suggested_path": "yes",
+    "no_ver_in_suggested_path": "yes",
+    "version": "2"
+  },
+  "end_full_path_universal": "model.onnx",
+  "package_extra_name": " (MLPerf BERT Large)",
+  "process_script": "install",
+  "soft_uoa": "bcaac306e9041879",
+  "suggested_path": "model-onnx-mlperf-bert-large",
+  "tags": [
+    "model",
+    "onnx",
+    "mlperf",
+    "bert",
+    "large"
+  ],
+  "use_scripts_from_another_entry": {
+    "data_uoa": "download-and-install-package",
+    "module_uoa": "script"
+  }
+}

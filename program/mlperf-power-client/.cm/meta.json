@@ -1,0 +1,55 @@
+{
+  "backup_data_uid": "da098eba16a29cbc",
+  "build_compiler_vars": {},
+  "data_name": "mlperf-power-client",
+  "main_language": "python",
+  "no_compile": "yes",
+  "no_target_file": "yes",
+  "process_in_tmp": "yes",
+  "program": "yes",
+  "run_deps": {
+    "python": {
+      "force_target_as_host": "yes",
+      "local": "yes",
+      "name": "Python interpreter",
+      "sort": 30,
+      "tags": "compiler,lang-python"
+    },
+    "power": {
+      "force_target_as_host": "yes",
+      "local": "yes",
+      "name": "MLCommons power",
+      "sort": 40,
+      "tags": "power,source,r1.0"
+    }
+  },
+  "run_cmds": {
+    "default": {
+      "ignore_return_code": "no",
+      "run_time": {
+        "run_cmd_main": "..$#dir_sep#$run.sh",
+	"fine_grain_timer_file": "tmp-ck-timer.json",
+        "post_process_via_ck": {
+          "script_name": "postprocess"
+        }
+      }
+    }
+  },
+  "run_vars": {
+    "CK_MLPERF_POWER_CLIENT_ADDRESS": "",
+    "CK_MLPERF_POWER_CLIENT_PORT": "4950",
+    "CK_MLPERF_POWER_CLIENT_LABEL": "",
+    "CK_MLPERF_POWER_CLIENT_NTP": "time.google.com",
+    "CK_MLPERF_POWER_CLIENT_WORKLOAD": "false",
+    "CK_MLPERF_POWER_CLIENT_LOADGEN_LOGS": ""
+  },
+  "tags": [
+    "program",
+    "lang-python",
+    "mlperf-power-client",
+    "mlperf-power",
+    "mlperf",
+    "power",
+    "client"
+  ]
+}

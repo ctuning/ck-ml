@@ -1,0 +1,89 @@
+{
+  "check_exit_status": "yes",
+  "customize": {
+    "install_env": {
+        "*PACKAGE_VERSION": "$<<DATASET_MAX_SEQ_LENGTH>>$.$<<DATASET_MAX_QUERY_LENGTH>>$.$<<DATASET_DOC_STRIDE>>$"
+    },
+    "no_os_in_suggested_path": "yes",
+    "no_ver_in_suggested_path": "yes",
+    "package_name": "Tokenized SQuAD dataset, pickled",
+    "skip_file_check": "yes"
+  },
+  "deps": {
+    "dataset-squad": {
+      "local": "yes",
+      "name": "Original SQuAD 1.1 dataset",
+      "sort": 10,
+      "tags": "dataset,squad,original"
+    },
+    "dataset-vocab": {
+      "local": "yes",
+      "name": "Tokenization vocabulary for BERT",
+      "sort": 20,
+      "tags": "dataset,tokenization,vocab"
+    },
+    "python": {
+      "local": "yes",
+      "name": "Python",
+      "sort": 30,
+      "tags": "compiler,python"
+    },
+    "lib-python-absl": {
+      "local": "yes",
+      "name": "Python Abseil library",
+      "sort": 40,
+      "tags": "lib,python-package,absl"
+    },
+    "lib-python-tensorflow": {
+      "local": "yes",
+      "name": "Python TensorFlow library",
+      "sort": 50,
+      "tags": "lib,python-package,tensorflow,vpip"
+    },
+    "lib-python-transformers": {
+      "local": "yes",
+      "name": "Python Transformers library",
+      "sort": 60,
+      "tags": "lib,python-package,transformers",
+      "version_from": [ 2, 4, 0],
+      "version_to": [ 2, 4, 0]
+    },
+    "mlperf-inference-src": {
+      "add_to_path": "no",
+      "local": "yes",
+      "name": "MLPerf Inference source",
+      "sort": 70,
+      "tags": "mlperf,inference,source"
+    }
+  },
+  "end_full_path_universal": "bert_tokenized_squad_v1_1.pickle",
+  "only_for_host_os_tags": [],
+  "only_for_target_os_tags": [],
+  "process_script": "install",
+  "soft_uoa": "315ff0642bead267",
+  "suggested_path": "dataset-squad-tokenized-converted",
+  "tags": [
+    "dataset",
+    "squad",
+    "tokenized",
+    "pickled",
+    "converted"
+  ],
+  "variations": {
+    "width.384": {
+        "on_by_default": "yes",
+        "extra_env": {
+            "DATASET_MAX_SEQ_LENGTH": "384",
+            "DATASET_MAX_QUERY_LENGTH": "64",
+            "DATASET_DOC_STRIDE": "128"
+        }
+    },
+    "width.128": {
+        "extra_env": {
+            "DATASET_MAX_SEQ_LENGTH": "128",
+            "DATASET_MAX_QUERY_LENGTH": "64",
+            "DATASET_DOC_STRIDE": "64"
+        }
+    }
+  }
+}

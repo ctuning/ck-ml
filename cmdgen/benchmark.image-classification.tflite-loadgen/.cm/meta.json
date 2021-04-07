@@ -1,0 +1,367 @@
+{
+  "accu_init": {
+    "ck_env": [
+      "--env.CK_LOADGEN_DATASET_SIZE=<<<dataset_size>>>"
+    ],
+    "deps": [
+      "--dep_add_tags.compiler=<<<compiler_tags>>>",
+      "--dep_add_tags.python=v3",
+      "--dep_add_tags.mlperf-inference-src=r1.0",
+      "--dep_add_tags.weights=<<<model_tags,>>>",
+      "--dep_add_tags.images=crop.875,preprocessed,using-<<<preprocessed_using>>>"
+    ],
+    "record_tags": [
+      "mlperf",
+      "division.<<<division>>>",
+      "task.image-classification",
+      "platform.<<<sut>>>",
+      "scenario.<<<scenario>>>",
+      "mode.<<<mode>>>",
+      "workload.<<<model_readable>>>",
+      "<<<preprocessed_tag>>>"
+    ],
+    "record_uoa_parts": [
+      "mlperf",
+      "<<<division>>>",
+      "<<<sut>>>",
+      "<<<library>>>",
+      "<<<model_readable>>>",
+      "<<<scenario>>>",
+      "<<<mode>>><<<mode_extension>>>"
+    ],
+    "shell_preamble": [
+    ]
+  },
+  "build_map": {
+    "sut": {
+      "mac": {
+        "compiler_tags": "llvm,v10"
+      },
+      "mate10pro": {
+        "compiler_tags": "llvm,v6"
+      },
+      "hikey": {
+        "compiler_tags": "gcc,v7"
+      },
+      "firefly": {
+        "compiler_tags": "gcc,v7"
+      },
+      "xavier": {
+        "compiler_tags": "gcc,v7"
+      },
+      "rpi4": {
+        "compiler_tags": "gcc,v8"
+      },
+      "rpi4coral": {
+        "compiler_tags": "gcc,v9"
+      },
+      "###": {
+        "compiler_tags": "gcc,v8"
+      }
+    },
+    "compliance": {
+      "###": {
+        "ck_env": "--env.CK_MLPERF_COMPLIANCE_TEST=### --env.CK_LOADGEN_MODE=PerformanceOnly",
+        "mode": "performance",
+        "mode_extension": "-compliance.###",
+        "record_tags": "compliance.###",
+        "recommended_repetitions": "1",
+        "recommended_dataset_size": "1024",
+        "output_file": "mlperf_log_summary.txt"
+      }
+    },
+    "model": {
+      "resnet50": {
+        "division": "closed",
+        "model_tags": [ "###" ]
+      },
+      "lite.": {
+        "model_tags": [ "efficientnet", "###" ]
+      },
+      "v[123]-.*": {
+        "model_tags": [ "mobilenet", "###" ]
+      },
+      "edgetpu_.*": {
+        "model_tags": [ "mobilenet", "###" ]
+      }
+    },
+    "model_extra_tags": {
+      "###": {
+        "model_tags": [ "###" ]
+      }
+    },
+    "library": {
+      "armnn-v21.02-neon": {
+        "ck_env": "--env.USE_NEON=1",
+        "deps": "--dep_add_tags.library=armnn,rel.21.02,neon",
+        "program_name": "image-classification-armnn-tflite-loadgen",
+        "record_tags": [
+          "inference_engine.armnn",
+          "inference_engine_version.v21.02",
+          "inference_engine_backend.neon"
+        ]
+      },
+      "armnn-v21.02-opencl": {
+        "ck_env": "--env.USE_OPENCL=1",
+        "deps": "--dep_add_tags.library=armnn,rel.21.02,opencl",
+        "program_name": "image-classification-armnn-tflite-loadgen",
+        "record_tags": [
+          "inference_engine.armnn",
+          "inference_engine_version.v21.02",
+          "inference_engine_backend.opencl"
+        ]
+      },
+      "armnn-v20.08-neon": {
+        "ck_env": "--env.USE_NEON=1",
+        "deps": "--dep_add_tags.library=armnn,rel.20.08,neon",
+        "program_name": "image-classification-armnn-tflite-loadgen",
+        "record_tags": [
+          "inference_engine.armnn",
+          "inference_engine_version.v20.08",
+          "inference_engine_backend.neon"
+        ]
+      },
+      "armnn-v20.08-opencl": {
+        "ck_env": "--env.USE_OPENCL=1",
+        "deps": "--dep_add_tags.library=armnn,rel.20.08,opencl",
+        "program_name": "image-classification-armnn-tflite-loadgen",
+        "record_tags": [
+          "inference_engine.armnn",
+          "inference_engine_version.v20.08",
+          "inference_engine_backend.opencl"
+        ]
+      },
+      "tflite-v2.4.1": {
+        "deps": "--dep_add_tags.library=tflite,v2.4.1",
+        "program_name": "image-classification-tflite-loadgen",
+        "record_tags": [
+          "inference_engine.tflite",
+          "inference_engine_version.v2.4.1",
+          "inference_engine_backend.eigen"
+        ]
+      },
+      "tflite-v2.4.1-ruy": {
+        "deps": "--dep_add_tags.library=tflite,v2.4.1,with.ruy",
+        "program_name": "image-classification-tflite-loadgen",
+        "record_tags": [
+          "inference_engine.tflite",
+          "inference_engine_version.v2.4.1",
+          "inference_engine_backend.ruy"
+        ]
+      },
+      "tflite-v2.4.0": {
+        "deps": "--dep_add_tags.library=tflite,v2.4.0",
+        "program_name": "image-classification-tflite-loadgen",
+        "record_tags": [
+          "inference_engine.tflite",
+          "inference_engine_version.v2.4.0",
+          "inference_engine_backend.eigen"
+        ]
+      },
+      "tflite-v2.4.0-ruy": {
+        "deps": "--dep_add_tags.library=tflite,v2.4.0,with.ruy",
+        "program_name": "image-classification-tflite-loadgen",
+        "record_tags": [
+          "inference_engine.tflite",
+          "inference_engine_version.v2.4.0",
+          "inference_engine_backend.ruy"
+        ]
+      },
+      "tflite-v2.2.0-ruy": {
+        "deps": "--dep_add_tags.library=tflite,v2.2.0",
+        "program_name": "image-classification-tflite-loadgen",
+        "record_tags": [
+          "inference_engine.tflite",
+          "inference_engine_version.v2.2.0",
+          "inference_engine_backend.ruy"
+        ]
+      },
+      "tflite-v2.3": {
+        "deps": "--dep_add_tags.library=tflite,v2.3.90",
+        "program_name": "image-classification-tflite-loadgen",
+        "record_tags": [
+          "inference_engine.tflite",
+          "inference_engine_version.v2.3.0",
+          "inference_engine_backend.eigen"
+        ]
+      },
+      "tflite-v2.3-ruy": {
+        "deps": "--dep_add_tags.library=tflite,v2.3.90,with.ruy",
+        "program_name": "image-classification-tflite-loadgen",
+        "record_tags": [
+          "inference_engine.tflite",
+          "inference_engine_version.v2.3.0",
+          "inference_engine_backend.ruy"
+        ]
+      },
+      "tflite-v2.3-xnnpack": {
+        "deps": "--dep_add_tags.library=tflite,v2.3.90,with.xnnpack",
+        "program_name": "image-classification-tflite-loadgen",
+        "record_tags": [
+          "inference_engine.tflite",
+          "inference_engine_version.v2.3.0",
+          "inference_engine_backend.xnnpack"
+        ]
+      },
+      "tflite-v1.13.1": {
+        "deps": "--dep_add_tags.library=tflite,v1.13.1",
+        "program_name": "image-classification-tflite-loadgen",
+        "record_tags": [
+          "inference_engine.tflite",
+          "inference_engine_version.v1.13.1"
+        ]
+      }
+    },
+    "mode": {
+      "accuracy": {
+        "ck_env": "--env.CK_LOADGEN_MODE=AccuracyOnly",
+        "recommended_dataset_size": "50000",
+        "mode_extension": "-dataset_size.<<<dataset_size>>>-<<<preprocessed_tag>>>",
+        "output_file": "accuracy.txt"
+      },
+      "performance": {
+        "ck_env": "--env.CK_LOADGEN_MODE=PerformanceOnly",
+        "recommended_dataset_size": "1024",
+        "mode_extension": "<<<performance_mode_extension>>>",
+        "output_file": "mlperf_log_summary.txt"
+      }
+    },
+    "scenario": {
+      "offline": {
+        "ck_env": "--env.CK_LOADGEN_SCENARIO=Offline",
+        "performance_mode_extension": ""
+      },
+      "singlestream": {
+        "ck_env": "--env.CK_LOADGEN_SCENARIO=SingleStream",
+        "performance_mode_extension": "-target_latency.<<<target_latency>>>"
+      },
+      "range_singlestream": {
+        "ck_env": "--env.CK_LOADGEN_SCENARIO=SingleStream",
+        "performance_mode_extension": "-max_query_count.<<<max_query_count>>>"
+      }
+    },
+    "buffer_size": {
+      "###": {
+        "ck_env": "--env.CK_LOADGEN_BUFFER_SIZE=###",
+        "record_uoa_parts": "buffer_size.###",
+        "record_tags": "buffer_size.###"
+      }
+    },
+    "performance_sample_count_override": {
+      "###": {
+        "ck_env": "--env.CK_LOADGEN_BUFFER_SIZE=###",
+        "record_uoa_parts": "buffer_size.###",
+        "record_tags": "buffer_size.###"
+      }
+    },
+    "target_latency": {
+      "###": {
+        "ck_env": "--env.CK_LOADGEN_TARGET_LATENCY=###",
+        "record_tags": "target_latency.###"
+      }
+    },
+    "target_qps": {
+      "###": {
+        "ck_env": "--env.CK_LOADGEN_TARGET_QPS=###",
+        "record_tags": "target_qps.###"
+      }
+    },
+    "target_latency_file": {
+      "###": {
+        "shell_preamble": "export CK_LOADGEN_TARGET_LATENCY=$(awk -vX=\"<<<sut>>>,<<<library>>>,<<<model_readable>>>\" 'X==$1{print $2;exit}' < ###); [ \"$CK_LOADGEN_TARGET_LATENCY\" ] || { echo 'Error: entry <<<sut>>>,<<<library>>>,<<<model_readable>>> not found in ###, exiting'; exit 1; }; ",
+        "ck_env": "--env.CK_LOADGEN_TARGET_LATENCY=$CK_LOADGEN_TARGET_LATENCY",
+        "record_tags": "target_latency.$CK_LOADGEN_TARGET_LATENCY",
+        "target_latency": "$CK_LOADGEN_TARGET_LATENCY"
+      }
+    },
+    "max_query_count": {
+      "###": {
+        "ck_env": "--env.CK_LOADGEN_MAX_QUERY_COUNT=\"$(echo ###)\"",
+        "record_tags": "max_query_count.\"$(echo ###)\""
+      }
+    },
+
+    "compile": {
+      "yes": {
+        "shell_wrapped_cmd": "<<<ck_compile_program>>>"
+      }
+    },
+    "no_record": {
+      "yes": {
+        "shell_wrapped_cmd": "<<<wrapped_ck_run_program>>>"
+      }
+    },
+    "verbose": {
+      "yes": {
+        "print_output_file": "<<<print_output_file_cmd>>>"
+      },
+      "all": {
+        "screen_output": "",
+        "print_output_file": "<<<print_output_file_cmd>>>"
+      }
+    },
+
+    "power_mode": {
+      "###": {
+        "ck_env": "--env.CK_POWER_MODE=###",
+        "record_uoa_parts": "power_mode.###",
+        "record_tags": "power_mode.###"
+      }
+    },
+    "fan_mode": {
+      "###": {
+        "ck_env": "--env.CK_FAN_MODE=###",
+        "record_uoa_parts": "fan_mode.###",
+        "record_tags": "fan_mode.###"
+      }
+    },
+
+    "power": {
+      "yes": {
+        "wrapped_ck_benchmark_program": "if [ -n \"`ck list local:experiment:<<<record_uoa_parts->>>-power.client`\" ]; then echo 'Experiment <<<record_uoa_parts->>>-power.client exists, skipping' ; else ck rm --force local:experiment:<<<record_uoa>>>; _cmd=\"$(cat<<'EOF'\n<<<ck_benchmark_program>>> \"@@@{'meta': {'ck_benchmark_program': '<<<ck_benchmark_program>>>'}}\" <<<?print_output_file>>> && <<<_power_log_helper>>>\nEOF\n)\";_cmd=\"$(printf \"%s\\n\" \"$_cmd\" | sed \"s/'/'\\\\\\\\''/g; 1 s/^/'/; $ s/$/'/\" )\"; <<<power_command_args >>> ; fi",
+        "power_command_args": [
+          "ck", "benchmark",
+          "--env.CK_MLPERF_POWER_CLIENT_ADDRESS=<<<power_server_ip>>>",
+          "--env.CK_MLPERF_POWER_CLIENT_PORT=<<<power_server_port>>>",
+          "--env.CK_MLPERF_POWER_CLIENT_LOADGEN_LOGS=\"$(ck find program:<<<program_name>>>)\"/tmp/loadgen_logs",
+          "--env.CK_MLPERF_POWER_CLIENT_WORKLOAD=\\\"\\\"\"$_cmd\"",
+          "--record", "--record_repo=local", "--repetitions=1",
+          "--record_uoa=<<<record_uoa_parts->>>-power.client",
+          "--tags=<<<record_tags,>>>,power.client",
+          "program:mlperf-power-client"
+        ],
+        "_power_log_helper": "mkdir -p \"$CK_MLPERF_POWER_CLIENT_LOADGEN_LOGS\" && cp \"$CK_MLPERF_POWER_CLIENT_LOADGEN_LOGS\"/../mlperf_log_* \"$CK_MLPERF_POWER_CLIENT_LOADGEN_LOGS\"/",
+
+        "record_uoa": "<<<record_uoa_parts->>>-power.workload",
+        "record_tags_inner": "<<<record_tags,>>>,power.workload"
+      },
+      "###": {}
+    }
+
+  },
+  "cmd_template": "<<<shell_wrapped_cmd>>>",
+  "defaults": {
+    "shell_wrapped_cmd": "<<<shell_preamble >>> <<<wrapped_ck_benchmark_program>>>",
+
+    "print_output_file_cmd": "&& cat `ck find program:<<<program_name>>>`/tmp/<<<output_file>>>",
+
+    "wrapped_ck_run_program": "<<<ck_run_program>>> <<<?print_output_file>>>",
+    "wrapped_ck_benchmark_program": "if [ -n \"`ck list local:experiment:<<<record_uoa>>>`\" ]; then echo 'Experiment <<<record_uoa>>> exists, skipping' ; else <<<ck_benchmark_program>>> \"@@@{'meta': {'ck_benchmark_program': '<<<ck_benchmark_program>>>'}}\" <<<?print_output_file>>> ; fi",
+
+    "ck_compile_program": "ck compile program:<<<program_name>>> <<<?deps >>>",
+    "run_or_benchmark_common": "program:<<<program_name>>> <<<screen_output>>> <<<?deps >>> <<<?ck_env >>>",
+    "ck_run_program": "ck run <<<run_or_benchmark_common>>>",
+    "ck_benchmark_program": "ck benchmark <<<run_or_benchmark_common>>> --skip_stat_analysis --process_multi_keys --repetitions=<<<repetitions>>> --record --record_repo=local --record_uoa=<<<record_uoa>>> --tags=<<<record_tags_inner>>>",
+
+    "dataset_size": "<<<recommended_dataset_size>>>",
+    "division": "open",
+    "model_readable": "<<<model_tags->>>",
+    "preprocessed_using": "opencv",
+    "preprocessed_tag": "preprocessed_using.<<<preprocessed_using>>>",
+    "record_uoa": "<<<record_uoa_parts->>>",
+    "record_tags_inner": "<<<record_tags,>>>",
+    "repetitions": "1",
+    "power_server_port": "4950",
+    "screen_output": "--env.CK_SILENT_MODE=YES --skip_print_timers"
+  }
+}

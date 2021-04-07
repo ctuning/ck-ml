@@ -1,0 +1,53 @@
+{
+  "customize": {
+    "extra_dir": "",
+    "install_env": {
+      "PACKAGE_BUILD_TYPE": "none",
+      "PACKAGE_GIT": "YES",
+      "PACKAGE_SKIP_LINUX_MAKE": "YES",
+      "PACKAGE_SUB_DIR": "power"
+    },
+    "no_os_in_suggested_path": "yes",
+    "no_ver_in_suggested_path": "yes",
+    "use_git_revision": "yes",
+    "version": "master"
+  },
+  "end_full_path_universal": "power$#sep#$ptd_client_server$#sep#$README.md",
+  "process_script": "install",
+  "soft_uoa": "mlperf.power.source",
+  "suggested_path": "mlperf-power",
+  "tags": [
+    "uninstalled",
+    "mlcommons",
+    "mlperf",
+    "power",
+    "src",
+    "source"
+  ],
+  "use_scripts_from_another_entry": {
+    "data_uoa": "cd9ccc74060b3d18",
+    "module_uoa": "script"
+  },
+  "variations": {
+    "r1.0": {
+      "extra_customize": {
+        "package_extra_name": " (official v1.0 release)",
+        "version": "r1.0"
+      },
+      "extra_env": {
+        "PACKAGE_GIT_CHECKOUT": "r1.0",
+        "PACKAGE_URL": "https://github.com/mlcommons/power-dev"
+      },
+      "on_by_default": "yes"
+    },
+    "upstream.master": {
+      "extra_customize": {
+        "package_extra_name": " (upstream repository - default)"
+      },
+      "extra_env": {
+        "PACKAGE_URL": "https://github.com/mlcommons/power-dev"
+      },
+      "on_by_default": "no"
+    }
+  }
+}

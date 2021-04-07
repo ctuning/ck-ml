@@ -1,0 +1,124 @@
+{
+  "backup_data_uid": "af3c1bb4851b93c1", 
+  "build_compiler_vars": {}, 
+  "data_name": "image-classification-tensorrt-loadgen-py", 
+  "main_language": "python", 
+  "no_compile": "yes", 
+  "no_target_file": "yes", 
+  "process_in_tmp": "yes", 
+  "program": "yes", 
+  "run_cmds": {
+    "default": {
+      "ignore_return_code": "no", 
+      "run_time": {
+        "run_cmd_main": "$<<CK_ENV_COMPILER_PYTHON_FILE>>$ ../tensorrt_classify_loadgen.py",
+        "fine_grain_timer_file": "tmp-ck-timer.json",
+        "pre_process_via_ck": {
+          "data_uoa": "b98ee24399ef4c3a",
+          "module_uoa": "script",
+          "script_name": "loadgen_preprocess"
+        },
+        "post_process_via_ck": {
+          "data_uoa": "b98ee24399ef4c3a",
+          "module_uoa": "script",
+          "script_name": "loadgen_postprocess"
+        }
+      }
+    }
+  }, 
+  "run_deps": {
+    "imagenet-aux": {
+      "force_target_as_host": "yes", 
+      "local": "yes", 
+      "name": "ImageNet dataset (aux)", 
+      "sort": 10, 
+      "tags": "dataset,imagenet,aux"
+    }, 
+    "images": {
+      "force_target_as_host": "yes", 
+      "local": "yes", 
+      "name": "ImageNet dataset (preprocessed subset)", 
+      "sort": 32,
+      "tags": "dataset,imagenet,preprocessed"
+    }, 
+    "imagenet-helper": {
+      "local": "yes",
+      "name": "Python ImageNet helper functions and metadata",
+      "sort": 35,
+      "tags": "lib,python-package,imagenet-helper"
+    },
+    "lib-python-loadgen": {
+      "local": "yes", 
+      "name": "Python LoadGen library", 
+      "sort": 40, 
+      "tags": "lib,python-package,loadgen"
+    }, 
+    "lib-python-numpy": {
+      "local": "yes", 
+      "name": "Python NumPy library", 
+      "sort": 50, 
+      "tags": "lib,python-package,numpy"
+    }, 
+    "lib-python-pycuda": {
+      "local": "yes", 
+      "name": "Python PyCUDA library", 
+      "sort": 60, 
+      "tags": "lib,python-package,pycuda"
+    }, 
+    "lib-python-tensorrt": {
+      "local": "yes", 
+      "name": "Python TensorRT library", 
+      "sort": 70, 
+      "tags": "lib,python-package,tensorrt"
+    }, 
+    "tensorrt-helper": {
+      "local": "yes",
+      "name": "Python TensorRT helper functions and metadata",
+      "sort": 80,
+      "tags": "lib,python-package,tensorrt-helper"
+    },
+    "weights": {
+      "pass_matching_tags_to": {
+        "side.": [ "images" ]
+      },
+      "local": "yes", 
+      "name": "TensorRT model", 
+      "sort": 30, 
+      "tags": "tensorrt,model"
+    },
+    "python": {
+      "force_target_as_host": "yes",
+      "local": "yes",
+      "name": "Python interpreter",
+      "sort": 100,
+      "tags": "compiler,lang-python"
+    },
+    "mlperf-inference-src": {
+      "force_target_as_host": "yes",
+      "add_to_path": "no",
+      "local": "yes",
+      "name": "MLPerf Inference source",
+      "sort": 110,
+      "tags": "mlperf,inference,source"
+    }
+  }, 
+  "run_vars": {
+    "CK_BATCH_SIZE": 1,
+    "CK_LOADGEN_BUFFER_SIZE": 1024, 
+    "CK_LOADGEN_DATASET_SIZE": 500,
+    "CK_LOADGEN_MULTISTREAMNESS": "",
+    "CK_LOADGEN_MODE": "AccuracyOnly", 
+    "CK_LOADGEN_SCENARIO": "SingleStream",
+    "CK_LOADGEN_USER_CONF": "user.conf",
+    "CK_MLPERF_PRE_USER_CONF_AND_AUDIT_CONFIG": "YES",
+    "CK_VERBOSE": 1
+  }, 
+  "tags": [
+    "loadgen", 
+    "image-classification", 
+    "tensorrt",
+    "trt",
+    "standalone",
+    "lang-python"
+  ]
+}

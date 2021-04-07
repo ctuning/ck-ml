@@ -1,0 +1,94 @@
+{
+  "backup_data_uid": "82f16e1439584ca2",
+  "pass_env_to_resolve": "yes",
+  "build_compiler_vars": {},
+  "data_name": "bert-squad-torch-py",
+  "main_language": "python",
+  "no_compile": "yes",
+  "no_target_file": "yes",
+  "process_in_tmp": "yes",
+  "program": "yes",
+  "run_cmds": {
+    "default": {
+      "ignore_return_code": "no",
+      "run_time": {
+        "run_cmd_main": "$<<CK_ENV_COMPILER_PYTHON_FILE>>$ ../bert_squad.py"
+      }
+    }
+  },
+  "run_deps": {
+    "mlperf-inference-src": {
+      "force_target_as_host": "yes",
+      "add_to_path": "no",
+      "local": "yes",
+      "name": "MLPerf Inference source",
+      "sort": 10,
+      "tags": "mlperf,inference,source,dividiti.bert"
+    },
+    "lib-python-numpy": {
+      "local": "yes",
+      "name": "Python NumPy library",
+      "sort": 20,
+      "tags": "lib,python-package,numpy"
+    },
+    "lib-python-tensorflow": {
+      "local": "yes",
+      "name": "Python TensorFlow library",
+      "sort": 30,
+      "tags": "lib,python-package,tensorflow"
+    },
+    "lib-python-torch": {
+      "local": "yes",
+      "name": "PyTorch library",
+      "sort": 40,
+      "tags": "lib,python-package,torch",
+      "version_from": [ 1, 6, 0]
+    },
+    "lib-python-transformers": {
+      "local": "yes",
+      "name": "Python Transformers library",
+      "sort": 50,
+      "tags": "lib,python-package,transformers",
+      "update_tags_if_env" : {
+        "patched,with.custom1":     [ { "CK_BERT_TRANSFORMERS_VARIATION": [ "with.custom1" ] } ],
+        "patched,with.custom2":     [ { "CK_BERT_TRANSFORMERS_VARIATION": [ "with.custom2" ] } ],
+        "patched,with.custom3":     [ { "CK_BERT_TRANSFORMERS_VARIATION": [ "with.custom3" ] } ],
+        "patched,with.split_heads": [ { "CK_BERT_TRANSFORMERS_VARIATION": [ "with.split_heads" ] } ],
+        "original":                 [ { "CK_BERT_TRANSFORMERS_VARIATION": [ "default", "original" ] } ]
+      },
+      "version_from": [ 2, 4, 0],
+      "version_to": [ 2, 4, 0]
+    },
+    "dataset-original": {
+      "local": "yes",
+      "name": "Original SQuAD dataset",
+      "sort": 110,
+      "tags": "dataset,squad,original"
+    },
+    "dataset-tokenized": {
+      "local": "yes",
+      "name": "SQuAD dataset tokenized for BERT",
+      "sort": 120,
+      "tags": "dataset,squad,tokenized"
+    },
+    "weights": {
+      "enable_if_env": [ { "CK_BERT_MODEL_HUB_NAME": [""] } ],
+      "local": "yes",
+      "name": "Pytorch model weights for BERT",
+      "sort": 130,
+      "tags": "model,weights,pytorch,bert"
+    }
+  },
+  "run_vars": {
+    "CK_BATCH_COUNT": "0",
+    "CK_DISABLE_CUDA": "NO",
+    "CK_BERT_MODEL_HUB_NAME": ""
+  },
+  "tags": [
+    "bert",
+    "squad",
+    "torch",
+    "pytorch",
+    "lang-python"
+  ]
+}

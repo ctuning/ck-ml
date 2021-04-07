@@ -1,0 +1,30 @@
+{
+  "auto_detect": "yes",
+  "customize": {
+    "check_that_exists": "yes",
+    "ck_version": 10,
+    "env_prefix": "CK_ENV_DATASET_SQUAD_TOKENIZED",
+    "extra_search_dirs": {
+      "linux": [
+        "/datasets",
+        "/data"
+      ]
+    },
+    "limit_recursion_dir_search": {
+      "linux": 5
+    },
+    "soft_file_universal": "bert_tokenized_squad_v1_1.pickle",
+    "version": "1.1"
+  },
+  "soft_name": "Tokenized SQuAD dataset",
+  "tags": [
+    "dataset",
+    "squad",
+    "tokenized",
+    "pickled"
+  ],
+  "use_customize_script_from_another_entry": {
+    "data_uoa": "dataset.squad.original",
+    "module_uoa": "soft"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "check_exit_status": "yes",
+  "customize": {
+    "install_env": {
+      "PACKAGE_NAME": "vocab.txt",
+      "PACKAGE_SKIP_CLEAN_PACKAGE": "YES",
+      "PACKAGE_SKIP_LINUX_MAKE": "YES",
+      "PACKAGE_URL": "https://zenodo.org/record/3733896/files",
+      "PACKAGE_WGET": "YES"
+    },
+    "no_os_in_suggested_path": "yes",
+    "no_ver_in_suggested_path": "yes",
+    "version": "1.1"
+  },
+  "end_full_path_universal": "vocab.txt",
+  "process_script": "install",
+  "soft_uoa": "04c6df734b47a68b",
+  "suggested_path": "dataset-tokenization-vocab-for.bert-downloaded",
+  "tags": [
+    "dataset",
+    "tokenization",
+    "vocab",
+    "vocabulary",
+    "for.bert",
+    "downloaded"
+  ],
+  "use_scripts_from_another_entry": {
+    "data_uoa": "download-and-install-package",
+    "module_uoa": "script"
+  }
+}

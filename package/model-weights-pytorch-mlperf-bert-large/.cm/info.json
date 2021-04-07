@@ -1,0 +1,15 @@
+{
+  "backup_data_uid": "118b212b13fe8234",
+  "backup_module_uid": "1dc07ee0f4742028",
+  "backup_module_uoa": "package",
+  "control": {
+    "engine": "CK",
+    "iso_datetime": "2020-12-30T15:12:36.008903",
+    "version": [
+      "1",
+      "9",
+      "7"
+    ]
+  },
+  "data_name": "model-weights-pytorch-mlperf-bert-large"
+}

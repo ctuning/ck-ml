@@ -1,0 +1,79 @@
+{
+  "backup_data_uid": "3e2d49b2b9d791db",
+  "build_compiler_vars": {},
+  "data_name": "example-loadgen-py",
+  "main_language": "python",
+  "no_compile": "yes",
+  "no_target_file": "yes",
+  "process_in_tmp": "yes",
+  "program": "yes",
+  "run_cmds": {
+    "cli": {
+      "ignore_return_code": "no",
+      "run_time": {
+        "run_cmd_main": "$<<CK_ENV_COMPILER_PYTHON_FILE>>$ ../cli_controlled_loadgen_example.py --scenario=$<<CK_LOADGEN_SCENARIO>>$ --mode=$<<CK_LOADGEN_MODE>>$ --samples_in_mem=$<<CK_LOADGEN_BUFFER_SIZE>>$ --config_file=$<<CK_LOADGEN_CONF_FILE>>$"
+      }
+    },
+    "env": {
+      "ignore_return_code": "no",
+      "run_time": {
+        "pre_process_via_ck": {
+          "data_uoa": "bert-question-answering",
+          "module_uoa": "script",
+          "script_name": "loadgen_preprocess"
+        },
+        "run_cmd_main": "$<<CK_ENV_COMPILER_PYTHON_FILE>>$ ../env_controlled_loadgen_example.py"
+      }
+    },
+    "queue": {
+      "ignore_return_code": "no",
+      "run_time": {
+        "pre_process_via_ck": {
+          "data_uoa": "bert-question-answering",
+          "module_uoa": "script",
+          "script_name": "loadgen_preprocess"
+        },
+        "run_cmd_main": "$<<CK_ENV_COMPILER_PYTHON_FILE>>$ ../queued_loadgen_example.py"
+      }
+    }
+  },
+  "run_deps": {
+    "lib-python-numpy": {
+      "local": "yes",
+      "name": "Python NumPy library",
+      "sort": 10,
+      "tags": "lib,python-package,numpy"
+    },
+    "mlperf-inference-src": {
+      "add_to_path": "no",
+      "force_target_as_host": "yes",
+      "local": "yes",
+      "name": "MLPerf Inference source",
+      "sort": 20,
+      "tags": "mlperf,inference,source"
+    },
+    "lib-python-loadgen": {
+      "local": "yes",
+      "name": "Python LoadGen library",
+      "sort": 30,
+      "tags": "lib,python-package,loadgen"
+    }
+  },
+  "run_vars": {
+    "CK_EXAMPLE_LATENCY_MS": 90,
+    "CK_EXAMPLE_BATCH_CAPACITY": 3,
+    "CK_EXAMPLE_TOPUP_TIME_MS": 40,
+
+    "CK_LOADGEN_BUFFER_SIZE": 8,
+    "CK_LOADGEN_DATASET_SIZE": 20,
+    "CK_LOADGEN_MODE": "AccuracyOnly",
+    "CK_LOADGEN_SCENARIO": "SingleStream",
+    "CK_LOADGEN_USER_CONF": "user.conf",
+    "ML_MODEL_MODEL_NAME": "random_model"
+  },
+  "tags": [
+    "loadgen",
+    "example",
+    "lang-python"
+  ]
+}

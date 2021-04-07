@@ -1,0 +1,21 @@
+{
+  "auto_detect": "yes",
+  "customize": {
+    "check_that_exists": "yes",
+    "ck_version": 10,
+    "env_prefix": "CK_ENV_DATASET_SQUAD_ORIGINAL",
+    "extra_search_dirs": { "linux": [ "/datasets", "/data" ] },
+    "limit_recursion_dir_search": {
+      "linux": 5
+    },
+    "soft_file_universal": "dev-v1.1.json",
+    "version": "1.1"
+  },
+  "soft_name": "Stanford Question Answering Dataset (SQuAD)",
+  "tags": [
+    "dataset",
+    "squad",
+    "orig",
+    "original"
+  ]
+}

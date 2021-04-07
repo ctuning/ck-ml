@@ -1,0 +1,15 @@
+{
+  "backup_data_uid": "c77a763336184a89",
+  "backup_module_uid": "145039462db4f4d2",
+  "backup_module_uoa": "jnotebook",
+  "control": {
+    "engine": "CK",
+    "iso_datetime": "2021-02-12T00:20:01.060696",
+    "version": [
+      "1",
+      "17",
+      "0"
+    ]
+  },
+  "data_name": "image-classification-armnn-tflite-loadgen"
+}

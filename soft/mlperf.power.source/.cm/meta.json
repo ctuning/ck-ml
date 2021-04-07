@@ -1,0 +1,22 @@
+{
+  "auto_detect": "yes",
+  "customize": {
+    "check_that_exists": "yes",
+    "ck_version": 10,
+    "env_prefix": "CK_ENV_MLPERF_POWER",
+    "limit_recursion_dir_search": {
+      "linux": 5
+    },
+    "soft_file_universal": "ptd_client_server$#sep#README.md"
+  },
+  "soft_name": "MLPerf Power source",
+  "tags": [
+    "uninstalled",
+    "mlcommons",
+    "mlperf",
+    "power",
+    "src",
+    "source"
+  ],
+  "template": "no"
+}
