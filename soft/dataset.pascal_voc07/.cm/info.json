@@ -1,0 +1,15 @@
+{
+  "backup_data_uid": "40a5a942105e3639",
+  "backup_module_uid": "5e1100048ab875d7",
+  "backup_module_uoa": "soft",
+  "control": {
+    "engine": "CK",
+    "iso_datetime": "2018-06-20T09:35:22.820809",
+    "version": [
+      "1",
+      "9",
+      "4"
+    ]
+  },
+  "data_name": "dataset.pascal_voc07"
+}

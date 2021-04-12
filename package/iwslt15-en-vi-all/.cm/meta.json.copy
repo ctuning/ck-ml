@@ -1,0 +1,53 @@
+{
+  "check_exit_status": "yes", 
+  "customize": {
+    "extra_dir": "", 
+    "no_os_in_suggested_path": "yes", 
+    "no_ver_in_suggested_path": "yes", 
+    "version": "2015"
+  }, 
+  "deps": {
+    "iwslt15-en-vi-train": {
+      "local": "yes", 
+      "name": "IWSLT15 English-Vietnamese dataset (train)", 
+      "skip_from_bat": "yes", 
+      "sort": 20, 
+      "tags": "dataset,translation,raw,train"
+    }, 
+    "iwslt15-en-vi-val": {
+      "local": "yes", 
+      "name": "IWSLT15 English-Vietnamese dataset (val)", 
+      "skip_from_bat": "yes", 
+      "sort": 30, 
+      "tags": "dataset,translation,raw,val"
+    }, 
+    "python": {
+      "local": "yes", 
+      "name": "Python interpreter (v3+)", 
+      "skip_from_bat": "yes", 
+      "sort": 5, 
+      "tags": "compiler,python", 
+      "version_from": [
+        3
+      ]
+    }, 
+    "tensorflow": {
+      "local": "yes", 
+      "name": "TensorFlow Library", 
+      "skip_from_bat": "yes", 
+      "sort": 10, 
+      "tags": "lib,tensorflow"
+    }
+  }, 
+  "need_cpu_info": "no", 
+  "process_script": "install", 
+  "soft_uoa": "f3403f90cebc91da", 
+  "suggested_path": "dataset-iwslt15-english-vietnamese-all", 
+  "tags": [
+    "dataset", 
+    "raw", 
+    "train",
+    "translation",
+    "channel-stable"
+  ]
+}

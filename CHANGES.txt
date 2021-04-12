@@ -1,5 +1,8 @@
+20210412:
+  * added components and workflows from ck-mxnet, ck-tvm and ck-tbd
+
 20210410:
-  * [gfursin] fixed TFLite packages 1.13, 1.14 and 1.15 (eigen library).
+  * fixed TFLite packages 1.13, 1.14 and 1.15 (eigen library).
      https://github.com/ctuning/ck/issues/138
      https://github.com/ctuning/ck/issues/139
 
