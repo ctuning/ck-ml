@@ -37,6 +37,19 @@ def version_cmd(i):
     elif os.path.exists(nvinfer_h):
         # TensorRT v1-5 (?).
         version_file_path = nvinfer_h
+
+    # Grigori fixed detection on Desktops/Laptops [20210413]
+    if not version_file_path:
+        nvinferversion_h=os.path.join(lib_dir, 'include', 'NvInferVersion.h')
+        nvinfer_h=os.path.join(lib_dir, 'include',  'NvInfer.h')
+        version_file_path = None
+        if os.path.exists(nvinferversion_h):
+            # TensorRT v5-6.
+            version_file_path = nvinferversion_h
+        elif os.path.exists(nvinfer_h):
+            # TensorRT v1-5 (?).
+            version_file_path = nvinfer_h
+
     if version_file_path:
         with open(version_file_path, 'r') as version_file:
             lines=version_file.readlines()
@@ -114,9 +127,14 @@ def setup(i):
     if not os.path.isdir(path_lib):
         return {'return':1, 'error':'can\'t find installation lib dir'}
 
+    # Grigori fixed detection on Desktops/Laptops [20210413]
     path_include=path_lib.replace('lib','include')
     if not os.path.isdir(path_include):
-        return {'return':1, 'error':'can\'t find installation include dir'}
+        path_include=os.path.join(path_lib,'include')
+        if not os.path.isdir(path_include):
+            path_include=os.path.join(os.path.dirname(path_lib),'include')
+            if not os.path.isdir(path_include):
+                return {'return':1, 'error':'can\'t find installation include dir'}
 
     path_bin=path_lib.replace('lib', 'bin')
     env=i['env']
