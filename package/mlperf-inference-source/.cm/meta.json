@@ -6,7 +6,7 @@
       "PACKAGE_BUILD_TYPE": "none",
       "PACKAGE_GIT": "YES",
       "PACKAGE_GIT_SUBMODULES": "YES",
-      "PACKAGE_PATCH": "YES",
+      "PACKAGE_PATCH": "NO",
       "PACKAGE_SKIP_CLEAN_SRC_DIR": "YES",
       "PACKAGE_SKIP_LINUX_MAKE": "YES",
       "PACKAGE_SUB_DIR": "inference"
@@ -124,6 +124,18 @@
       "extra_customize": {
         "package_extra_name": " (PR#779: v1.0 logging)"
       }
+    },
+    "for.aimet": {
+      "extra_env": {
+        "PACKAGE_URL": "https://github.com/mlcommons/inference",
+        "PACKAGE_GIT_CHECKOUT": "r1.0",
+        "PACKAGE_PATCH": "YES"
+      },
+      "extra_customize": {
+        "package_extra_name": " (v1.0 branch patched for AIMET)",
+        "version": "r1.0 patched"
+      }
+
     }
   },
   "use_scripts_from_another_entry": {

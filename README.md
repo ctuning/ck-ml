@@ -10,23 +10,21 @@ Windows: [![Windows Build status](https://ci.appveyor.com/api/projects/status/gl
 *There are numerous CK components spread across numerous GitHub repositories. 
 Based on the feedback from the community, we have created this repository 
 to collect all main CK components related to AI and ML Systems in one place. 
-These components are also uploaded to the cKnowledge.io platform 
-to ensure the stability of public CK workflows!*
+These components are also uploaded to the [cKnowledge.io platform](https://cKnowledge.io) 
+similar to PyPI to help you search for specific components and see their connections!*
 
-A collection of portable workflows, automation actions and reusable artifacts for AI and ML systems in the [CK format](https://arxiv.org/pdf/2011.01149.pdf):
+This repository contains a collection of portable workflows, automation actions 
+and reusable artifacts for AI and ML systems in the [CK format](https://arxiv.org/pdf/2011.01149.pdf):
 
-* CK modules with automation actions: [[dev](https://github.com/ctuning/ck-ml/tree/main/module)] [[stable](https://github.com/ctuning/ck/tree/master/ck/repo/module)]
-* CK program workflows: [[dev](https://github.com/ctuning/ck-ml/tree/main/program)] [[CK platform]( https://cKnowledge.io/programs )]
-* CK meta packages: [[dev](https://github.com/ctuning/ck-ml/tree/main/package)] [[CK platform]( https://cKnowledge.io/packages )]
-* CK software detection: [[dev](https://github.com/ctuning/ck-ml/tree/main/soft)] [[CK platform]( https://cKnowledge.io/soft )]
-* CK datasets: [[dev](https://github.com/ctuning/ck-ml/tree/main/dataset)] [[CK platform]( https://cKnowledge.io/c/dataset )]
-* CK adaptive containers: [[dev](https://github.com/ctuning/ck-ml/tree/main/docker)] [[CK platform]( https://cKnowledge.io/c/docker )]
-* CK OS: [[dev](https://github.com/ctuning/ck-ml/tree/main/os)] [[CK platform]( https://cKnowledge.io/c/os )]
-* CK MLPerf system descriptions: [[dev](https://github.com/ctuning/ck-ml/tree/main/sut)] [[CK platform]( https://cKnowledge.io/c/sut )]
-* CK MLPerf benchmark CMD generators: [[dev](https://github.com/ctuning/ck-ml/tree/main/cmdgen)] [[CK platform]( https://cKnowledge.io/c/cmdgen )]
-
-All CK components are available at the [CK portal](https://cKnowledge.io) similar to PyPI.
-Feel free to discuss them with the [CK community](https://cKnowledge.io/engage).
+* CK modules with automation actions: [[list](https://github.com/ctuning/ck/tree/master/ck/repo/module)]
+* CK program workflows: [[list]( https://cKnowledge.io/programs )]
+* CK meta packages: [[list]( https://cKnowledge.io/packages )]
+* CK software detection: [[list]( https://cKnowledge.io/soft )]
+* CK datasets: [[list]( https://cKnowledge.io/c/dataset )]
+* CK adaptive containers: [[list]( https://cKnowledge.io/c/docker )]
+* CK OS: [[list]( https://cKnowledge.io/c/os )]
+* CK MLPerf system descriptions: [[list]( https://cKnowledge.io/c/sut )]
+* CK MLPerf benchmark CMD generators: [[list]( https://cKnowledge.io/c/cmdgen )]
 
 # Docs
 
@@ -39,7 +37,7 @@ Feel free to discuss them with the [CK community](https://cKnowledge.io/engage).
 
 ## Without Docker
 
-Install the CK framework as described [here](https://ck.readthedocs.io/en/latest/src/installation.html).
+Install the [CK framework](https://cKnowledge.org) as described [here](https://ck.readthedocs.io/en/latest/src/installation.html).
 
 Pull this repository:
 ```bash

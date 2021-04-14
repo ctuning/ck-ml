@@ -1,3 +1,6 @@
+20210414:
+  * regular aggregation of the CK components from the community
+
 20210412:
   * added components and workflows from ck-mxnet, ck-tvm and ck-tbd
 

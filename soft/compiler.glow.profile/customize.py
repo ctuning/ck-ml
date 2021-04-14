@@ -53,5 +53,21 @@ def setup(i):
 
     env[env_prefix + '_PROFILE_DIR']  = os.path.dirname(full_path)
     env[env_prefix + '_PROFILE_YAML'] = full_path
+    install_env = cus.get('install_env', '')
+    is_aimet = install_env.get('_AIMET_MODEL')
+    if is_aimet == 'yes':
+       import yaml
+       with open('profile.yaml') as file:
+          encodings = yaml.load(file, Loader=yaml.FullLoader)
+          node = encodings['activation_encodings']
+          output1_node=node['325'][0]
+          output1_scale = output1_node['scale']
+          output1_offset = -output1_node['offset'] - 128
+       env[env_prefix + '_NODE_PRECISION_FILE']  = os.path.dirname(full_path)+"/node-precision.yaml"
+       env['CK_ENV_ONNX_MODEL_ONNX_FILEPATH'] = os.path.dirname(full_path)+"/ssd_resnet34_aimet.onnx"
+       #env[env_prefix + '_OUTPUT1_SCALE']  = output1_scale
+       #env[env_prefix + '_OUTPUT1_OFFSET']  = output1_offset
+       env['CK_ENV_ABC_LOC_SCALE']  = output1_scale
+       env['CK_ENV_ABC_LOC_OFFSET']  = output1_offset
 
     return {'return':0, 'bat':''}
