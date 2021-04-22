@@ -1,3 +1,7 @@
+20210422
+  * added --force_version to "ck detect soft" to force version.
+    Useful to automate autodetection of imagenet, for example.
+
 20210418:
   * added --quiet flag to automatically enter default anser to most questions
 
