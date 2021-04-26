@@ -84,6 +84,10 @@ install:
     - ck install package --quiet --tags=model,onnx,resnet,nchw,converted                    # ResNet50 ONNX model, converted from TF, in NCHW
     - ck install package --quiet --tags=model,onnx,resnet,nhwc,converted                    # ResNet50 ONNX model, converted from TF, in NHWC
     - ck install package --quiet --tags=lib,python-package,onnxruntime
+
+    - ck install package --quiet --tags=mlperf,inference,src,r1.0
+
+
 script:
     - ck show env                                                                   # show everything that has been detected or installed
     - ck run program:image-classification-onnx-py --quiet --dep_add_tags.weights=mobilenet,converted --cmd_key=barebones --env.CK_BATCH_SIZE=3      # internal preprocessing
