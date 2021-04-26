@@ -90,7 +90,6 @@ install:
     - ck install package --tags=tool,cmake,prebuilt --quiet
 
     - ck install package --tags=lib,python-package,absl
-    - ck install package --tags=lib,python-package,numpy
 
     - ck install package --tags=lib,python-package,mlperf,loadgen
     - ck install package --tags=lib,mlperf,loadgen,static
