@@ -35,6 +35,12 @@
       "name": "Python Abseil library",
       "sort": 30,
       "tags": "lib,python-package,absl"
+    },
+    "lib-python-numpy": {
+      "local": "yes",
+      "name": "Python NumPy library",
+      "sort": 40,
+      "tags": "lib,python-package,numpy"
     }
   },
   "end_full_path_universal": "build$#sep#$__init__.py",
