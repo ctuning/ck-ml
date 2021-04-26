@@ -87,7 +87,7 @@ install:
 
     - ck install package --quiet --tags=mlperf,inference,src,r1.0
 
-    - ck install package --tags=tool,cmake,prebuilt
+    - ck install package --tags=tool,cmake,prebuilt --quiet
 
     - ck install package --tags=lib,python-package,absl
     - ck install package --tags=lib,python-package,numpy
