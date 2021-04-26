@@ -85,9 +85,10 @@ install:
     - ck install package --quiet --tags=model,onnx,resnet,nhwc,converted                    # ResNet50 ONNX model, converted from TF, in NHWC
     - ck install package --quiet --tags=lib,python-package,onnxruntime
 
-    - ck install package --quiet --tags=mlperf,inference,src,r1.0
-
+    - ck detect soft:compiler.gcc --full_path=`which gcc`
     - ck install package --tags=tool,cmake,prebuilt --quiet
+
+    - ck install package --quiet --tags=mlperf,inference,src,r1.0
 
     - ck install package --tags=lib,python-package,absl
 
