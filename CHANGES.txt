@@ -1,3 +1,6 @@
+20210427
+  * removed some oudated or broken LLVM packages
+
 20210426
   * removed unused env:python_simport
   * removed outdated cmake packages
