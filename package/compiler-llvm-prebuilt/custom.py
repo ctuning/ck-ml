@@ -1,7 +1,8 @@
 #!/usr/bin/python
 
 #
-# Developer: Grigori Fursin, Grigori.Fursin@cTuning.org, http://fursin.net
+# Developers: 
+#  - Grigori Fursin, OctoML
 #
 
 import os
@@ -86,28 +87,37 @@ def setup(i):
     ie=cus.get('install_env',{})
     nie={} # new env
 
+    package_name=ie.get('PACKAGE_NAME','').strip()
+
+    llvm_version=ie.get('LLVM_VERSION','').strip()
+    if llvm_version=='':
+        return {'return':1, 'error':'internal problem - LLVM_VERSION is not defined in env'}
+
+    llvm_version_split=llvm_version.split('.')
+
+    ck.out('')
+    ck.out('LLVM version: '+llvm_version)
+    ck.out('')
+
     # Update vars
     if macos=='yes':
-       # Fix it when Darvin binaries are available ...
-       return {'return':1, 'error':'this package doesn\'t support MacOS yet'}
-
        if hbits!='64':
           return {'return':1, 'error':'this package doesn\'t support non 64-bit MacOS'}
 
-       nie['PACKAGE_NAME']='clang+llvm-7.0.1-x86_64-apple-darwin.tar.xz'
+       nie['PACKAGE_NAME']='clang+llvm-'+llvm_version+'-x86_64-apple-darwin.tar.xz' if package_name=='' else package_name
 
        nie['PACKAGE_UNXTAR']='YES'
        nie['PACKAGE_UNTAR_EXTRA']='--strip 1'
        nie['PACKAGE_SKIP_LINUX_MAKE']='YES'
 
     elif hname=='win':
-       f='LLVM-7.0.1-win'
+       f='LLVM-'+llvm_version+'-win'
        if hbits=='64':
           f+='64.exe'
        else:
           f+='32.exe'
 
-       nie['PACKAGE_NAME']=f
+       nie['PACKAGE_NAME']=f if package_name=='' else package_name
        nie['PACKAGE_WGET_EXTRA']=ie['PACKAGE_WGET_EXTRA']+' -O '+f
        nie['PACKAGE_RUN']='YES'
 
@@ -122,9 +132,9 @@ def setup(i):
        if habi.startswith('arm') or habi.startswith('aarch'):
 #          return {'return':1, 'error':'ARM platform is not supported yet'}
           if hbits=='64':
-             nie['PACKAGE_NAME']='clang+llvm-7.0.1-aarch64-linux-gnu.tar.xz'
+             nie['PACKAGE_NAME']='clang+llvm-'+llvm_version+'-aarch64-linux-gnu.tar.xz' if package_name=='' else package_name
           else:
-             nie['PACKAGE_NAME']='clang+llvm-7.0.1-armv7a-linux-gnueabihf.tar.xz'
+             nie['PACKAGE_NAME']='clang+llvm-'+llvm_version+'-armv7a-linux-gnueabihf.tar.xz' if package_name=='' else package_name
        else:
           r=ck.access({'action':'detect','module_uoa':'platform.os', 'out':o})
           if r['return']>0: return r
@@ -143,22 +153,39 @@ def setup(i):
                 if j1>=0:
                    mver=ver[:j1]
 
+          print(mver)
+
           if 'debian' in flavor:
              return {'return':0, 'error':'debian is not supported yet'}
-#             nie['PACKAGE_NAME']='clang+llvm-7.0.1-x86_64-linux-gnu-debian8.tar.xz'
+#             nie['PACKAGE_NAME']='clang+llvm-'+llvm_version+'-x86_64-linux-gnu-debian8.tar.xz'
           else:
-             nie['PACKAGE_NAME']='clang+llvm-7.0.1-x86_64-linux-gnu-ubuntu-16.04.tar.xz'
+             default_os='18.04'
 
-             if mver=='14.04':
-                nie['PACKAGE_NAME']='clang+llvm-7.0.1-x86_64-linux-gnu-ubuntu-14.04.tar.xz'
-             elif mver=='16.04':
-                nie['PACKAGE_NAME']='clang+llvm-7.0.1-x86_64-linux-gnu-ubuntu-16.04.tar.xz'
-             elif mver=='16.10':
-                nie['PACKAGE_NAME']='clang+llvm-7.0.1-x86_64-linux-gnu-ubuntu-16.04.tar.xz'
-             elif mver=='18.04':
-                nie['PACKAGE_NAME']='clang+llvm-7.0.1-x86_64-linux-gnu-ubuntu-18.04.tar.xz'
-             elif mver=='18.10':
-                nie['PACKAGE_NAME']='clang+llvm-7.0.1-x86_64-linux-gnu-ubuntu-18.04.tar.xz'
+             if llvm_version=='10.0.1':
+                 default_os='16.04'
+             elif llvm_version=='11.0.0':
+                 default_os='20.04'
+             elif llvm_version=='11.0.1':
+                 default_os='16.04'
+                 if mver=='20.10':
+                    default_os='20.10'
+             elif llvm_version=='12.0.0':
+                 default_os='16.04'
+                 if mver=='20.04' or mver=='20.10':
+                    default_os='20.04'
+
+             nie['PACKAGE_NAME']='clang+llvm-'+llvm_version+'-x86_64-linux-gnu-ubuntu-'+default_os+'.tar.xz' if package_name=='' else package_name
+
+#             if mver=='14.04':
+#                nie['PACKAGE_NAME']='clang+llvm-'+llvm_version+'-x86_64-linux-gnu-ubuntu-14.04.tar.xz'
+#             elif mver=='16.04':
+#                nie['PACKAGE_NAME']='clang+llvm-'+llvm_version+'-x86_64-linux-gnu-ubuntu-16.04.tar.xz'
+#             elif mver=='16.10':
+#                nie['PACKAGE_NAME']='clang+llvm-'+llvm_version+'-x86_64-linux-gnu-ubuntu-16.04.tar.xz'
+#             elif mver=='18.04':
+#                nie['PACKAGE_NAME']='clang+llvm-'+llvm_version+'-x86_64-linux-gnu-ubuntu-110.04.tar.xz'
+#             elif mver=='18.10':
+#                nie['PACKAGE_NAME']='clang+llvm-'+llvm_version+'-x86_64-linux-gnu-ubuntu-18.04.tar.xz'
 
        nie['PACKAGE_UNXTAR']='YES'
        nie['PACKAGE_UNTAR_EXTRA']='--strip 1'
