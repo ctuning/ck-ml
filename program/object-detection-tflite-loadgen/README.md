@@ -13,10 +13,10 @@ $ source ~/.bashrc && ck version
 V1.15.0
 ```
 
-### Pull [CK-MLPerf](https://github.com/ctuning/ck-mlperf)
+### Pull [CK-ML](https://github.com/ctuning/ck-ml)
 
 ```bash
-$ ck pull repo:ck-mlperf
+$ ck pull repo:ck-ml
 ```
 
 ### Pull [CK-Coral](https://github.com/ctuning/ck-coral)
