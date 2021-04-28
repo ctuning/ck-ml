@@ -89,6 +89,29 @@
         "inference_engine_version": "v2.3.0",
         "inference_engine_backend": "xnnpack"
       },
+      "tflite-v2.4.1-ruy": {
+        "deps": "--dep_add_tags.library=tflite,v2.4.1,with.ruy",
+        "program_name": "object-detection-tflite-loadgen",
+        "inference_engine": "tflite",
+        "inference_engine_version": "v2.4.1",
+        "inference_engine_backend": "ruy"
+      },
+      "tflite-edgetpu-v2.4.1": {
+        "ck_env": "--env.USE_EDGETPU=1",
+        "deps": "--dep_add_tags.library=tflite,v2.4.1",
+        "program_name": "object-detection-tflite-loadgen",
+        "inference_engine": "tflite",
+        "inference_engine_version": "v2.4.1",
+        "inference_engine_backend": "edgetpu"
+      },
+      "tflite-edgetpu-v2.4.1-ruy": {
+        "ck_env": "--env.USE_EDGETPU=1",
+        "deps": "--dep_add_tags.library=tflite,v2.4.1,with.ruy",
+        "program_name": "object-detection-tflite-loadgen",
+        "inference_engine": "tflite",
+        "inference_engine_version": "v2.4.1",
+        "inference_engine_backend": "ruy"
+      },
       "tflite-edgetpu": {
         "ck_env": "--env.USE_EDGETPU=1",
         "deps": "--dep_add_tags.library=tflite,for.coral",
