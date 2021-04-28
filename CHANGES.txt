@@ -1,6 +1,7 @@
 20210427
   * removed some outdated or broken LLVM packages
   * added package:compiler-llvm-prebuilt
+  * fixed links
 
 20210426
   * removed unused env:python_simport
