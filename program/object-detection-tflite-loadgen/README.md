@@ -90,7 +90,7 @@ ck install package --tags=model,tflite,object-detection,ssd-mobilenet,non-quanti
 
 ck install package --tags=api,model,tensorflow,r2.3.0
 
-ck install package --tags=lib,tflite,via-cmake,v2.4.1,with.ruy --env.PACKAGE_LIB_RUY=ON --env.CK_HOST_CPU_NUMBER_OF_PROCESSORS=2
+ck install package --tags=lib,tflite,via-cmake,v2.4.1,with.ruy --env.CK_HOST_CPU_NUMBER_OF_PROCESSORS=2
 ```
 
 ### Run experiments
