@@ -11,7 +11,7 @@
 ## CK repositories
 
 <pre>
-&dollar; ck pull repo --url=https://github.com/krai/ck-mlperf
+&dollar; ck pull repo --url=https://github.com/ctuning/ck-ml
 </pre>
 
 ## ONNX library and runtime

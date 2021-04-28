@@ -2,7 +2,7 @@
 
 ## SingleStream
 
-- Set up [`program:image-classification-armnn-tflite-loadgen`](https://github.com/krai/ck-mlperf/blob/master/program/image-classification-armnn-tflite-loadgen/README.md) on your SUT.
+- Set up [`program:image-classification-armnn-tflite-loadgen`](https://github.com/ctuning/ck-ml/blob/master/program/image-classification-armnn-tflite-loadgen/README.md) on your SUT.
 - Customize the examples below for your SUT.
 
 ### Workloads
