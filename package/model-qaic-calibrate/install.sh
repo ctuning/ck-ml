@@ -44,26 +44,19 @@ if [[ -n ${_AIMET_MODEL} ]]; then
      AIMET_RUN="ssd-resnet34"
      rm -rf ${INSTALL_DIR}/$AIMET_RUN
      cp -r ${PACKAGE_DIR}/$AIMET_RUN ${INSTALL_DIR}/$AIMET_RUN
-     PYTHON="/usr/bin/python3.6"
+     PYTHON="${CK_ENV_COMPILER_PYTHON_FILE}"
      COCO_CAL_DIR="${CK_ENV_DATASET_IMAGE_DIR}/${CK_ENV_DATASET_COCO_TRAIN_TRAIN_IMAGE_DIR}"
-     PYTHONPATH=${CK_ENV_MLPERF_INFERENCE}/vision/classification_and_detection/python
-     AIMET_PATH=${CK_ENV_LIB_AIMET}/../../../lib/x86_64-linux-gnu:${CK_ENV_LIB_AIMET}/../../../lib/python
-     export PYTHONPATH=${AIMET_PATH}:$PYTHONPATH
-     export LD_LIBRARY_PATH=${AIMET_PATH}:$LD_LIBRARY_PATH
      cd ${INSTALL_DIR}/${AIMET_RUN}
      rm -rf output
      rm -rf preprocessed
-     ${PYTHON} -m pip install torch==1.4 torchvision==0.5.0 setuptools==41.0.1 pycocotools numpy pyyaml tensorboard tqdm onnx Pillow --user
+     ${PYTHON} -m pip install torchvision==0.5.0 pycocotools numpy pyyaml tensorboard tqdm onnx Pillow jsonschema opencv-python-headless --user
      ln -s ${CK_ENV_MLPERF_INFERENCE} inference
-     ln -s ${CK_ENV_DATASET_OBJ_DETECTION_PREPROCESSED_DIR} preprocessed
-     ln -s ${COCO_CAL_DIR} ${COCO_CAL_DIR}/val2017
      wget -nc "https://zenodo.org/record/3236545/files/resnet34-ssd1200.pytorch"
      #echo "PYTHONPATH=${PYTHONPATH} LD_LIBRARY_PATH=${LD_LIBRARY_PATH} ${PYTHON} ssd_resnet_aimet.py resnet34-ssd1200.pytorch annotations.json ${COCO_CAL_DIR}"
      ${PYTHON} ssd_resnet_aimet.py resnet34-ssd1200.pytorch annotations.json ${COCO_CAL_DIR}
      mv output/ssd_resnet34_aimet.encodings.yaml ${INSTALL_DIR}/profile.yaml
      mv output/ssd_resnet34_aimet.onnx ${INSTALL_DIR}/
      mv node-precision.yaml ${INSTALL_DIR}/
-     rm ${COCO_CAL_DIR}/val2017
      rm -rf output
      exit_if_error
      echo "Done."

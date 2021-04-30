@@ -52,7 +52,7 @@
       "local": "yes",
       "name": "Python v3.6",
       "sort": 20,
-      "tags": "compiler,python,v3.6"
+      "tags": "compiler,python"
     },
     "python-setuptools": {
       "local": "yes",

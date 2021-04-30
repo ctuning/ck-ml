@@ -1,5 +1,5 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index d3bbe73..fd5f92b 100644
+index d3bbe73..72d6d9e 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -39,8 +39,8 @@ cmake_minimum_required(VERSION 3.5)
@@ -34,7 +34,7 @@ index d3bbe73..fd5f92b 100644
 -set(OPENCV_LIBRARY /usr/local/lib/libopencv_core.a)
 +set(OPENCV_LIBRARY "${OpenCV_LIBS}")
  
-+find_package (Python 3.6 EXACT COMPONENTS Interpreter Development)
++find_package (Python 3 EXACT COMPONENTS Interpreter Development)
  # ----------------------------------
  # Conditional build for PyTorch
  # ----------------------------------
@@ -49,7 +49,7 @@ index d3bbe73..fd5f92b 100644
    # So we don't have a version mismatch - between PyTorch custom C++ op code and PyMO
 -  list(APPEND PYBIND11_INC_DIRS "/usr/local/lib/python3.6/dist-packages/torch/include")
 -  list(APPEND PYBIND11_INC_DIRS "/usr/include/python3.6/")
-+  list(APPEND PYBIND11_INC_DIRS $ENV{HOME}/.local/lib/python3.6/site-packages/torch/include)
++  list(APPEND PYBIND11_INC_DIRS "${TORCH_INCLUDE_DIR}")
 +  list(APPEND PYBIND11_INC_DIRS "${Python_INCLUDE_DIRS}")
  
  else (ENABLE_TORCH)
@@ -126,10 +126,17 @@ index b2123fd..3537dc1 100644
 -
 -add_subdirectory(test)
 diff --git a/ModelOptimizations/PyModelOptimizations/CMakeLists.txt b/ModelOptimizations/PyModelOptimizations/CMakeLists.txt
-index e6e3575..0b96e46 100644
+index e6e3575..341390b 100644
 --- a/ModelOptimizations/PyModelOptimizations/CMakeLists.txt
 +++ b/ModelOptimizations/PyModelOptimizations/CMakeLists.txt
-@@ -57,8 +57,8 @@ if (ENABLE_CUDA)
+@@ -50,15 +50,14 @@ if (ENABLE_CUDA)
+              MoDlQuantizationCuda
+              MoDlCompression
+ 
+-            CUDA::cublas
+              ${LAPACKE_LIBRARY}
+              ${OPENCV_LIBRARY}
+              z
            )
  
  else (ENABLE_CUDA)
@@ -140,7 +147,7 @@ index e6e3575..0b96e46 100644
              stdc++
              PYBIND11
              MoDlQuantization
-@@ -80,4 +80,4 @@ set_target_properties(PyModelOptimizations
+@@ -80,4 +79,4 @@ set_target_properties(PyModelOptimizations
  
  install(FILES $<TARGET_FILE:PyModelOptimizations>
        DESTINATION ${AIMET_INSTALL_DIR}/lib/x86_64-linux-gnu
@@ -159,19 +166,31 @@ index e4eecc2..377dd99 100644
 -add_subdirectory(googletest/googletest-release-1.8.0/
 -      EXCLUDE_FROM_ALL)
 \ No newline at end of file
+diff --git a/TrainingExtensions/common/CMakeLists.txt b/TrainingExtensions/common/CMakeLists.txt
+index 5263eaa..83aeca0 100644
+--- a/TrainingExtensions/common/CMakeLists.txt
++++ b/TrainingExtensions/common/CMakeLists.txt
+@@ -47,7 +47,6 @@ if (ENABLE_CUDA)
+             PYBIND11
+             MoDlQuantization
+             MoDlQuantizationCuda
+-            CUDA::cublas
+             )
+ 
+ else (ENABLE_CUDA)
 diff --git a/TrainingExtensions/torch/CMakeLists.txt b/TrainingExtensions/torch/CMakeLists.txt
-index f46b9d9..46de00c 100644
+index f46b9d9..7577c8c 100644
 --- a/TrainingExtensions/torch/CMakeLists.txt
 +++ b/TrainingExtensions/torch/CMakeLists.txt
-@@ -35,7 +35,7 @@
- #==============================================================================
- cmake_minimum_required(VERSION 3.5)
+@@ -50,7 +50,7 @@ string(REPLACE ";" "','" DlQuantizationIncludePaths "${DlQuantizationIncludes}")
+ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/src/setup.py.in ${SETUP_PY})
  
--find_program(PYTHON "python3")
-+find_program(PYTHON "python3.6")
- 
- 
- set(SETUP_PY "${CMAKE_CURRENT_BINARY_DIR}/src/setup.py")
+ add_custom_command(OUTPUT ${OUTPUT}
+-      COMMAND ${CMAKE_COMMAND} -E env PYTHONPATH="${CMAKE_BINARY_DIR}/artifacts"
++	COMMAND ${CMAKE_COMMAND} -E env PYTHONPATH="${PYTHONPATH}:${CMAKE_BINARY_DIR}/artifacts"
+               ${PYTHON} ${SETUP_PY} install  --install-base=${CMAKE_BINARY_DIR}/artifacts
+                                              --install-purelib=${CMAKE_BINARY_DIR}/artifacts
+                                              --install-platlib=${CMAKE_BINARY_DIR}/artifacts
 @@ -86,4 +86,4 @@ install(DIRECTORY ${CMAKE_BINARY_DIR}/artifacts/
  
  install(FILES ${CMAKE_BINARY_DIR}/artifacts/easy-install.pth ${CMAKE_BINARY_DIR}/artifacts/site.py

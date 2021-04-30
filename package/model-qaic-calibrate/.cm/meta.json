@@ -2,6 +2,7 @@
   "check_exit_status": "yes",
   "customize": {
     "install_env": {
+      "CUDA_VISIBLE_DEVICES": "-1",
       "MODEL_NAME": "profile",
       "PACKAGE_VERSION": "1",
       "QAIC_TOOLCHAIN_PATH": "/opt/qti-aic/",
@@ -100,6 +101,11 @@
           {
             "_MODEL_TO_CONVERT": "calibrate_ssd_resnet34_no_nms_mlperf"
           }
+        ],
+        "ssd-mobilenet,onnx,mlperf,non-quantized,no-nms": [
+          {
+            "_MODEL_TO_CONVERT": "calibrate_ssd_resnet34_no_nms_mlperf"
+          }
         ]
       }
     },
@@ -118,7 +124,7 @@
       "local": "yes",
       "name": "MLPerf Source",
       "sort": 36,
-      "tags": "mlperf,inference,source,r1.0",
+      "tags": "mlperf,inference,source,for.aimet",
       "enable_if_env": [
         {
             "_AIMET_MODEL": "yes"
@@ -128,9 +134,9 @@
     "python": {
       "add_to_path": "yes",
       "local": "yes",
-      "name": "Python 3.6",
+      "name": "Python 3",
       "sort": 40,
-      "tags": "compiler,python,v3.6",
+      "tags": "compiler,python,v3",
       "enable_if_env": [
         {
             "_AIMET_MODEL": "yes"
@@ -211,6 +217,20 @@
         "calibrated-by-qaic",
         "no-nms"
       ]
+    },
+    "ssd-mobilenet": {
+      "extra_customize": {
+        "package_name": "Profile for QAIC model (SSD-MobileNet No NMS)"
+      },
+      "extra_env": {
+        "_MODEL_TO_CONVERT": "calibrate_ssd_mobilenet_no_nms"
+      },
+      "extra_tags": [
+        "object-detection",
+        "calibrated-by-qaic",
+        "no-nms"
+      ],
+      "on_by_default": "no"
     }
   }
 }
