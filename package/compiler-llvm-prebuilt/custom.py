@@ -153,8 +153,6 @@ def setup(i):
                 if j1>=0:
                    mver=ver[:j1]
 
-          print(mver)
-
           if 'debian' in flavor:
              return {'return':0, 'error':'debian is not supported yet'}
 #             nie['PACKAGE_NAME']='clang+llvm-'+llvm_version+'-x86_64-linux-gnu-debian8.tar.xz'
