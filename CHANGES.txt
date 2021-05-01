@@ -1,3 +1,7 @@
+20210501
+  * added info about how to register ImageNet 2012 using CK
+    in imagenet-2012-train and imagenet-2012-val packages
+
 20210430
   * removed modules that are the same as in the CK framework (default repo)
   * regular update of ML systems components from the community
