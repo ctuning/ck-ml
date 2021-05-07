@@ -2,7 +2,7 @@
   "cmd": {
     "default": {
       "build": "-f $#CK_PATH#$/Dockerfile.ubuntu-20.04 -t octoml/$#CK_DOCKER_NAME#$ $#CK_PATH#$",
-      "run": "-it octoml/$#CK_DOCKER_NAME#$  bash"
+      "run": "-it octoml/$#CK_DOCKER_NAME#$"
     }
   },
   "tags": [
