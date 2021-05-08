@@ -1,3 +1,6 @@
+20210509
+  * added 2 docker images to test CK dashboards
+
 20210501
   * added info about how to register ImageNet 2012 using CK
     in imagenet-2012-train and imagenet-2012-val packages
