@@ -27,6 +27,6 @@ ck run docker:ck-mlperf-dashboard-demo
 
 Go to http://localhost:3355/?template=dashboard&scenario=mlperf.mobilenets
 
-## Feedbacok
+## Feedback
 
 Contact [Grigori Fursin](https://cKnowledge.io/@gfursin)

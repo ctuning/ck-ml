@@ -43,6 +43,6 @@ Run the following command from your host machine to visualize results:
 ck display dashboard --scenario=mlperf.mobilenets
 ```
 
-## Feedbacok
+## Feedback
 
 Contact [Grigori Fursin](https://cKnowledge.io/@gfursin)
