@@ -1,6 +1,6 @@
 ﻿# Demo of MLPerf dashboards for ML Systems DSE (Linux and Windows)
 
-This Docker image demonstrates how to run CK experiments and record results 
+This container demonstrates how to run CK experiments and record results 
 from the Docker in the local "ck-experiments" repository on the host machine
 to be processed in Jupyter notebooks or visualized using CK dashboards.
 
