@@ -33,8 +33,8 @@ You must run this container using a special script from this directory:
 This script will mount local CK ck-experiments repo inside Docker
 to be able to record experiments there from the Docker container.
 
-This script will call a helper script [docker-helper.sh] with benchmarks
-that you can modify to run different experiments.
+This script will call a helper script [docker-helper.sh](docker-helper.sh) 
+with benchmarks that you can modify to run different experiments.
 
 ## View CK dashboard localy
 
