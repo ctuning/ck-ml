@@ -19,12 +19,12 @@ ck pull repo:ck-ml
 ck add repo:ck-experiments --quiet
 ```
 
-## Build this docker
+## Build this container
 ```
 ck build docker:ck-mlperf-local-dashboard-demo
 ```
 
-## Run this docker
+## Run this container
 
 You must run this container using a special script from this directory:
 * Linux: [docker-start.sh](docker-start.sh)

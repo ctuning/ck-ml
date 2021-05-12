@@ -10,7 +10,7 @@ python3 -m pip install ck
 ck pull repo:ck-ml
 ```
 
-## Build this docker
+## Build this container
 ```
 ck build docker:ck-mlperf-dashboard-demo
 ```
@@ -18,7 +18,7 @@ ck build docker:ck-mlperf-dashboard-demo
 Note that it will build and run several MLPerf benchmarks while recording results
 to the CK 'experiment' entries to be used in the CK dashboard.
 
-## Run this docker
+## Run this container
 ```
 ck run docker:ck-mlperf-dashboard-demo
 ```
