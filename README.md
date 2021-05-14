@@ -23,8 +23,8 @@ in the [CK format](https://arxiv.org/pdf/2011.01149.pdf):
 * CK datasets: [[list]( https://cKnowledge.io/c/dataset )]
 * CK adaptive containers: [[list]( https://cKnowledge.io/c/docker )]
 * CK OS: [[list]( https://cKnowledge.io/c/os )]
-* CK MLPerf system descriptions: [[list]( https://cKnowledge.io/c/sut )]
-* CK MLPerf benchmark CMD generators: [[list]( https://cKnowledge.io/c/cmdgen )]
+* CK MLPerf&trade; system descriptions: [[list]( https://cKnowledge.io/c/sut )]
+* CK MLPerf&trade; benchmark CMD generators: [[list]( https://cKnowledge.io/c/cmdgen )]
 
 You can find **stable** CK components aggregated in [this repository](https://github.com/ctuning/ai).
 
@@ -33,7 +33,7 @@ You can find **stable** CK components aggregated in [this repository](https://gi
 
 # Real world use-cases
 
-* [CK-powered MLPerf benchmark automation](https://github.com/ctuning/ck/blob/master/docs/mlperf-automation/README.md)
+* [CK-powered MLPerf&trade; benchmark automation](https://github.com/ctuning/ck/blob/master/docs/mlperf-automation/README.md)
 * [MLOps from OctoML.ai](https://github.com/octoml/mlops)
 * [Other projects from our partners]( https://cKnowledge.org/partners.html )
 
@@ -49,5 +49,5 @@ Don't hesitate to report issues or submit feature requests [here](https://github
 
 # Feedback
 
-Сontact [Grigori Fursin](https://cKnowledge.io/@gfursin) ([OctoML.ai](https://octoml.ai), [MLCommons member](https://mlcommons.org))
+Сontact [Grigori Fursin](https://cKnowledge.io/@gfursin) ([OctoML.ai](https://octoml.ai), [MLCommons&trade; member](https://mlcommons.org))
 
