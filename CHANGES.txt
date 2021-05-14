@@ -1,3 +1,7 @@
+20210514
+  * added demo program:image-corner-detection
+  * added more tests to travis
+
 20210509
   * added 2 docker images to test CK dashboards
 
