@@ -37,7 +37,8 @@
   "tags": [
     "lib", 
     "python-package", 
-    "onnx", 
+    "onnx-archive", 
+    "archive",
     "vmaster"
   ], 
   "variations": {
