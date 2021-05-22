@@ -16,7 +16,8 @@ echo ""
 echo "Setting up Accuracy Checker."
 echo ""
 
-if [ "${PACKAGE_VERSION}" = "2019_R3.1" ] || [ "${PACKAGE_VERSION}" = "2019_R3" ]; then
+if [ "${PACKAGE_VERSION}" = "2019_R3.1" ] || [ "${PACKAGE_VERSION}" = "2019_R3" ] \
+   || [ "${PACKAGE_VERSION}" = "2020.1" ] || [ "${PACKAGE_VERSION}" = "2020.2" ]; then
 
 read -d '' CMD <<END_OF_CMD
   cd ${INSTALL_DIR}/open_model_zoo-${PACKAGE_VERSION}/tools/accuracy_checker/ ; \
