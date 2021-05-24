@@ -7,6 +7,9 @@ Linux/MacOS: [![Travis Build Status](https://travis-ci.org/ctuning/ck-ml.svg?bra
 Windows: [![Windows Build status](https://ci.appveyor.com/api/projects/status/gl53cle5dvkskvgr?svg=true)](https://ci.appveyor.com/project/gfursin/ck-ml)
 
 
+[![DOI](https://zenodo.org/badge/355592552.svg)](https://zenodo.org/badge/latestdoi/355592552)
+
+
 *There are numerous CK components spread across numerous GitHub repositories. 
 Based on the feedback from the community, we have created this repository 
 to collect all the main CK components related to AI and ML Systems in one place. 
