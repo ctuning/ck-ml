@@ -1,3 +1,6 @@
+20210524:
+  * improving Docker images based on the latest CK enhancements
+
 20210514
   * added demo program:image-corner-detection
   * added more tests to travis

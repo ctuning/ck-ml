@@ -30,7 +30,7 @@ RUN cd /tmp \
  && wget https://www.python.org/ftp/python/3.7.8/Python-3.7.8.tgz \
  && tar xvf Python-3.7.8.tgz \
  && cd Python-3.7.8 \
- && ./configure --enable-optimizations --enable-shared --with-ensurepip=install \
+ && ./configure --enable-shared --with-ensurepip=install \
  && make -j20 \
  && make altinstall \
  && rm -rf /tmp/*
@@ -57,6 +57,8 @@ ENV CK_ROOT=/home/dvdt/CK \
     LANG=C.UTF-8
 RUN mkdir -p ${CK_ROOT} ${CK_REPOS} ${CK_TOOLS}
 RUN git config --global user.name ${GIT_USER} && git config --global user.email ${GIT_EMAIL}
+
+RUN ${CK_PYTHON} -m pip install pyyaml --user
 RUN git clone https://github.com/ctuning/ck.git ${CK_ROOT}
 RUN cd ${CK_ROOT}\
  && ${CK_PYTHON} setup.py install --user\
@@ -71,7 +73,7 @@ RUN ck create_entry --data_uoa=experiment --data_uid=bc0409fb61f0aa82 --path=${C
  && chmod -R g+w ${CK_REPOS}/local/experiment
 
 # Pull CK repositories (including ck-mlperf, ck-env, ck-autotuning, ck-tensorflow, ck-docker).
-RUN ck pull repo:ck-openvino
+RUN ck pull repo:ck-ml
 
 # Use generic Linux settings with dummy frequency setting scripts.
 RUN ck detect platform.os --platform_init_uoa=generic-linux-dummy
@@ -107,8 +109,8 @@ RUN ck install package --tags=lib,python-package,absl
 #-----------------------------------------------------------------------------#
 # Step 2. Install C++ dependencies (for Inference Engine and MLPerf program).
 #-----------------------------------------------------------------------------#
-RUN ck install package --tags=lib,opencv,v4.3.0
-RUN ck install package --tags=lib,boost,v1.67.0 --no_tags=min-for-caffe
+RUN ck install package --tags=lib,opencv,v3.4.10
+RUN ck install package --tags=lib,boost,v1.67.0 --no_tags=min-for-caffe --quiet
 RUN ck install package --tags=mlperf,inference,source,dividiti.v0.5-intel
 RUN ck install package --tags=lib,loadgen,static
 #-----------------------------------------------------------------------------#
@@ -117,6 +119,7 @@ RUN ck install package --tags=lib,loadgen,static
 #-----------------------------------------------------------------------------#
 # Step 3. Install the OpenVINO release to be used for MLPerf Inference v0.7.
 #-----------------------------------------------------------------------------#
+RUN ck install package --tags=lib,intel,open-model-zoo,2020.2
 RUN ck install package --tags=lib,openvino,2020.2
 RUN ck compile ck-openvino:program:mlperf-inference-v0.5 \
 --dep_add_tags.opencv=with-variations
