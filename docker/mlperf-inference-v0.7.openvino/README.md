@@ -1,3 +1,6 @@
+# News 
+* **20210525: This container was updated by grigori@octoml.ai to support the latest CK version! See [this repo](https://github.com/octoml/mlops) for more details.**
+
 # MLPerf Inference v0.7 - OpenVINO
 
 This collection of images from [dividiti](http://dividiti.com) tests automated, customizable and reproducible [Collective Knowledge](http://cknowledge.org) workflows for OpenVINO workoads.
@@ -13,7 +16,7 @@ You will need to install [Collective Knowledge](http://cknowledge.org) to build 
 Please follow the [CK installation instructions](https://github.com/ctuning/ck#installation) and then pull the ck-mlperf repository:
 
 ```bash
-$ ck pull repo:ck-mlperf
+$ ck pull repo:ck-ml
 ```
 
 **NB:** Refresh all CK repositories after any updates (e.g. bug fixes):
@@ -21,32 +24,32 @@ $ ck pull repo:ck-mlperf
 $ ck pull all
 ```
 
-## Build
+## Build (Linux or Windows)
 
 To build an image e.g. from `Dockerfile.ubuntu-20.04`:
 ```bash
-$ export CK_IMAGE=mlperf-inference-v0.7.openvino CK_TAG=ubuntu-20.04
-$ cd `ck find docker:$CK_IMAGE` && docker build -t ctuning/$CK_IMAGE:$CK_TAG -f Dockerfile.$CK_TAG .
+$ ck build docker:mlperf-inference-v0.7.openvino --tag=ubuntu-20.04
 ```
 
-## Run the default command
+## Run the default command (Linux or Windows)
 
 To run the default command of an image e.g. built from `Dockerfile.ubuntu-20.04`:
 ```bash
-$ export CK_IMAGE=mlperf-inference-v0.7.openvino CK_TAG=ubuntu-20.04
-$ docker run --rm ctuning/$CK_IMAGE:$CK_TAG
+$ ck run docker:mlperf-inference-v0.7.openvino --tag=ubuntu-20.04
 ...
- Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.242
- Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.381
- Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.277
- Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.031
- Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.189
- Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.575
- Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.224
+Accumulating evaluation results...
+DONE (t=0.22s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.244
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.380
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.280
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.032
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.193
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.576
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.225
  Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.264
- Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.265
- Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.036
- Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.194
- Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.620
-mAP=24.207%
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.266
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.037
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.198
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.619
+mAP=24.354%
 ```
