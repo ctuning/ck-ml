@@ -1,5 +1,10 @@
+# News:
+#  * 20210525: Grigori updated this container to support the latest CK framework
+#              with the latest CK components from ctuning@ck-ml repo
+
 FROM ubuntu:20.04
 
+LABEL maintainer="Grigori Fursin <grigori@octoml.ai>"
 LABEL maintainer="Anton Lokhmotov <anton@dividiti.com>"
 
 # Use the Bash shell.
@@ -44,24 +49,25 @@ USER dvdt:dvdtg
 WORKDIR /home/dvdt
 
 # Install Collective Knowledge (CK). Make it group-executable.
-ENV CK_ROOT=/home/dvdt/CK \
-    CK_REPOS=/home/dvdt/CK_REPOS \
+ENV CK_REPOS=/home/dvdt/CK_REPOS \
     CK_TOOLS=/home/dvdt/CK_TOOLS \
-    PATH=${CK_ROOT}/bin:/home/dvdt/.local/bin:${PATH} \
+    PATH=/home/dvdt/.local/bin:${PATH} \
     CPATH=/usr/local/include/python3.7m \
     LD_LIBRARY_PATH=/usr/local/lib \
     CK_CC=gcc \
     CK_PYTHON=python3.7 \
-    GIT_USER="dividiti" \
-    GIT_EMAIL="info@dividiti.com" \
     LANG=C.UTF-8
-RUN mkdir -p ${CK_ROOT} ${CK_REPOS} ${CK_TOOLS}
-RUN git config --global user.name ${GIT_USER} && git config --global user.email ${GIT_EMAIL}
-RUN git clone https://github.com/ctuning/ck.git ${CK_ROOT}
-RUN cd ${CK_ROOT}\
- && ${CK_PYTHON} setup.py install --user\
- && ${CK_PYTHON} -c "import ck.kernel as ck; print ('Collective Knowledge v%s' % ck.__version__)"\
- && chmod -R g+rx /home/dvdt/.local
+
+RUN mkdir -p ${CK_REPOS} ${CK_TOOLS}
+
+# Install CK (CK automation f49f20744aba90e2)
+# We need to install new pip and setuptools otherwise there is a conflict 
+# with the local CK installation of Python packages ...
+RUN export DUMMY_CK=A
+RUN ${CK_PYTHON} --version
+RUN ${DUMMY_CK} ${CK_PYTHON} -m pip install --ignore-installed pip setuptools wheel --user
+RUN ${DUMMY_CK} ${CK_PYTHON} -m pip install pyyaml virtualenv --user
+RUN ${DUMMY_CK} ${CK_PYTHON} -m pip install ck --user
 
 # Explicitly create a CK experiment entry, a folder that will be mounted
 # (with '--volume=<folder_for_results>:/home/dvdt/CK_REPOS/local/experiment').
@@ -71,7 +77,7 @@ RUN ck create_entry --data_uoa=experiment --data_uid=bc0409fb61f0aa82 --path=${C
  && chmod -R g+w ${CK_REPOS}/local/experiment
 
 # Pull CK repositories (including ck-mlperf, ck-env, ck-autotuning, ck-tensorflow, ck-docker).
-RUN ck pull repo:ck-openvino
+RUN ck pull repo:ck-ml
 
 # Use generic Linux settings with dummy frequency setting scripts.
 RUN ck detect platform.os --platform_init_uoa=generic-linux-dummy
@@ -84,8 +90,6 @@ RUN ck detect soft --tags=cmake --full_path=`which cmake`
 
 # Detect Python.
 RUN ck detect soft --tags=compiler,python --full_path=`which ${CK_PYTHON}`
-# Install the latest Python package installer (pip) and some dependencies.
-RUN ${CK_PYTHON} -m pip install --ignore-installed pip setuptools --user
 
 
 #-----------------------------------------------------------------------------#
@@ -107,8 +111,8 @@ RUN ck install package --tags=lib,python-package,absl
 #-----------------------------------------------------------------------------#
 # Step 2. Install C++ dependencies (for Inference Engine and MLPerf program).
 #-----------------------------------------------------------------------------#
-RUN ck install package --tags=channel-stable,opencv,v3.4.3
-RUN ck install package --tags=channel-stable,boost,v1.67.0 --no_tags=min-for-caffe
+RUN ck install package --tags=lib,opencv,v3.4.3
+RUN ck install package --tags=boost,v1.67.0,from-sourceforge --no_tags=min-for-caffe
 # Install LoadGen from a branch reconstructed according to Intel's README.
 RUN ck install package --tags=mlperf,inference,source,dividiti.v0.5-intel
 RUN ck install package --tags=lib,loadgen,static
@@ -118,8 +122,9 @@ RUN ck install package --tags=lib,loadgen,static
 #-----------------------------------------------------------------------------#
 # Step 3. Install the OpenVINO "pre-release" used for MLPerf Inference v0.5.
 #-----------------------------------------------------------------------------#
-RUN ck install package --tags=lib,openvino,pre-release
-RUN ck compile ck-openvino:program:mlperf-inference-v0.5
+RUN ck install package --tags=lib,intel,open-model-zoo,2019_R3
+RUN ck install package --tags=lib,openvino,2019_R3
+RUN ck compile ck-ml:program:mlperf-inference-v0.5
 #-----------------------------------------------------------------------------#
 
 
@@ -127,6 +132,7 @@ RUN ck compile ck-openvino:program:mlperf-inference-v0.5
 # Step 4. Install the first 500 images of the ImageNet 2012 validation dataset
 # to use as the calibration dataset for image classification models.
 #-----------------------------------------------------------------------------#
+RUN ck install package --tags=dataset,imagenet,aux,from.berkeley
 RUN ck install package --tags=dataset,imagenet,cal,all.500
 # Install misc Python dependencies required for calibration.
 RUN ${CK_PYTHON}  -m pip install --user \
@@ -140,7 +146,9 @@ RUN ck install package --tags=lib,python-package,cv2,opencv-python-headless
 # Step 5. Install the official ResNet model for MLPerf Inference v0.5
 # and convert it into the OpenVINO format.
 #-----------------------------------------------------------------------------#
-RUN ck install package --tags=model,tf,mlperf,resnet --no_tags=ssd
+RUN ck install package --tags=model,tf,mlperf,resnet,from-zenodo --no_tags=ssd
+
+RUN ${DUMMY_CK} ${CK_PYTHON} -m pip install scikit-learn==0.22.2 --user
 RUN ck install package --tags=model,openvino,resnet50
 #-----------------------------------------------------------------------------#
 
@@ -182,7 +190,7 @@ RUN ck install package --tags=tool,coco,api
 # Step 9. Make final preparations to run the OpenVINO program.
 #-----------------------------------------------------------------------------#
 # Allow the program create tmp files when running under an external user.
-RUN chmod -R g+rwx `ck find ck-openvino:program:mlperf-inference-v0.5`
+RUN chmod -R g+rwx `ck find ck-ml:program:mlperf-inference-v0.5`
 # The program expects to find val_map.txt in the dataset directory (segfaults otherwise).
 RUN head -n 500 `ck locate env --tags=aux`/val.txt > `ck locate env --tags=raw,val`/val_map.txt
 #-----------------------------------------------------------------------------#
@@ -195,8 +203,8 @@ RUN head -n 500 `ck locate env --tags=aux`/val.txt > `ck locate env --tags=raw,v
 # using all (virtual) CPU cores.
 #-----------------------------------------------------------------------------#
 CMD ["export NPROCS=`grep -c processor /proc/cpuinfo` \
- && ck run ck-openvino:program:mlperf-inference-v0.5 --skip_print_timers \
+ && ck run ck-ml:program:mlperf-inference-v0.5 --skip_print_timers \
     --cmd_key=image-classification --env.CK_OPENVINO_MODEL_NAME=resnet50 \
     --env.CK_LOADGEN_SCENARIO=Offline --env.CK_LOADGEN_MODE=Accuracy --env.CK_LOADGEN_DATASET_SIZE=500 \
     --env.CK_OPENVINO_NTHREADS=$NPROCS --env.CK_OPENVINO_NSTREAMS=$NPROCS --env.CK_OPENVINO_NIREQ=$NPROCS \
- && cat /home/dvdt/CK_REPOS/ck-openvino/program/mlperf-inference-v0.5/tmp/accuracy.txt"]
+ && cat /home/dvdt/CK_REPOS/ck-ml/program/mlperf-inference-v0.5/tmp/accuracy.txt"]

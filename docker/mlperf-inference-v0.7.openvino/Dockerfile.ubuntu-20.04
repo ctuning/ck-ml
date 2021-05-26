@@ -1,11 +1,9 @@
+FROM ubuntu:20.04
+
 # News:
 #  * 20210525: Grigori updated this container to support the latest CK framework
 #              with the latest CK components from ctuning@ck-ml repo
-
-FROM ubuntu:20.04
-
 LABEL maintainer="Grigori Fursin <grigori@octoml.ai>"
-LABEL maintainer="Anton Lokhmotov <anton@dividiti.com>"
 
 # Use the Bash shell.
 SHELL ["/bin/bash", "-c"]
@@ -50,8 +48,7 @@ USER dvdt:dvdtg
 WORKDIR /home/dvdt
 
 # Install Collective Knowledge (CK). Make it group-executable.
-ENV CK_ROOT=/home/dvdt/CK \
-    CK_REPOS=/home/dvdt/CK_REPOS \
+ENV CK_REPOS=/home/dvdt/CK_REPOS \
     CK_TOOLS=/home/dvdt/CK_TOOLS \
     PATH=/home/dvdt/.local/bin:${PATH} \
     CPATH=/usr/local/include/python3.7m \
@@ -60,7 +57,7 @@ ENV CK_ROOT=/home/dvdt/CK \
     CK_PYTHON=python3.7 \
     LANG=C.UTF-8
 
-RUN mkdir -p ${CK_ROOT} ${CK_REPOS} ${CK_TOOLS}
+RUN mkdir -p ${CK_REPOS} ${CK_TOOLS}
 
 # Install CK (CK automation f49f20744aba90e2)
 # We need to install new pip and setuptools otherwise there is a conflict 
