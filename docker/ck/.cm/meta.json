@@ -1,5 +1,4 @@
 {
-  "default_org":"octoml",
   "cmd": {
     "default": {
       "build": "-f $#CK_PATH#$/Dockerfile$#CK_TAG_DOT#$ -t $#CK_DOCKER_ORGANIZATION#$/$#CK_DOCKER_NAME#$$#CK_TAG_COLON#$ $#CK_PATH#$",
@@ -22,5 +21,12 @@
   "tags": [
     "adaptive-container",
     "ck"
+  ],
+  "tested": [
+    {
+      "email": "grigori@octoml.ai",
+      "iso_datetime": "2021-05-26T09:46:25.175776",
+      "name": "Grigori Fursin"
+    }
   ]
 }

@@ -53,7 +53,7 @@ WORKDIR /home/dvdt
 ENV CK_ROOT=/home/dvdt/CK \
     CK_REPOS=/home/dvdt/CK_REPOS \
     CK_TOOLS=/home/dvdt/CK_TOOLS \
-    PATH=${CK_ROOT}/bin:/home/dvdt/.local/bin:${PATH} \
+    PATH=/home/dvdt/.local/bin:${PATH} \
     CPATH=/usr/local/include/python3.7m \
     LD_LIBRARY_PATH=/usr/local/lib \
     CK_CC=gcc \
@@ -61,8 +61,6 @@ ENV CK_ROOT=/home/dvdt/CK \
     LANG=C.UTF-8
 
 RUN mkdir -p ${CK_ROOT} ${CK_REPOS} ${CK_TOOLS}
-
-RUN git clone https://github.com/ctuning/ck.git ${CK_ROOT}
 
 # Install CK (CK automation f49f20744aba90e2)
 # We need to install new pip and setuptools otherwise there is a conflict 

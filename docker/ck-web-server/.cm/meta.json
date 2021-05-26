@@ -28,7 +28,6 @@
       "key": "WFE_PORT"
     }
   },
-  "default_org": "octoml",
   "docker_tags": [
     "ubuntu-20.04",
     "ubuntu-18.04",
@@ -37,5 +36,12 @@
   "tags": [
     "adaptive-container",
     "ck"
+  ],
+  "tested": [
+    {
+      "email": "grigori@octoml.ai",
+      "iso_datetime": "2021-05-26T09:46:53.877920",
+      "name": "Grigori Fursin"
+    }
   ]
 }
