@@ -1,6 +1,9 @@
 FROM debian:9
 
-LABEL maintainer="Anton Lokhmotov <anton@dividiti.com>"
+# News:
+#  * 20210525: Grigori updated this container to support the latest CK framework
+#              with the latest CK components from ctuning@ck-ml repo
+LABEL maintainer="Grigori Fursin <grigori@octoml.ai>"
 
 # Use the Bash shell.
 SHELL ["/bin/bash", "-c"]
@@ -29,24 +32,26 @@ USER dvdt:dvdt
 WORKDIR /home/dvdt
 
 # Install Collective Knowledge (CK).
-ENV CK_ROOT=/home/dvdt/CK \
-    CK_REPOS=/home/dvdt/CK_REPOS \
+ENV CK_REPOS=/home/dvdt/CK_REPOS \
     CK_TOOLS=/home/dvdt/CK_TOOLS \
-    PATH=${CK_ROOT}/bin:/home/dvdt/.local/bin:${PATH} \
+    PATH=/home/dvdt/.local/bin:${PATH} \
     CK_PYTHON=python3 \
     CK_CC=gcc \
-    GIT_USER="dividiti" \
-    GIT_EMAIL="info@dividiti.com" \
     LANG=C.UTF-8
-RUN mkdir -p ${CK_ROOT} ${CK_REPOS} ${CK_TOOLS}
-RUN git config --global user.name ${GIT_USER} && git config --global user.email ${GIT_EMAIL}
-RUN git clone https://github.com/ctuning/ck.git ${CK_ROOT}
-RUN cd ${CK_ROOT} \
- && ${CK_PYTHON} setup.py install --user \
- && ${CK_PYTHON} -c "import ck.kernel as ck; print ('Collective Knowledge v%s' % ck.__version__)"
+
+RUN mkdir -p ${CK_REPOS} ${CK_TOOLS}
+
+# Install CK (CK automation f49f20744aba90e2)
+# We need to install new pip and setuptools otherwise there is a conflict 
+# with the local CK installation of Python packages ...
+RUN export DUMMY_CK=A
+RUN ${CK_PYTHON} --version
+RUN ${DUMMY_CK} ${CK_PYTHON} -m pip install --ignore-installed pip setuptools wheel --user
+RUN ${DUMMY_CK} ${CK_PYTHON} -m pip install pyyaml virtualenv --user
+RUN ${DUMMY_CK} ${CK_PYTHON} -m pip install ck --user
 
 # Pull CK repositories (including ck-env, ck-autotuning and ck-tensorflow).
-RUN ck pull repo:ck-mlperf
+RUN ck pull repo:ck-ml
 
 # Use generic Linux settings with dummy frequency setting scripts.
 RUN ck detect platform.os --platform_init_uoa=generic-linux-dummy
@@ -54,12 +59,10 @@ RUN ck detect platform.os --platform_init_uoa=generic-linux-dummy
 # Detect C/C++ compiler (gcc).
 RUN ck detect soft:compiler.gcc --full_path=`which ${CK_CC}`
 # Install TFLite.
-RUN ck install package --tags=lib,tensorflow-lite,tensorflow-static,v1.13.1
+RUN ck install package:lib-tflite-1.13.1-src-static
 
 # Detect Python.
 RUN ck detect soft:compiler.python --full_path=`which ${CK_PYTHON}`
-# Install the latest Python package installer (pip).
-RUN ${CK_PYTHON} -m pip install --ignore-installed pip setuptools --user
 # Install Python dependencies.
 RUN ck install package --tags=lib,python-package,numpy
 
@@ -75,9 +78,8 @@ RUN ck install package --tags=image-classification,model,tflite,mlperf,resnet,do
 RUN ck install package --tags=image-classification,model,tflite,mlperf,resnet,downloaded,no-argmax
 
 # Download and preprocess the first 500 images of the ImageNet 2012 validation dataset.
-RUN ck install package --tags=dataset,imagenet,aux
+RUN ck install package --tags=dataset,imagenet,aux,from.berkeley
 RUN ck install package --tags=dataset,imagenet,val,original,min --no_tags=resized
-# Preprocess using "headless" OpenCV (which doesn't need libsm6, libxext6, libxrender-dev).
 RUN ck install package --tags=lib,python-package,cv2,opencv-python-headless
 RUN ck install package --tags=dataset,imagenet,val,preprocessed,using-opencv
 
