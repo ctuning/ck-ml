@@ -5,7 +5,6 @@
 FROM ubuntu:20.04
 
 LABEL maintainer="Grigori Fursin <grigori@octoml.ai>"
-LABEL maintainer="Anton Lokhmotov <anton@dividiti.com>"
 
 # Use the Bash shell.
 SHELL ["/bin/bash", "-c"]
@@ -147,7 +146,7 @@ RUN ck install package --tags=lib,python-package,cv2,opencv-python-headless
 # and convert it into the OpenVINO format.
 #-----------------------------------------------------------------------------#
 RUN ck install package --tags=model,tf,mlperf,resnet,from-zenodo --no_tags=ssd
-
+# Need to downgrade scikit-learn, otherwise next package will fail (needs deprecated func)
 RUN ${DUMMY_CK} ${CK_PYTHON} -m pip install scikit-learn==0.22.2 --user
 RUN ck install package --tags=model,openvino,resnet50
 #-----------------------------------------------------------------------------#
@@ -157,7 +156,7 @@ RUN ck install package --tags=model,openvino,resnet50
 # Step 6. Install the official MobileNet model for MLPerf Inference v0.5
 # and convert it into the OpenVINO format.
 #-----------------------------------------------------------------------------#
-RUN ck install package --tags=model,tf,mlperf,mobilenet-v1-1.0-224,non-quantized
+RUN ck install package --tags=model,tf,mlperf,mobilenet-v1-1.0-224,non-quantized,from-zenodo
 RUN ck install package --tags=model,openvino,mobilenet
 #-----------------------------------------------------------------------------#
 

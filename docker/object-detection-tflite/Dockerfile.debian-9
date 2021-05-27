@@ -74,18 +74,21 @@ RUN ck show env --tags=python-package
 RUN ck install package --tags=tool,coco,api
 
 # Install TFLite.
-RUN ck install package --tags=lib,tensorflow-lite,tensorflow-static,v1.13.1
+RUN ck install package:lib-tflite-1.13.1-src-static
 
 # Download the SSD-MobileNet TF/TFLite models (non-quantized and quantized).
 # https://github.com/mlperf/inference/blob/master/edge/object_detection/ssd_mobilenet/tflite/README.md#install-the-ssd-mobilenet-models-for-tflite
 RUN ck install package --tags=model,tflite,object-detection,mlperf,ssd-mobilenet,non-quantized,from-zenodo
+
+RUN ck install package --tags=lib,python-package,cv2,opencv-python-headless
+RUN ck install package --tags=tensorflow,model,api,r1.13.0
 
 # Download the COCO 2017 validation dataset (5,000 images) to the default path;
 # preprocess all the 5000 images (as the user may want to run full evaluation);
 # remove the original images and training annotations while taking care to preserve
 # 'val2017/000000000139.jpg' used to detect COCO 2017 (ck-env:soft:dataset.coco.2017.val).
 RUN echo | ck install package --tags=object-detection,dataset,coco.2017,val,original,full \
- && ck install package --tags=object-detection,dataset,coco.2017,preprocessed,full \
+ && ck install package --tags=object-detection,dataset,coco.2017,preprocessed,full,using-opencv \
  && ck virtual env --tags=object-detection,dataset,coco.2017,val,original,full --shell_cmd=\
 'mv $CK_ENV_DATASET_IMAGE_DIR/000000000139.jpg $CK_ENV_DATASET_COCO/;\
  rm $CK_ENV_DATASET_IMAGE_DIR/*;\

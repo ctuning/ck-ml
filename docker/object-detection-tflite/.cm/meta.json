@@ -13,5 +13,12 @@
     "adaptive-container",
     "ck",
     "mlperf"
+  ],
+  "tested": [
+    {
+      "email": "Grigori.Fursin@cTuning.org",
+      "iso_datetime": "2021-05-26T19:15:51.757521",
+      "name": "Grigori Fursin"
+    }
   ]
 }

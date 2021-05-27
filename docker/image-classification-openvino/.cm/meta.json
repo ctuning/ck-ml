@@ -1,5 +1,5 @@
 {
-  "aging":"yes",
+  "aging": "yes",
   "cmd": {
     "default": {
       "build": "-f $#CK_PATH#$/Dockerfile$#CK_TAG_DOT#$ -t $#CK_DOCKER_ORGANIZATION#$/$#CK_DOCKER_NAME#$$#CK_TAG_COLON#$ $#CK_PATH#$",
@@ -14,5 +14,12 @@
     "adaptive-container",
     "ck",
     "mlperf"
+  ],
+  "tested": [
+    {
+      "email": "Grigori.Fursin@cTuning.org",
+      "iso_datetime": "2021-05-26T23:16:58.615918",
+      "name": "Grigori Fursin"
+    }
   ]
 }

@@ -72,9 +72,6 @@ RUN ck detect soft --tags=cmake --full_path=`which cmake`
 
 # Detect Python.
 RUN ck detect soft --tags=compiler,python --full_path=`which ${CK_PYTHON}`
-# Install the latest Python package installer (pip) and some dependencies.
-RUN ${CK_PYTHON} -m pip install --ignore-installed pip setuptools --user
-
 
 #-----------------------------------------------------------------------------#
 # Step 1. Install Python dependencies (for Model Optimizer and LoadGen).

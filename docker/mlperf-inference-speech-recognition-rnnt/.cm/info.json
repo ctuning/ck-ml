@@ -11,5 +11,5 @@
       "0"
     ]
   },
-  "data_name": "speech-recognition.rnnt"
+  "data_name": "mlperf-inference-speech-recognition-rnnt"
 }
