@@ -1,7 +1,10 @@
-# MLPerf Inference - Speech Recognition - RNNT
+# News 
+* **20210525: This container was tested, fixed and improved by [Grigori Fursin](https://cKnowledge.io/@gfursin) to support the latest CK version! 
+  There is still some issue with postprocessing that we plan to fix in the new MLPerf release.
+  See [octoml@mlops repo](https://github.com/octoml/mlops) and [MLPerf automation docs](https://github.com/ctuning/ck/blob/master/docs/mlperf-automation/README.md) for more details.**
 
-[This collection of images](https://hub.docker.com/r/ctuning/speech-recognition.rnnt) from [dividiti](http://dividiti.com)
-tests automated, customizable and reproducible [Collective Knowledge](http://cknowledge.org) workflow for the [Speech Recognition RNNT](https://github.com/mlperf/inference/tree/master/v0.7/speech_recognition/rnnt/) workload. All images include the CK workflow, the latest PyTorch, the PyTorch model, and the (suitably preprocessed) [LibriSpeech](http://www.openslr.org/12/) Dev-Clean dataset.
+
+# MLPerf Inference - Speech Recognition - RNNT
 
 | `CK_TAG` (`Dockerfile`'s extension)  | Python | GCC   | Comments |
 |-|-|-|-|
@@ -37,10 +40,10 @@ It is instructive to diff the following image pairs:
 ## Set up Collective Knowledge
 
 You will need to install [Collective Knowledge](http://cknowledge.org) to build images and save benchmarking results.
-Please follow the [CK installation instructions](https://github.com/ctuning/ck#installation) and then pull the ck-mlperf repository:
+Please follow the [CK installation instructions](https://github.com/ctuning/ck#installation) and then pull the ck-ml repository:
 
 ```bash
-$ ck pull repo:ck-mlperf
+$ ck pull repo:ck-ml
 ```
 
 **NB:** Refresh all CK repositories after any updates (e.g. bug fixes):
@@ -54,7 +57,7 @@ $ ck pull all
 To build an image e.g. from `Dockerfile.centos-7`:
 ```bash
 $ export CK_IMAGE=speech-recognition.rnnt CK_TAG=centos-7
-$ cd `ck find docker:$CK_IMAGE` && docker build -t ctuning/$CK_IMAGE:$CK_TAG -f Dockerfile.$CK_TAG .
+$ ck build docker:$CK_IMAGE --tag=$CK_TAG
 ```
 
 ### Show Python and GCC versions
@@ -63,12 +66,12 @@ To show the Python and GCC versions in use in an image built from `Dockerfile.ce
 ```bash
 $ export CK_IMAGE=speech-recognition.rnnt CK_TAG=centos-7
 
-$ docker run -it --rm ctuning/$CK_IMAGE:$CK_TAG "ck show env --tags=compiler,python"
+$ ck run docker:$CK_IMAGE --tag=$CK_TAG --command="ck show env --tags=compiler,python"
 Env UID:         Target OS: Bits: Name:  Version: Tags:
 
 ef09a59ce5645ffc   linux-64    64 python 3.7.8    64bits,compiler,host-os-linux-64,lang-python,python,target-os-linux-64,v3,v3.7,v3.7.8
 
-$ docker run -it --rm ctuning/$CK_IMAGE:$CK_TAG "ck show env --tags=compiler,gcc"
+$ ck run docker:$CK_IMAGE --tag=$CK_TAG --command="ck show env --tags=compiler,gcc"
 Env UID:         Target OS: Bits: Name:          Version: Tags:
 
 511106845f6bfe42   linux-64    64 GNU C compiler 8.3.1    64bits,compiler,gcc,host-os-linux-64,lang-c,lang-cpp,target-os-linux-64,v8,v8.3,v8.3.1
@@ -100,5 +103,5 @@ Required-by: resampy, librosa
 To run the default command of an image e.g. built from `Dockerfile.centos-7`:
 ```bash
 $ export CK_IMAGE=speech-recognition.rnnt CK_TAG=centos-7
-$ docker run --rm ctuning/$CK_IMAGE:$CK_TAG
+$ ck run docker:$CK_IMAGE --tag=$CK_TAG
 ```

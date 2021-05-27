@@ -7,19 +7,9 @@
     }
   },
   "docker_tags": [
-    "ubuntu-20.04",
-    "ubuntu-20.04.min",
-    "ubuntu-18.04",
-    "ubuntu-16.04",
-    "amazonlinux",
-    "amazonlinux.glow",
-    "amazonlinux.glow.min",
-    "amazonlinux.min",
-    "centos-7",
-    "centos-8",
-    "centos-8.python3.7",
-    "debian-10",
-    "debian-9"
+    "ubuntu-18.04-tf-1.15.2-mkl-py3",
+    "ubuntu-18.04-tf-2.0.1-mkl-py3",
+    "ubuntu-18.04-tf-2.1.0-mkl-py3"
   ],
   "tags": [
     "adaptive-container",
