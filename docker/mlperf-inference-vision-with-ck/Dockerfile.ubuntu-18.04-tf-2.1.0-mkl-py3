@@ -1,6 +1,9 @@
 FROM intelaipg/intel-optimized-tensorflow:2.1.0-mkl-py3
 
-LABEL maintainer="Anton Lokhmotov <anton@dividiti.com>"
+# News:
+#  * 20210525: Grigori updated this container to support the latest CK framework
+#              with the latest CK components from ctuning@ck-ml repo
+LABEL maintainer="Grigori Fursin <grigori@octoml.ai>"
 
 # Use the Bash shell.
 SHELL ["/bin/bash", "-c"]
@@ -19,7 +22,7 @@ RUN apt update -y\
  git wget zip libz-dev\
  curl\
  cmake\
- vim\
+ mc vim\
  && apt clean
 
 # Create a non-root user with a fixed group id 1500 and a fixed user id 2000
@@ -31,22 +34,23 @@ USER dvdt:dvdtg
 WORKDIR /home/dvdt
 
 # Install Collective Knowledge (CK). Make it group-executable.
-ENV CK_ROOT=/home/dvdt/CK \
-    CK_REPOS=/home/dvdt/CK_REPOS \
+ENV CK_REPOS=/home/dvdt/CK_REPOS \
     CK_TOOLS=/home/dvdt/CK_TOOLS \
-    PATH=${CK_ROOT}/bin:/home/dvdt/.local/bin:${PATH} \
+    PATH=/home/dvdt/.local/bin:${PATH} \
     CK_CC=gcc \
     CK_PYTHON=python3 \
-    GIT_USER="dividiti" \
-    GIT_EMAIL="info@dividiti.com" \
     LANG=C.UTF-8
-RUN mkdir -p ${CK_ROOT} ${CK_REPOS} ${CK_TOOLS}
-RUN git config --global user.name ${GIT_USER} && git config --global user.email ${GIT_EMAIL}
-RUN git clone https://github.com/ctuning/ck.git ${CK_ROOT}
-RUN cd ${CK_ROOT}\
- && ${CK_PYTHON} setup.py install --user\
- && ${CK_PYTHON} -c "import ck.kernel as ck; print ('Collective Knowledge v%s' % ck.__version__)"\
- && chmod -R g+rx /home/dvdt/.local
+
+RUN mkdir -p ${CK_REPOS} ${CK_TOOLS}
+
+# Install CK (CK automation f49f20744aba90e2)
+# We need to install new pip and setuptools otherwise there is a conflict 
+# with the local CK installation of Python packages ...
+RUN export DUMMY_CK=A
+RUN ${CK_PYTHON} --version
+RUN ${DUMMY_CK} ${CK_PYTHON} -m pip install --ignore-installed pip setuptools wheel --user
+RUN ${DUMMY_CK} ${CK_PYTHON} -m pip install pyyaml virtualenv --user
+RUN ${DUMMY_CK} ${CK_PYTHON} -m pip install ck --user
 
 # Explicitly create a CK experiment entry, a folder that will be mounted
 # (with '--volume=<folder_for_results>:/home/dvdt/CK_REPOS/local/experiment').
@@ -56,7 +60,8 @@ RUN ck create_entry --data_uoa=experiment --data_uid=bc0409fb61f0aa82 --path=${C
  && chmod -R g+w ${CK_REPOS}/local/experiment
 
 # Pull CK repositories (including ck-mlperf, ck-env, ck-autotuning, ck-tensorflow, ck-docker).
-RUN ck pull repo:ck-object-detection
+RUN ck pull repo:ck-ml
+
 
 # Use generic Linux settings with dummy frequency setting scripts.
 RUN ck detect platform.os --platform_init_uoa=generic-linux-dummy
@@ -66,8 +71,6 @@ RUN ck detect soft:compiler.gcc --full_path=`which ${CK_CC}`
 
 # Detect Python.
 RUN ck detect soft:compiler.python --full_path=`which ${CK_PYTHON}`
-# Install the latest Python package installer (pip) and some dependencies.
-RUN ${CK_PYTHON} -m pip install --ignore-installed pip setuptools --user
 
 
 #-----------------------------------------------------------------------------#
@@ -104,7 +107,7 @@ RUN ck install package --tags=tool,coco,api
 #-----------------------------------------------------------------------------#
 # Install TF model API, but remove useless API files to free up space.
 RUN ck detect soft --tags=cmake --full_path=/usr/bin/cmake
-RUN ck install package --tags=model,tensorflow,api\
+RUN ck install package --tags=model,tensorflow,api,r1.13.0\
  && ck virtual env --tags=model,tensorflow,api --shell_cmd=\
 'cd $CK_ENV_TENSORFLOW_MODELS;\
  mv object_detection ..;\
@@ -116,18 +119,18 @@ RUN ck install package --tags=model,tensorflow,api\
  rm tutorials -rf;\
  rm .git -rf'
 
-RUN ck install package --tags=rcnn,nas,lowproposals,vcoco\
- && ck install package --tags=rcnn,resnet50,lowproposals\
- && ck install package --tags=rcnn,resnet101,lowproposals\
- && ck install package --tags=rcnn,inception-resnet-v2,lowproposals\
- && ck install package --tags=rcnn,inception-v2\
- && ck install package --tags=ssd,inception-v2\
- && ck install package --tags=ssd,mobilenet-v1,non-quantized,mlperf,tf\
- && ck install package --tags=ssd,mobilenet-v1,quantized,mlperf,tf\
- && ck install package --tags=ssd,mobilenet-v1,fpn\
- && ck install package --tags=ssd,resnet50,fpn\
- && ck install package --tags=ssdlite,mobilenet-v2,vcoco\
- && ck install package --tags=yolo-v3
+RUN ck install package --tags=rcnn,nas,lowproposals,vcoco
+RUN ck install package --tags=rcnn,resnet50,lowproposals\
+RUN ck install package --tags=rcnn,resnet101,lowproposals\
+RUN ck install package --tags=rcnn,inception-resnet-v2,lowproposals\
+RUN ck install package --tags=rcnn,inception-v2\
+RUN ck install package --tags=ssd,inception-v2\
+RUN ck install package --tags=ssd,mobilenet-v1,non-quantized,mlperf,tf\
+RUN ck install package --tags=ssd,mobilenet-v1,quantized,mlperf,tf\
+RUN ck install package --tags=ssd,mobilenet-v1,fpn\
+RUN ck install package --tags=ssd,resnet50,fpn\
+RUN ck install package --tags=ssdlite,mobilenet-v2,vcoco\
+RUN ck install package --tags=yolo-v3
 #-----------------------------------------------------------------------------#
 
 
