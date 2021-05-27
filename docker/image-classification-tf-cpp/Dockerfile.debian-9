@@ -1,6 +1,9 @@
 FROM debian:9
 
-LABEL maintainer="Anton Lokhmotov <anton@dividiti.com>"
+# News:
+#  * 20210525: Grigori updated this container to support the latest CK framework
+#              with the latest CK components from ctuning@ck-ml repo
+LABEL maintainer="Grigori Fursin <grigori@octoml.ai>"
 
 # Use the Bash shell.
 SHELL ["/bin/bash", "-c"]
@@ -19,6 +22,7 @@ RUN apt update -y \
         git wget zip libz-dev curl vim \
         autoconf autogen libtool \
         python3 python3-pip \
+        mc \
  && apt clean
 
 # Upgrade pip.
@@ -30,30 +34,31 @@ USER dvdt:dvdt
 WORKDIR /home/dvdt
 
 # Install Collective Knowledge (CK).
-ENV CK_ROOT=/home/dvdt/CK \
-    CK_REPOS=/home/dvdt/CK_REPOS \
+ENV CK_REPOS=/home/dvdt/CK_REPOS \
     CK_TOOLS=/home/dvdt/CK_TOOLS \
-    PATH=${CK_ROOT}/bin:/home/dvdt/.local/bin:${PATH} \
+    PATH=/home/dvdt/.local/bin:${PATH} \
     CK_PYTHON=python3 \
     CK_CC=gcc \
-    GIT_USER="dividiti" \
-    GIT_EMAIL="info@dividiti.com" \
     LANG=C.UTF-8
-RUN mkdir -p ${CK_ROOT} ${CK_REPOS} ${CK_TOOLS}
-RUN git config --global user.name ${GIT_USER} && git config --global user.email ${GIT_EMAIL}
-RUN git clone https://github.com/ctuning/ck.git ${CK_ROOT}
-RUN cd ${CK_ROOT} \
- && ${CK_PYTHON} setup.py install --user \
- && ${CK_PYTHON} -c "import ck.kernel as ck; print ('Collective Knowledge v%s' % ck.__version__)"
+
+RUN mkdir -p ${CK_REPOS} ${CK_TOOLS}
+
+# Install CK (CK automation f49f20744aba90e2)
+# We need to install new pip and setuptools otherwise there is a conflict 
+# with the local CK installation of Python packages ...
+RUN export DUMMY_CK=A
+RUN ${CK_PYTHON} --version
+RUN ${DUMMY_CK} ${CK_PYTHON} -m pip install --ignore-installed pip setuptools wheel --user
+RUN ${DUMMY_CK} ${CK_PYTHON} -m pip install pyyaml virtualenv --user
+RUN ${DUMMY_CK} ${CK_PYTHON} -m pip install ck --user
 
 # Pull CK repositories (including ck-env, ck-autotuning and ck-tensorflow).
-RUN ck pull repo:ck-mlperf
+RUN ck pull repo:ck-ml
 
 # Use generic Linux settings with dummy frequency setting scripts.
 RUN ck detect platform.os --platform_init_uoa=generic-linux-dummy
 
 # Install Python dependencies.
-RUN ${CK_PYTHON} -m pip install --ignore-installed pip setuptools --user
 RUN ck detect soft:compiler.python --full_path=`which ${CK_PYTHON}`
 
 RUN ck install package --tags=lib,python-package,numpy
@@ -62,12 +67,14 @@ RUN ck install package --tags=lib,python-package,pillow
 
 # Install C/C++ dependencies.
 RUN ck detect soft:compiler.gcc --full_path=`which ${CK_CC}`
-RUN ck install package --tags=lib,tensorflow,vstatic,v1.13.1 --no_tags=lite
+#RUN ck install package --tags=lib,tensorflow,vstatic,v1.13.1 --no_tags=lite
+RUN ck install package:lib-tensorflow-1.13.1-src-static
 
 # Download and preprocess the first 500 images of the ImageNet 2012 validation dataset.
-RUN ck install package --tags=dataset,imagenet,aux
+RUN ck install package --tags=dataset,imagenet,aux,from.berkeley
 RUN ck install package --tags=dataset,imagenet,val,original,min --no_tags=resized
-RUN ck install package --tags=dataset,imagenet,val,preprocessed
+RUN ck install package --tags=lib,python-package,cv2,opencv-python-headless
+RUN ck install package --tags=dataset,imagenet,val,preprocessed,using-opencv
 
 # Download the MobileNet TF/TFLite models (non-quantized and quantized).
 # https://github.com/mlperf/inference/tree/master/edge/object_classification/mobilenets/tf-cpp#install-the-mobilenet-model-for-tensorflow-c
