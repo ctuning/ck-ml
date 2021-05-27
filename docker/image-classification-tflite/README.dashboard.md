@@ -1,4 +1,4 @@
-# [MLPerf Inference - Image Classification - TFLite (Ubuntu 18.04)](https://hub.docker.com/r/ctuning/image-classification-tflite.dashboard.ubuntu-18.04): Dashboard
+# MLPerf Inference - Image Classification - TFLite: Dashboard
 
 1. [Dashboard image](#image_dashboard) (based on [Ubuntu](https://hub.docker.com/_/ubuntu/) 18.04 latest)
     - [Download](#image_dashboard_download) or [Build](#image_dashboard_build)
@@ -12,21 +12,15 @@
 <a name="image_dashboard"></a>
 ## Dashboard image
 
-<a name="image_dashboard_download"></a>
-### Download
-```
-$ docker pull ctuning/image-classification-tflite.dashboard.ubuntu-18.04
-```
-
 <a name="image_dashboard_build"></a>
 ### Build
 ```bash
-$ ck build docker:image-classification-tflite.dashboard.ubuntu-18.04
+$ ck build docker:image-classification-tflite --tag=ubuntu-18.04-dashboard
 ```
 **NB:** Equivalent to:
 ```bash
-$ cd `ck find docker:image-classification-tflite.dashboard.ubuntu-18.04`
-$ docker build -f Dockerfile -t ctuning/image-classification-tflite.dashboard.ubuntu-18.04 .
+$ cd `ck find docker:image-classification-tflite`
+$ docker build -f Dockerfile.ubuntu-18.04-dashboard -t ctuning/image-classification-tflite:ubuntu-18.04-dashboard .
 ```
 
 
@@ -37,11 +31,11 @@ $ docker build -f Dockerfile -t ctuning/image-classification-tflite.dashboard.ub
 #### Dashboard
 1. Run a dashboard container with an interactive shell:
 ```
-$ ck run docker:image-classification-tflite.dashboard.ubuntu-18.04
+$ ck run docker:image-classification-tflite --tag=ubuntu-18.04-dashboard
 ```
 **NB:** Equivalent to:
 ```bash
-$ docker run -it --publish 3355:3344 --rm ctuning/image-classification-tflite.dashboard.ubuntu-18.04
+$ docker run -it --publish 3355:3344 --rm ctuning/image-classification-tflite:ubuntu-18.04-dashboard
 ```
 
 2. Point your browser to http://localhost:3355/?template=dashboard&scenario=mlperf.mobilenets to
