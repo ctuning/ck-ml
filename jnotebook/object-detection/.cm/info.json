@@ -1,0 +1,15 @@
+{
+  "backup_data_uid": "64ac3c0be5cb24f9",
+  "backup_module_uid": "145039462db4f4d2",
+  "backup_module_uoa": "jnotebook",
+  "control": {
+    "engine": "CK",
+    "iso_datetime": "2021-05-27T16:18:52.339199",
+    "version": [
+      "2",
+      "4",
+      "0"
+    ]
+  },
+  "data_name": "object-detection"
+}

@@ -1,0 +1,15 @@
+{
+  "backup_data_uid": "0441a89e576f76e7",
+  "backup_module_uid": "1dc07ee0f4742028",
+  "backup_module_uoa": "package",
+  "control": {
+    "engine": "CK",
+    "iso_datetime": "2021-05-27T16:19:53.931735",
+    "version": [
+      "2",
+      "4",
+      "0"
+    ]
+  },
+  "data_name": "model-tf-ssd-resnet50-fpn-coco"
+}
