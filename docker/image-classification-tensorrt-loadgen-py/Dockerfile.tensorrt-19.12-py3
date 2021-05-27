@@ -97,21 +97,22 @@ RUN ck detect soft:lib.python.tensorrt --full_path=/usr/lib/python3.6/dist-packa
 # Step 4. Download and preprocess the first 500 images of the ImageNet 2012
 # validation dataset.
 #-----------------------------------------------------------------------------#
-RUN ck install package --tags=dataset,imagenet,aux
+RUN ck install package --tags=dataset,imagenet,aux,from.berkeley
 RUN ck install package --tags=dataset,imagenet,val,original,min --no_tags=resized
-RUN ck install package --tags=dataset,imagenet,val,full,preprocessed,using-opencv
+#RUN ck install package --tags=dataset,imagenet,val,full,preprocessed,using-opencv
+RUN ck install package --tags=dataset,imagenet,val,preprocessed,using-opencv
 
 #-----------------------------------------------------------------------------#
 # Step 5. Install MLPerf Inference packages.
 #-----------------------------------------------------------------------------#
-RUN ck install package --tags=mlperf,inference,source
+RUN ck install package --tags=mlperf,inference,source,upstream.master
 RUN ck install package --tags=mlperf,loadgen,python-package
 
 #-----------------------------------------------------------------------------#
 # Step 6. Make final preparations to run Image Classification with TensorRT.
 #-----------------------------------------------------------------------------#
 # Install the official MLPerf ResNet ONNX model.
-RUN ck install package --tags=model,onnx,resnet,downloaded
+RUN ck install package --tags=model,onnx,resnet,downloaded,from.pb
 # Allow to create new environments when running under an external user.
 RUN chmod -R g+rwx $CK_REPOS/local/env
 # Allow a few programs to create tmp files when running under an external user.
