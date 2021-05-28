@@ -29,7 +29,7 @@ in the [CK format](https://arxiv.org/pdf/2011.01149.pdf):
 * CK MLPerf&trade; system descriptions: [[list]( https://cKnowledge.io/c/sut )]
 * CK MLPerf&trade; benchmark CMD generators: [[list]( https://cKnowledge.io/c/cmdgen )]
 
-You can find **stable** CK components aggregated in [this repository](https://github.com/ctuning/ai).
+You can find **stable** CK components aggregated in [this repository](https://github.com/ctuning/ck-ml-arc).
 
 # Install and use CK framework
 * https://github.com/ctuning/ck
