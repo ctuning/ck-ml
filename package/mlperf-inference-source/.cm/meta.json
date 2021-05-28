@@ -77,6 +77,14 @@
         "package_extra_name": " (OctoML's dev branch)"
       }
     },
+    "octoml.dev.git": {
+      "extra_env": {
+        "PACKAGE_URL": "git@github.com:octoml/mlcommons-inference"
+      },
+      "extra_customize": {
+        "package_extra_name": " (OctoML's dev branch)"
+      }
+    },
     "dividiti.master": {
       "extra_env": {
         "PACKAGE_URL": "https://github.com/dividiti/inference"
