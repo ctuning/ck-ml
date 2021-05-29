@@ -5,6 +5,7 @@ FROM nvcr.io/nvidia/tensorrt:19.12-py3
 # News:
 #  * 20210525: Grigori updated this container to support the latest CK framework
 #              with the latest CK components from ctuning@ck-ml repo
+#              However, it currently fails with CUDA run-time error
 LABEL maintainer="Grigori Fursin <grigori@octoml.ai>"
 
 # Use the Bash shell.

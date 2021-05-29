@@ -1,13 +1,10 @@
 # MLPerf Inference - Object Detection - TensorFlow with NVIDIA TensorRT
 
-[This collection of images](https://hub.docker.com/r/ctuning/mlperf-inference-vision-with-ck.tensorrt.ubuntu-18.04) from [dividiti](http://dividiti.com)
-is based on the [TensorRT images](https://docs.nvidia.com/deeplearning/sdk/tensorrt-container-release-notes/) from NVIDIA (which are in turn based on Ubuntu 18.04):
+This image is based on the [TensorRT images](https://docs.nvidia.com/deeplearning/sdk/tensorrt-container-release-notes/) from NVIDIA (which are in turn based on Ubuntu 18.04):
 
 | `Dockerfile` | Base image | [CUDA](https://developer.nvidia.com/cuda-zone) | [TensorRT](https://developer.nvidia.com/tensorrt) | [TensorFlow](https://www.tensorflow.org/) |
 |-|-|-|-|-|
-| `Dockerfile` (`Dockerfile_20.03-py3_tf-2.1.0`) | [20.03-py3](https://docs.nvidia.com/deeplearning/sdk/tensorrt-container-release-notes/rel_20-03.html) | 10.2.89 | 7.0.0 | [2.1.0](https://github.com/tensorflow/tensorflow/releases/tag/v2.1.0) |
-| `Dockerfile_20.03-py3_tf-2.0.1` | [20.03-py3](https://docs.nvidia.com/deeplearning/sdk/tensorrt-container-release-notes/rel_20-03.html) | 10.2.89 | 7.0.0 | [2.0.1](https://github.com/tensorflow/tensorflow/releases/tag/v2.0.1) |
-| `Dockerfile_19.07-py3_tf-1.14.0` | [19.07-py3](https://docs.nvidia.com/deeplearning/sdk/tensorrt-container-release-notes/rel_19-07.html) | 10.1.168 | 5.1.5 | [1.14.0](https://github.com/tensorflow/tensorflow/releases/tag/v1.14.0) |
+| `Dockerfile.tensorrt-7-20.03-py3-tf-2.1.0` | [20.03-py3](https://docs.nvidia.com/deeplearning/sdk/tensorrt-container-release-notes/rel_20-03.html) | 10.2.89 | 7.0.0 | [2.1.0](https://github.com/tensorflow/tensorflow/releases/tag/v2.1.0) |
 
 **NB:** [19.10-py3](https://docs.nvidia.com/deeplearning/sdk/tensorrt-container-release-notes/rel_19-10.html) was the last base image to support CUDA 10.1. TensorFlow 1.15, 2.0 and 2.1 all require patching (done by CK) to work with CUDA 10.2.
 
@@ -52,7 +49,7 @@ You will need to install [Collective Knowledge](http://cknowledge.org) to build 
 Please follow the [CK installation instructions](https://github.com/ctuning/ck#installation) and then pull our object detection repository:
 
 ```bash
-$ ck pull repo:ck-mlperf
+$ ck pull repo:ck-ml
 ```
 
 **NB:** Refresh all CK repositories after any updates (e.g. bug fixes):
@@ -65,20 +62,12 @@ $ ck pull all
 
 Set up the variable to contain the image name:
 ```bash
-$ export CK_IMAGE=mlperf-inference-vision-with-ck.tensorrt.ubuntu-18.04
+$ export CK_IMAGE=mlperf-inference-vision-tensorrt-with-ck
 ```
 
 Set up the variable that points to the directory that contains your CK repositories (usually `~/CK` or `~/CK_REPOS`):
 ```bash
 $ export CK_REPOS=${HOME}/CK
-```
-
-<a name="image_download"></a>
-## Download from Docker Hub
-
-To download a prebuilt image from Docker Hub, run:
-```
-$ docker pull ctuning/${CK_IMAGE}
 ```
 
 **NB:** As the prebuilt TensorFlow variant does not support AVX2 instructions, we advise to use the TensorFlow variant built from sources on compatible hardware.
@@ -91,13 +80,13 @@ to [rebuild](#build) the image on your system.
 
 To build an image on your system, run:
 ```bash
-$ ck build docker:${CK_IMAGE}
-```
+$ ck build docker:${CK_IMAGE} --tag=tensorrt-7-20.03-py3-tf-2.1.0
+``` 
 
 **NB:** This CK command is equivalent to:
 ```bash
 $ cd `ck find docker:${CK_IMAGE}`
-$ docker build -f Dockerfile -t ctuning/${CK_IMAGE} .
+$ docker build -f Dockerfile -t ctuning/${CK_IMAGE}:tensorrt-7-20.03-py3-tf-2.1.0 .
 ```
 
 <a name="usage"></a>
@@ -108,7 +97,7 @@ $ docker build -f Dockerfile -t ctuning/${CK_IMAGE} .
 
 Once you have downloaded or built an image, you can run inference on the CPU as follows:
 ```bash
-$ docker run --env-file ${CK_REPOS}/ck-mlperf/docker/${CK_IMAGE}/env.list --rm ctuning/${CK_IMAGE} \
+$ docker run --env-file ${CK_REPOS}/ck-ml/docker/${CK_IMAGE}/env.list --rm ctuning/${CK_IMAGE} \
         "ck run program:mlperf-inference-vision --cmd_key=direct \
         --env.CK_LOADGEN_EXTRA_PARAMS='--count 50' \
         --env.CK_METRIC_TYPE=COCO \
@@ -129,7 +118,7 @@ $ docker run --rm ctuning/${CK_IMAGE}
 
 To run inference on the GPU with CUDA, we need to make a couple of changes:
 ```bash
-$ docker run --runtime=nvidia --env-file ${CK_REPOS}/ck-mlperf/docker/${CK_IMAGE}/env.list --rm ctuning/${CK_IMAGE} \
+$ docker run --runtime=nvidia --env-file ${CK_REPOS}/ck-ml/docker/${CK_IMAGE}/env.list --rm ctuning/${CK_IMAGE} \
         "ck run program:mlperf-inference-vision --cmd_key=direct \
         --env.CK_LOADGEN_EXTRA_PARAMS='--count 50' \
         --env.CK_METRIC_TYPE=COCO \
@@ -144,7 +133,7 @@ $ docker run --runtime=nvidia --env-file ${CK_REPOS}/ck-mlperf/docker/${CK_IMAGE
 
 Now let's use TensorRT backend in [static mode](https://docs.nvidia.com/deeplearning/frameworks/tf-trt-user-guide/index.html#static-dynamic-mode):
 ```bash
-$ docker run --runtime=nvidia --env-file ${CK_REPOS}/ck-mlperf/docker/${CK_IMAGE}/env.list --rm ctuning/${CK_IMAGE} \
+$ docker run --runtime=nvidia --env-file ${CK_REPOS}/ck-ml/docker/${CK_IMAGE}/env.list --rm ctuning/${CK_IMAGE} \
         "ck run program:mlperf-inference-vision --cmd_key=direct \
         --env.CK_LOADGEN_EXTRA_PARAMS='--count 50' \
         --env.CK_METRIC_TYPE=COCO \
@@ -158,7 +147,7 @@ $ docker run --runtime=nvidia --env-file ${CK_REPOS}/ck-mlperf/docker/${CK_IMAGE
 
 Finally, TensorRT backend in [dynamic mode](https://docs.nvidia.com/deeplearning/frameworks/tf-trt-user-guide/index.html#static-dynamic-mode):
 ```bash
-$ docker run --runtime=nvidia --env-file ${CK_REPOS}/ck-mlperf/docker/${CK_IMAGE}/env.list --rm ctuning/${CK_IMAGE} \
+$ docker run --runtime=nvidia --env-file ${CK_REPOS}/ck-ml/docker/${CK_IMAGE}/env.list --rm ctuning/${CK_IMAGE} \
         "ck run program:mlperf-inference-vision --cmd_key=direct \
         --env.CK_LOADGEN_EXTRA_PARAMS='--count 50' \
         --env.CK_METRIC_TYPE=COCO \
@@ -228,7 +217,7 @@ When running `ck benchmark` via Docker, we map the internal output directory to 
 in order to access the results easier (using parameters for a custom Yolo v3 model for a change) :
 
 ```bash
-$ docker run --runtime=nvidia --env-file ${CK_REPOS}/ck-mlperf/docker/${CK_IMAGE}/env.list \
+$ docker run --runtime=nvidia --env-file ${CK_REPOS}/ck-ml/docker/${CK_IMAGE}/env.list \
         --user=$(id -u):1500 --volume ${EXPERIMENTS_DIR}:/home/dvdt/CK_REPOS/local/experiment \
         --rm ctuning/${CK_IMAGE} \
         "ck benchmark program:mlperf-inference-vision --cmd_key=direct --repetitions=1 \

@@ -1,6 +1,6 @@
 # Object Detection TensorFlow (Python) Docker images
 
-[This collection of images](https://hub.docker.com/r/ctuning/object-detection-tf-py.tensorrt.ubuntu-18.04) from [dividiti](http://dividiti.com)
+This image
 is based on the [TensorRT images](https://docs.nvidia.com/deeplearning/sdk/tensorrt-container-release-notes/) from NVIDIA (which are in turn based on Ubuntu 18.04):
 
 | `Dockerfile` | Base image | [CUDA](https://developer.nvidia.com/cuda-zone) | [TensorRT](https://developer.nvidia.com/tensorrt) | [TensorFlow](https://www.tensorflow.org/) |
