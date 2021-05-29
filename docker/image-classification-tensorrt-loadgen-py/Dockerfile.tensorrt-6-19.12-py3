@@ -7,6 +7,7 @@ FROM nvcr.io/nvidia/tensorrt:19.12-py3
 #              with the latest CK components from ctuning@ck-ml repo
 #              However, it currently fails with CUDA run-time error
 LABEL maintainer="Grigori Fursin <grigori@octoml.ai>"
+LABEL maintainer="Anton Lokhmotov <anton@dividiti.com>"
 
 # Use the Bash shell.
 SHELL ["/bin/bash", "-c"]
