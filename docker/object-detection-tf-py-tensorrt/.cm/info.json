@@ -11,5 +11,5 @@
       "0"
     ]
   },
-  "data_name": "object-detection-tf-py.tensorrt.ubuntu-18.04"
+  "data_name": "object-detection-tf-py-tensorrt"
 }

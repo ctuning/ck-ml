@@ -1,3 +1,8 @@
+# News 
+* **20210529: [Grigori Fursin](https://cKnowledge.io/@gfursin) converted this container to support the latest CK version! 
+  However, the MLPerf workflow fails with a run-time CUDA error. We decided to archive it.
+  See [octoml@mlops repo](https://github.com/octoml/mlops) and [MLPerf automation docs](https://github.com/ctuning/ck/blob/master/docs/mlperf-automation/README.md) for more details.**
+
 # MLPerf Inference - Object Detection - TensorFlow with NVIDIA TensorRT
 
 This image is based on the [TensorRT images](https://docs.nvidia.com/deeplearning/sdk/tensorrt-container-release-notes/) from NVIDIA (which are in turn based on Ubuntu 18.04):

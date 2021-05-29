@@ -1,3 +1,8 @@
+# News 
+* **20210529: [Grigori Fursin](https://cKnowledge.io/@gfursin) converted this container to support the latest CK version! 
+  However, the MLPerf workflow fails with a run-time CUDA error. We decided to archive it.
+  See [octoml@mlops repo](https://github.com/octoml/mlops) and [MLPerf automation docs](https://github.com/ctuning/ck/blob/master/docs/mlperf-automation/README.md) for more details.**
+
 # Object Detection TensorFlow (Python) Docker images
 
 This image
@@ -5,11 +10,7 @@ is based on the [TensorRT images](https://docs.nvidia.com/deeplearning/sdk/tenso
 
 | `Dockerfile` | Base image | [CUDA](https://developer.nvidia.com/cuda-zone) | [TensorRT](https://developer.nvidia.com/tensorrt) | [TensorFlow](https://www.tensorflow.org/) |
 |-|-|-|-|-|
-| `Dockerfile` (`Dockerfile_20.03-py3_tf-2.1.0`) | [20.03-py3](https://docs.nvidia.com/deeplearning/sdk/tensorrt-container-release-notes/rel_20-03.html) | 10.2.89 | 7.0.0 | [2.1.0](https://github.com/tensorflow/tensorflow/releases/tag/v2.1.0) |
-| `Dockerfile_20.03-py3_tf-2.0.1`  | [20.03-py3](https://docs.nvidia.com/deeplearning/sdk/tensorrt-container-release-notes/rel_20-03.html) | 10.2.89  | 7.0.0 | [2.0.1](https://github.com/tensorflow/tensorflow/releases/tag/v2.0.1) |
-| `Dockerfile_19.10-py3_tf-2.0.1`  | [19.10-py3](https://docs.nvidia.com/deeplearning/sdk/tensorrt-container-release-notes/rel_19-10.html) | 10.1.243 | 6.0.1 | [2.0.1](https://github.com/tensorflow/tensorflow/releases/tag/v2.0.1) |
-| `Dockerfile_19.10-py3_tf-1.15.2` | [19.10-py3](https://docs.nvidia.com/deeplearning/sdk/tensorrt-container-release-notes/rel_19-10.html) | 10.1.243 | 6.0.1 | [1.15.2](https://github.com/tensorflow/tensorflow/releases/tag/v1.15.2) |
-| `Dockerfile_19.07-py3_tf-1.14.0` | [19.07-py3](https://docs.nvidia.com/deeplearning/sdk/tensorrt-container-release-notes/rel_19-07.html) | 10.1.168 | 5.1.5 | [1.14.0](https://github.com/tensorflow/tensorflow/releases/tag/v1.14.0) |
+| `DockerfileDockerfile.tensorrt-7-20.03-py3` | [20.03-py3](https://docs.nvidia.com/deeplearning/sdk/tensorrt-container-release-notes/rel_20-03.html) | 10.2.89 | 7.0.0 | [2.1.0](https://github.com/tensorflow/tensorflow/releases/tag/v2.1.0) |
 
 **NB:** [19.10-py3](https://docs.nvidia.com/deeplearning/sdk/tensorrt-container-release-notes/rel_19-10.html) was the last base image to support CUDA 10.1. TensorFlow 1.15, 2.0 and 2.1 all require patching (done by CK) to work with CUDA 10.2.
 
@@ -63,19 +64,6 @@ $ ck pull all
 ```
 (This only updates CK repositories on the host system. To update the Docker image, [rebuild](#build) it using the `--no-cache` flag.)
 
-<a name="image_download"></a>
-## Download from Docker Hub
-
-To download a prebuilt image from Docker Hub, run:
-```
-$ docker pull ctuning/object-detection-tf-py.tensorrt.ubuntu-18.04
-```
-
-**NB:** As the prebuilt TensorFlow variant does not support AVX2 instructions, we advise to use the TensorFlow variant built from sources on compatible hardware.
-In fact, as the prebuilt image was built on an [HP Z640 workstation](http://h20195.www2.hp.com/v2/default.aspx?cc=ie&lc=en&oid=7528701)
-with an [Intel(R) Xeon(R) CPU E5-2650 v3](https://ark.intel.com/products/81705/Intel-Xeon-Processor-E5-2650-v3-25M-Cache-2_30-GHz) (launched in Q3'14), we advise
-to [rebuild](#build) the image on your system.
-
 <a name="image_build"></a>
 ## Build
 
@@ -83,20 +71,13 @@ to [rebuild](#build) the image on your system.
 
 To build the latest image on your system (from (`Dockerfile`), run:
 ```bash
-$ ck build docker:object-detection-tf-py.tensorrt.ubuntu-18.04
+$ ck build docker:object-detection-tf-py-tensorrt --tag=tensorrt-7-20.03-py3
 ```
 
 **NB:** This CK command is equivalent to:
 ```bash
-$ cd `ck find docker:object-detection-tf-py.tensorrt.ubuntu-18.04`
-$ docker build --no-cache -f Dockerfile -t ctuning/object-detection-tf-py.tensorrt.ubuntu-18.04:latest .
-```
-
-### Snapshot
-
-To build a snapshot (e.g. from `Dockerfile_20.03-py3_tf-2.0.1`), run:
-```bash
-$ docker build --no-cache -t ctuning/object-detection-tf-py.tensorrt.ubuntu-18.04:20.03-py3_tf-2.0.1 -f Dockerfile_20.03-py3_tf-2.0.1 .
+$ cd `ck find docker:object-detection-tf-py-tensorrt`
+$ docker build --no-cache -f Dockerfile.tensorrt-7-20.03-py3 -t ctuning/object-detection-tf-py-tensorrt:tensorrt-7-20.03-py3
 ```
 
 <a name="usage"></a>
@@ -107,7 +88,7 @@ $ docker build --no-cache -t ctuning/object-detection-tf-py.tensorrt.ubuntu-18.0
 
 Once you have downloaded or built an image, you can run inference on the CPU e.g. as follows:
 ```bash
-$ docker run --rm ctuning/object-detection-tf-py.tensorrt.ubuntu-18.04 \
+$ docker run --rm ctuning/object-detection-tf-py-tensorrt:tensorrt-7-20.03-py3 \
     "ck run program:object-detection-tf-py \
         --dep_add_tags.lib-tensorflow=vprebuilt \
         --dep_add_tags.weights=ssd-mobilenet,quantized \
@@ -118,13 +99,13 @@ Here, we run inference on 50 images on the CPU using the quantized SSD-MobileNet
 
 **NB:** This is equivalent to the default run command:
 ```bash
-$ ck run docker:object-detection-tf-py.tensorrt.ubuntu-18.04
+$ ck run docker:object-detection-tf-py-tensorrt
 ```
 
 To run inference on the GPU, add the `--runtime=nvidia` flag:
 
 ```bash
-$ docker run --runtime=nvidia --rm ctuning/object-detection-tf-py.tensorrt.ubuntu-18.04 \
+$ docker run --rm ctuning/object-detection-tf-py-tensorrt:tensorrt-7-20.03-py3 \
     "ck run program:object-detection-tf-py \
         --dep_add_tags.lib-tensorflow=vsrc \
         --dep_add_tags.weights=ssd-mobilenet,quantized \
@@ -183,7 +164,7 @@ When you run inference using `ck run`, the result gets printed but not saved.
 You can use `ck benchmark` to save the result on the host system as CK experiment entries (JSON files) e.g. as follows:
 
 ```bash
-$ docker run --runtime=nvidia \
+$ docker run --rm ctuning/object-detection-tf-py-tensorrt:tensorrt-7-20.03-py3 \
     --env-file `ck find docker:object-detection-tf-py.tensorrt.ubuntu-18.04`/env.list \
     --volume=<folder_for_results>:/home/dvdt/CK_REPOS/local/experiment \
     --user=$(id -u):1500 \
