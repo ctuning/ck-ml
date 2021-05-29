@@ -32,22 +32,23 @@ USER dvdt:dvdtg
 WORKDIR /home/dvdt
 
 # Install Collective Knowledge (CK). Make it group-executable.
-ENV CK_ROOT=/home/dvdt/CK \
-    CK_REPOS=/home/dvdt/CK_REPOS \
+ENV CK_REPOS=/home/dvdt/CK_REPOS \
     CK_TOOLS=/home/dvdt/CK_TOOLS \
-    PATH=${CK_ROOT}/bin:/home/dvdt/.local/bin:${PATH} \
+    PATH=/home/dvdt/.local/bin:${PATH} \
     CK_CC=gcc \
-    CK_PYTHON=python3 \
-    GIT_USER="dividiti" \
-    GIT_EMAIL="info@dividiti.com" \
+    CK_PYTHON=python3.6 \
     LANG=C.UTF-8
-RUN mkdir -p ${CK_ROOT} ${CK_REPOS} ${CK_TOOLS}
-RUN git config --global user.name ${GIT_USER} && git config --global user.email ${GIT_EMAIL}
-RUN git clone https://github.com/ctuning/ck.git ${CK_ROOT}
-RUN cd ${CK_ROOT}\
- && ${CK_PYTHON} setup.py install --user\
- && ${CK_PYTHON} -c "import ck.kernel as ck; print ('Collective Knowledge v%s' % ck.__version__)"\
- && chmod -R g+rx /home/dvdt/.local
+
+RUN mkdir -p ${CK_REPOS} ${CK_TOOLS}
+
+# Install CK (CK automation f49f20744aba90e2)
+# We need to install new pip and setuptools otherwise there is a conflict 
+# with the local CK installation of Python packages ...
+RUN export DUMMY_CK=A
+RUN ${CK_PYTHON} --version
+RUN ${DUMMY_CK} ${CK_PYTHON} -m pip install --ignore-installed pip setuptools wheel --user
+RUN ${DUMMY_CK} ${CK_PYTHON} -m pip install pyyaml virtualenv --user
+RUN ${DUMMY_CK} ${CK_PYTHON} -m pip install ck --user
 
 # Explicitly create a CK experiment entry, a folder that will be mounted
 # (with '--volume=<folder_for_results>:/home/dvdt/CK_REPOS/local/experiment').
@@ -160,18 +161,18 @@ RUN ck install package --tags=model,tensorflow,api\
  rm tutorials -rf;\
  rm .git -rf'
 
-RUN ck install package --tags=rcnn,nas,lowproposals,vcoco\
- && ck install package --tags=rcnn,resnet50,lowproposals\
- && ck install package --tags=rcnn,resnet101,lowproposals\
- && ck install package --tags=rcnn,inception-resnet-v2,lowproposals\
- && ck install package --tags=rcnn,inception-v2\
- && ck install package --tags=ssd,inception-v2\
- && ck install package --tags=ssd,mobilenet-v1,non-quantized,mlperf,tf\
- && ck install package --tags=ssd,mobilenet-v1,quantized,mlperf,tf\
- && ck install package --tags=ssd,mobilenet-v1,fpn\
- && ck install package --tags=ssd,resnet50,fpn\
- && ck install package --tags=ssdlite,mobilenet-v2,vcoco\
- && ck install package --tags=yolo-v3
+RUN ck install package --tags=rcnn,nas,lowproposals,vcoco
+RUN ck install package --tags=rcnn,resnet50,lowproposals\
+RUN ck install package --tags=rcnn,resnet101,lowproposals\
+RUN ck install package --tags=rcnn,inception-resnet-v2,lowproposals\
+RUN ck install package --tags=rcnn,inception-v2\
+RUN ck install package --tags=ssd,inception-v2\
+RUN ck install package --tags=ssd,mobilenet-v1,non-quantized,mlperf,tf\
+RUN ck install package --tags=ssd,mobilenet-v1,quantized,mlperf,tf\
+RUN ck install package --tags=ssd,mobilenet-v1,fpn\
+RUN ck install package --tags=ssd,resnet50,fpn\
+RUN ck install package --tags=ssdlite,mobilenet-v2,vcoco\
+RUN ck install package --tags=yolo-v3
 #-----------------------------------------------------------------------------#
 
 
