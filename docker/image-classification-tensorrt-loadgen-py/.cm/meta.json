@@ -1,4 +1,5 @@
 {
+  "outdated":"yes",
   "cmd": {
     "default": {
       "build": "-f $#CK_PATH#$/Dockerfile$#CK_TAG_DOT#$ -t $#CK_DOCKER_ORGANIZATION#$/$#CK_DOCKER_NAME#$$#CK_TAG_COLON#$ $#CK_PATH#$",
@@ -7,7 +8,7 @@
     }
   },
   "docker_tags": [
-    "tensorrt-19.12-py3"
+    "tensorrt-6-19.12-py3"
   ],
   "tags": [
     "adaptive-container",

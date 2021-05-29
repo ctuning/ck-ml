@@ -1,3 +1,9 @@
+# News 
+* **20210529: [Grigori Fursin](https://cKnowledge.io/@gfursin) converted this container to support the latest CK version! 
+  However, the MLPerf workflow fails with a run-time CUDA error. We decided to archive it.
+  See [octoml@mlops repo](https://github.com/octoml/mlops) and [MLPerf automation docs](https://github.com/ctuning/ck/blob/master/docs/mlperf-automation/README.md) for more details.**
+
+
 # MLPerf Inference - Image Classification - NVIDIA TensorRT
 
 [This image]() is based on
@@ -33,9 +39,9 @@ Note that you may need to run commands below with `sudo`, unless you [manage Doc
 ## Set up Collective Knowledge
 
 You will need to install [Collective Knowledge](http://cknowledge.org) to build images and save benchmarking results.
-Please follow the [CK installation instructions](https://github.com/ctuning/ck#installation) and then pull this CK-MLPerf repository:
+Please follow the [CK installation instructions](https://github.com/ctuning/ck#installation) and then pull this CK-ML repository:
 ```bash
-$ ck pull repo:ck-mlperf
+$ ck pull repo:ck-ml
 ```
 
 To refresh all CK repositories after any updates (e.g. bug fixes), run:
@@ -48,7 +54,7 @@ $ ck pull all
 
 Set up the variable to this Docker image name:
 ```bash
-$ export CK_IMAGE=image-classification-tensorrt-loadgen-py.tensorrt-6
+$ export CK_IMAGE=image-classification-tensorrt-loadgen-py
 ```
 
 Set up the variable that points to the directory that contains your CK repositories (usually `~/CK` or `~/CK_REPOS`):
@@ -56,28 +62,13 @@ Set up the variable that points to the directory that contains your CK repositor
 $ export CK_REPOS=${HOME}/CK
 ```
 
-<a name="image_download"></a>
-## Download from Docker Hub
-
-To download a prebuilt image from Docker Hub, run:
-```
-$ docker pull ctuning/${CK_IMAGE}
-```
-
 <a name="image_build"></a>
 ## Build
 
 To build an image on your system, run:
 ```bash
-$ ck build docker:${CK_IMAGE}
+$ ck build docker:image-classification-tensorrt-loadgen-py --tag=tensorrt-6-19.12-py3
 ```
-
-**NB:** This CK command is equivalent to:
-```bash
-$ cd `ck find docker:${CK_IMAGE}`
-$ docker build -f Dockerfile -t ctuning/${CK_IMAGE} .
-```
-**NB:** Add the `--no-cache` flag to rebuild the image from scratch.
 
 <a name="use"></a>
 # Use
@@ -92,23 +83,24 @@ Once you have downloaded or built an image, you can run inference in the accurac
 #### ResNet, fp32, 32 samples per batch
 
 ```bash
-$ docker run --runtime=nvidia --env-file ${CK_REPOS}/ck-mlperf/docker/${CK_IMAGE}/env.list --rm ctuning/${CK_IMAGE} \
+$ docker run --runtime=nvidia --env-file ${CK_REPOS}/ck-ml/docker/${CK_IMAGE}/env.list \
+  --rm ctuning/image-classification-tensorrt-loadgen-py:tensorrt-6-19.12-py3 \
   "ck run program:image-classification-tensorrt-loadgen-py --skip_print_timers --env.CK_SILENT_MODE \
   --env.CK_LOADGEN_MODE=AccuracyOnly --env.CK_LOADGEN_SCENARIO=MultiStream \
   --env.CK_LOADGEN_MULTISTREAMNESS=32 --env.CK_BATCH_SIZE=32 \
   --env.CK_LOADGEN_DATASET_SIZE=500 --env.CK_LOADGEN_BUFFER_SIZE=500 \
-  --env.CK_LOADGEN_CONF_FILE=/home/dvdt/CK_REPOS/ck-mlperf/program/image-classification-tensorrt-loadgen-py/user.conf \
+  --env.CK_LOADGEN_CONF_FILE=/home/dvdt/CK_REPOS/ck-ml/program/image-classification-tensorrt-loadgen-py/user.conf \
   --dep_add_tags.weights=model,tensorrt,resnet,converted-from-onnx,fp32,maxbatch.32 \
   --dep_add_tags.images=dataset,imagenet,preprocessed,using-opencv,rgb8 \
   --dep_add_tags.python=v3.6 --dep_add_tags.lib-python-tensorrt=v6.0 \
   && echo '--------------------------------------------------------------------------------' \
   && echo 'mlperf_log_summary.txt' \
   && echo '--------------------------------------------------------------------------------' \
-  && cat  /home/dvdt/CK_REPOS/ck-mlperf/program/image-classification-tensorrt-loadgen-py/tmp/mlperf_log_summary.txt \
+  && cat  /home/dvdt/CK_REPOS/ck-ml/program/image-classification-tensorrt-loadgen-py/tmp/mlperf_log_summary.txt \
   && echo '--------------------------------------------------------------------------------' \
   && echo 'mlperf_log_detail.txt' \
   && echo '--------------------------------------------------------------------------------' \
-  && cat  /home/dvdt/CK_REPOS/ck-mlperf/program/image-classification-tensorrt-loadgen-py/tmp/mlperf_log_detail.txt \
+  && cat  /home/dvdt/CK_REPOS/ck-ml/program/image-classification-tensorrt-loadgen-py/tmp/mlperf_log_detail.txt \
   && echo ''"
 ...
 accuracy=75.200%, good=376, total=500
@@ -134,23 +126,23 @@ $ docker run --rm ctuning/$CK_IMAGE
 #### ResNet, int8, 15 samples per batch
 
 ```bash
-$ docker run --runtime=nvidia --env-file ${CK_REPOS}/ck-mlperf/docker/${CK_IMAGE}/env.list --rm ctuning/${CK_IMAGE} \
+$ docker run --runtime=nvidia --env-file ${CK_REPOS}/ck-ml/docker/${CK_IMAGE}/env.list --rm ctuning/${CK_IMAGE} \
   "ck run program:image-classification-tensorrt-loadgen-py --skip_print_timers --env.CK_SILENT_MODE \
   --env.CK_LOADGEN_MODE=AccuracyOnly --env.CK_LOADGEN_SCENARIO=MultiStream \
   --env.CK_LOADGEN_MULTISTREAMNESS=15 --env.CK_BATCH_SIZE=15 \
   --env.CK_LOADGEN_DATASET_SIZE=500 --env.CK_LOADGEN_BUFFER_SIZE=500 \
-  --env.CK_LOADGEN_CONF_FILE=/home/dvdt/CK_REPOS/ck-mlperf/program/image-classification-tensorrt-loadgen-py/user.conf \
+  --env.CK_LOADGEN_CONF_FILE=/home/dvdt/CK_REPOS/ck-ml/program/image-classification-tensorrt-loadgen-py/user.conf \
   --dep_add_tags.weights=model,tensorrt,resnet,converted-by.nvidia,for.gtx1080,int8 \
   --dep_add_tags.images=dataset,imagenet,preprocessed,using-opencv,rgb8 \
   --dep_add_tags.python=v3.6 --dep_add_tags.lib-python-tensorrt=v6.0 \
   && echo '--------------------------------------------------------------------------------' \
   && echo 'mlperf_log_summary.txt' \
   && echo '--------------------------------------------------------------------------------' \
-  && cat  /home/dvdt/CK_REPOS/ck-mlperf/program/image-classification-tensorrt-loadgen-py/tmp/mlperf_log_summary.txt \
+  && cat  /home/dvdt/CK_REPOS/ck-ml/program/image-classification-tensorrt-loadgen-py/tmp/mlperf_log_summary.txt \
   && echo '--------------------------------------------------------------------------------' \
   && echo 'mlperf_log_detail.txt' \
   && echo '--------------------------------------------------------------------------------' \
-  && cat  /home/dvdt/CK_REPOS/ck-mlperf/program/image-classification-tensorrt-loadgen-py/tmp/mlperf_log_detail.txt \
+  && cat  /home/dvdt/CK_REPOS/ck-ml/program/image-classification-tensorrt-loadgen-py/tmp/mlperf_log_detail.txt \
   && echo ''"
 ...
 accuracy=74.000%, good=370, total=500
@@ -167,23 +159,23 @@ No errors encountered during test.
 #### MobileNet, int8
 
 ```bash
-$ docker run --runtime=nvidia --env-file ${CK_REPOS}/ck-mlperf/docker/${CK_IMAGE}/env.list --rm ctuning/${CK_IMAGE} \
+$ docker run --runtime=nvidia --env-file ${CK_REPOS}/ck-ml/docker/${CK_IMAGE}/env.list --rm ctuning/${CK_IMAGE} \
   "ck run program:image-classification-tensorrt-loadgen-py --skip_print_timers --env.CK_SILENT_MODE \
   --env.CK_LOADGEN_MODE=AccuracyOnly --env.CK_LOADGEN_SCENARIO=MultiStream \
   --env.CK_LOADGEN_MULTISTREAMNESS=250 --env.CK_BATCH_SIZE=250 \
   --env.CK_LOADGEN_DATASET_SIZE=500 --env.CK_LOADGEN_BUFFER_SIZE=500 \
-  --env.CK_LOADGEN_CONF_FILE=/home/dvdt/CK_REPOS/ck-mlperf/program/image-classification-tensorrt-loadgen-py/user.conf \
+  --env.CK_LOADGEN_CONF_FILE=/home/dvdt/CK_REPOS/ck-ml/program/image-classification-tensorrt-loadgen-py/user.conf \
   --dep_add_tags.weights=model,tensorrt,mobilenet,converted-by.nvidia,for.gtx1080,int8 \
   --dep_add_tags.images=dataset,imagenet,preprocessed,using-opencv,rgb8 \
   --dep_add_tags.python=v3.6 --dep_add_tags.lib-python-tensorrt=v6.0 \
   && echo '--------------------------------------------------------------------------------' \
   && echo 'mlperf_log_summary.txt' \
   && echo '--------------------------------------------------------------------------------' \
-  && cat  /home/dvdt/CK_REPOS/ck-mlperf/program/image-classification-tensorrt-loadgen-py/tmp/mlperf_log_summary.txt \
+  && cat  /home/dvdt/CK_REPOS/ck-ml/program/image-classification-tensorrt-loadgen-py/tmp/mlperf_log_summary.txt \
   && echo '--------------------------------------------------------------------------------' \
   && echo 'mlperf_log_detail.txt' \
   && echo '--------------------------------------------------------------------------------' \
-  && cat  /home/dvdt/CK_REPOS/ck-mlperf/program/image-classification-tensorrt-loadgen-py/tmp/mlperf_log_detail.txt \
+  && cat  /home/dvdt/CK_REPOS/ck-ml/program/image-classification-tensorrt-loadgen-py/tmp/mlperf_log_detail.txt \
   && echo ''"
 ...
 accuracy=69.000%, good=345, total=500
@@ -202,24 +194,24 @@ No errors encountered during test.
 #### ResNet, fp32
 
 ```bash
-$ docker run --runtime=nvidia --env-file ${CK_REPOS}/ck-mlperf/docker/${CK_IMAGE}/env.list --rm ctuning/${CK_IMAGE} \
+$ docker run --runtime=nvidia --env-file ${CK_REPOS}/ck-ml/docker/${CK_IMAGE}/env.list --rm ctuning/${CK_IMAGE} \
   "ck run program:image-classification-tensorrt-loadgen-py --skip_print_timers --env.CK_SILENT_MODE \
   --env.CK_LOADGEN_MODE=PerformanceOnly --env.CK_LOADGEN_SCENARIO=MultiStream \
   --env.CK_LOADGEN_MULTISTREAMNESS=32 --env.CK_BATCH_SIZE=32 \
   --env.CK_LOADGEN_COUNT_OVERRIDE=1440 \
   --env.CK_LOADGEN_DATASET_SIZE=500 --env.CK_LOADGEN_BUFFER_SIZE=1024 \
-  --env.CK_LOADGEN_CONF_FILE=/home/dvdt/CK_REPOS/ck-mlperf/program/image-classification-tensorrt-loadgen-py/user.conf \
+  --env.CK_LOADGEN_CONF_FILE=/home/dvdt/CK_REPOS/ck-ml/program/image-classification-tensorrt-loadgen-py/user.conf \
   --dep_add_tags.weights=model,tensorrt,resnet,converted-from-onnx,fp32,maxbatch.32 \
   --dep_add_tags.images=dataset,imagenet,preprocessed,using-opencv,rgb8 \
   --dep_add_tags.python=v3.6 --dep_add_tags.lib-python-tensorrt=v6.0 \
   && echo '--------------------------------------------------------------------------------' \
   && echo 'mlperf_log_summary.txt' \
   && echo '--------------------------------------------------------------------------------' \
-  && cat  /home/dvdt/CK_REPOS/ck-mlperf/program/image-classification-tensorrt-loadgen-py/tmp/mlperf_log_summary.txt \
+  && cat  /home/dvdt/CK_REPOS/ck-ml/program/image-classification-tensorrt-loadgen-py/tmp/mlperf_log_summary.txt \
   && echo '--------------------------------------------------------------------------------' \
   && echo 'mlperf_log_detail.txt' \
   && echo '--------------------------------------------------------------------------------' \
-  && cat  /home/dvdt/CK_REPOS/ck-mlperf/program/image-classification-tensorrt-loadgen-py/tmp/mlperf_log_detail.txt \
+  && cat  /home/dvdt/CK_REPOS/ck-ml/program/image-classification-tensorrt-loadgen-py/tmp/mlperf_log_detail.txt \
   && echo ''"
 ...
 --------------------------------------------------------------------
@@ -260,24 +252,24 @@ To find out, we should [benchmark](#benchmark) this workload with several values
 #### ResNet, int8, 15 samples per batch
 
 ```bash
-$ docker run --runtime=nvidia --env-file ${CK_REPOS}/ck-mlperf/docker/${CK_IMAGE}/env.list --rm ctuning/${CK_IMAGE} \
+$ docker run --runtime=nvidia --env-file ${CK_REPOS}/ck-ml/docker/${CK_IMAGE}/env.list --rm ctuning/${CK_IMAGE} \
   "ck run program:image-classification-tensorrt-loadgen-py --skip_print_timers --env.CK_SILENT_MODE \
   --env.CK_LOADGEN_MODE=PerformanceOnly --env.CK_LOADGEN_SCENARIO=MultiStream \
   --env.CK_LOADGEN_MULTISTREAMNESS=15 --env.CK_BATCH_SIZE=15 \
   --env.CK_LOADGEN_COUNT_OVERRIDE=1440 \
   --env.CK_LOADGEN_DATASET_SIZE=500 --env.CK_LOADGEN_BUFFER_SIZE=1024 \
-  --env.CK_LOADGEN_CONF_FILE=/home/dvdt/CK_REPOS/ck-mlperf/program/image-classification-tensorrt-loadgen-py/user.conf \
+  --env.CK_LOADGEN_CONF_FILE=/home/dvdt/CK_REPOS/ck-ml/program/image-classification-tensorrt-loadgen-py/user.conf \
   --dep_add_tags.weights=model,tensorrt,resnet,converted-by.nvidia,for.gtx1080,int8 \
   --dep_add_tags.images=dataset,imagenet,preprocessed,using-opencv,rgb8 \
   --dep_add_tags.python=v3.6 --dep_add_tags.lib-python-tensorrt=v6.0 \
   && echo '--------------------------------------------------------------------------------' \
   && echo 'mlperf_log_summary.txt' \
   && echo '--------------------------------------------------------------------------------' \
-  && cat  /home/dvdt/CK_REPOS/ck-mlperf/program/image-classification-tensorrt-loadgen-py/tmp/mlperf_log_summary.txt \
+  && cat  /home/dvdt/CK_REPOS/ck-ml/program/image-classification-tensorrt-loadgen-py/tmp/mlperf_log_summary.txt \
   && echo '--------------------------------------------------------------------------------' \
   && echo 'mlperf_log_detail.txt' \
   && echo '--------------------------------------------------------------------------------' \
-  && cat  /home/dvdt/CK_REPOS/ck-mlperf/program/image-classification-tensorrt-loadgen-py/tmp/mlperf_log_detail.txt \
+  && cat  /home/dvdt/CK_REPOS/ck-ml/program/image-classification-tensorrt-loadgen-py/tmp/mlperf_log_detail.txt \
   && echo ''"
 ...
 --------------------------------------------------------------------
@@ -308,24 +300,24 @@ Result is : VALID
 #### MobileNet, int8, 250 samples per batch
 
 ```bash
-$ docker run --runtime=nvidia --env-file ${CK_REPOS}/ck-mlperf/docker/${CK_IMAGE}/env.list --rm ctuning/${CK_IMAGE} \
+$ docker run --runtime=nvidia --env-file ${CK_REPOS}/ck-ml/docker/${CK_IMAGE}/env.list --rm ctuning/${CK_IMAGE} \
   "ck run program:image-classification-tensorrt-loadgen-py --skip_print_timers --env.CK_SILENT_MODE \
   --env.CK_LOADGEN_MODE=PerformanceOnly --env.CK_LOADGEN_SCENARIO=MultiStream \
   --env.CK_LOADGEN_MULTISTREAMNESS=250 --env.CK_BATCH_SIZE=250 \
   --env.CK_LOADGEN_COUNT_OVERRIDE=1440 \
   --env.CK_LOADGEN_DATASET_SIZE=500 --env.CK_LOADGEN_BUFFER_SIZE=1024 \
-  --env.CK_LOADGEN_CONF_FILE=/home/dvdt/CK_REPOS/ck-mlperf/program/image-classification-tensorrt-loadgen-py/user.conf \
+  --env.CK_LOADGEN_CONF_FILE=/home/dvdt/CK_REPOS/ck-ml/program/image-classification-tensorrt-loadgen-py/user.conf \
   --dep_add_tags.weights=model,tensorrt,mobilenet,converted-by.nvidia,for.gtx1080,int8 \
   --dep_add_tags.images=dataset,imagenet,preprocessed,using-opencv,rgb8 \
   --dep_add_tags.python=v3.6 --dep_add_tags.lib-python-tensorrt=v6.0 \
   && echo '--------------------------------------------------------------------------------' \
   && echo 'mlperf_log_summary.txt' \
   && echo '--------------------------------------------------------------------------------' \
-  && cat  /home/dvdt/CK_REPOS/ck-mlperf/program/image-classification-tensorrt-loadgen-py/tmp/mlperf_log_summary.txt \
+  && cat  /home/dvdt/CK_REPOS/ck-ml/program/image-classification-tensorrt-loadgen-py/tmp/mlperf_log_summary.txt \
   && echo '--------------------------------------------------------------------------------' \
   && echo 'mlperf_log_detail.txt' \
   && echo '--------------------------------------------------------------------------------' \
-  && cat  /home/dvdt/CK_REPOS/ck-mlperf/program/image-classification-tensorrt-loadgen-py/tmp/mlperf_log_detail.txt \
+  && cat  /home/dvdt/CK_REPOS/ck-ml/program/image-classification-tensorrt-loadgen-py/tmp/mlperf_log_detail.txt \
   && echo ''"
 ...
 --------------------------------------------------------------------
@@ -383,14 +375,14 @@ When running `ck benchmark` via Docker, we will map the internal directory `/hom
 
 ```bash
 $ export NUM_STREAMS=30
-$ docker run --runtime=nvidia --env-file ${CK_REPOS}/ck-mlperf/docker/${CK_IMAGE}/env.list \
+$ docker run --runtime=nvidia --env-file ${CK_REPOS}/ck-ml/docker/${CK_IMAGE}/env.list \
   --user=$(id -u):1500 --volume ${CK_EXPERIMENTS_DIR}:/home/dvdt/CK_REPOS/local/experiment \
   --rm ctuning/${CK_IMAGE} \
   "ck benchmark program:image-classification-tensorrt-loadgen-py --repetitions=1 --env.CK_SILENT_MODE \
   --env.CK_LOADGEN_MODE=AccuracyOnly --env.CK_LOADGEN_SCENARIO=MultiStream \
   --env.CK_LOADGEN_MULTISTREAMNESS=${NUM_STREAMS} --env.CK_BATCH_SIZE=${NUM_STREAMS} \
   --env.CK_LOADGEN_DATASET_SIZE=500 --env.CK_LOADGEN_BUFFER_SIZE=500 \
-  --env.CK_LOADGEN_CONF_FILE=/home/dvdt/CK_REPOS/ck-mlperf/program/image-classification-tensorrt-loadgen-py/user.conf \
+  --env.CK_LOADGEN_CONF_FILE=/home/dvdt/CK_REPOS/ck-ml/program/image-classification-tensorrt-loadgen-py/user.conf \
   --dep_add_tags.weights=model,tensorrt,resnet,converted-from-onnx,fp32,maxbatch.${NUM_STREAMS} \
   --dep_add_tags.images=dataset,imagenet,preprocessed,using-opencv,rgb8 \
   --dep_add_tags.python=v3.6 --dep_add_tags.lib-python-tensorrt=v6.0 \
@@ -406,7 +398,7 @@ accuracy=75.200%, good=376, total=500
 
 ```bash
 $ export NUM_STREAMS=30
-$ docker run --runtime=nvidia --env-file ${CK_REPOS}/ck-mlperf/docker/${CK_IMAGE}/env.list \
+$ docker run --runtime=nvidia --env-file ${CK_REPOS}/ck-ml/docker/${CK_IMAGE}/env.list \
   --user=$(id -u):1500 --volume ${CK_EXPERIMENTS_DIR}:/home/dvdt/CK_REPOS/local/experiment \
   --rm ctuning/${CK_IMAGE} \
   "ck benchmark program:image-classification-tensorrt-loadgen-py --repetitions=1 --env.CK_SILENT_MODE \
@@ -414,7 +406,7 @@ $ docker run --runtime=nvidia --env-file ${CK_REPOS}/ck-mlperf/docker/${CK_IMAGE
   --env.CK_LOADGEN_MULTISTREAMNESS=${NUM_STREAMS} --env.CK_BATCH_SIZE=${NUM_STREAMS} \
   --env.CK_LOADGEN_COUNT_OVERRIDE=1440 \
   --env.CK_LOADGEN_DATASET_SIZE=500 --env.CK_LOADGEN_BUFFER_SIZE=1024 \
-  --env.CK_LOADGEN_CONF_FILE=/home/dvdt/CK_REPOS/ck-mlperf/program/image-classification-tensorrt-loadgen-py/user.conf \
+  --env.CK_LOADGEN_CONF_FILE=/home/dvdt/CK_REPOS/ck-ml/program/image-classification-tensorrt-loadgen-py/user.conf \
   --dep_add_tags.weights=model,tensorrt,resnet,converted-from-onnx,fp32,maxbatch.${NUM_STREAMS} \
   --dep_add_tags.images=dataset,imagenet,preprocessed,using-opencv,rgb8 \
   --dep_add_tags.python=v3.6 --dep_add_tags.lib-python-tensorrt=v6.0 \
@@ -451,11 +443,10 @@ Result is : INVALID
 <a name="parameters_docker"></a>
 ### Docker parameters explained
 
-#### `--env-file ${CK_REPOS}/ck-mlperf/docker/${CK_IMAGE}/env.list`
+#### `--env-file ${CK_REPOS}/ck-ml/docker/${CK_IMAGE}/env.list`
 
 The path to an `env.list` file, which is usually located in the same directory as `Dockerfile`.
 
-The `env.list` files are currently identical for all [dividiti](http://dividiti.com)'s images:
 ```
 HOME=/home/dvdt
 CK_ROOT=/home/dvdt/CK
@@ -464,8 +455,6 @@ CK_TOOLS=/home/dvdt/CK_TOOLS
 PATH=/bin:/home/dvdt/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 CK_PYTHON=python3
 CK_CC=gcc
-GIT_USER="dividiti"
-GIT_EMAIL="info@dividiti.com"
 LANG=C.UTF-8
 ```
 
@@ -499,7 +488,7 @@ id and the `1500` group id.
 $ export CK_REPOS=$HOME/CK
 $ export CK_IMAGE=image-classification-tensorrt-loadgen-py.tensorrt-6
 $ export CK_EXPERIMENTS_DIR=`ck find repo:mlperf.closed.image-classification.velociti.tensorrt`/experiment
-$ cd `ck find ck-mlperf:docker:${CK_IMAGE}`
+$ cd `ck find ck-ml:docker:${CK_IMAGE}`
 ```
 
 ### Accuracy mode
@@ -541,14 +530,14 @@ The results get accumulated under `$CK_EXPERIMENTS_DIR`:
 ```
 $ ls -la $CK_EXPERIMENTS_DIR
 total 16
-drwxrwxr-x  4 anton dvdt  4096 Mar 28 00:10 .
-drwxr-xr-x 14 anton anton 4096 Mar 28 00:09 ..
-drwxr-xr-x  2 anton  1500 4096 Mar 28 00:10 .cm
-drwxr-xr-x  3 anton  1500 4096 Mar 29 18:28 mlperf.closed.image-classification.velociti.tensorrt.resnet.multistream.accuracy
-drwxr-xr-x  3 anton  1500 4096 Mar 28 00:49 mlperf.closed.image-classification.velociti.tensorrt.resnet.multistream.performance
+.
+..
+.cm
+mlperf.closed.image-classification.velociti.tensorrt.resnet.multistream.accuracy
+mlperf.closed.image-classification.velociti.tensorrt.resnet.multistream.performance
 
 $ tree $CK_EXPERIMENTS_DIR
-/data/anton/tensorrt-experiments
+... tensorrt-experiments
 ├── mlperf.closed.image-classification.velociti.tensorrt.resnet.multistream.accuracy
 │   ├── ckp-f6af4c77a2b50fde.0001.json
 │   ├── ckp-f6af4c77a2b50fde.features_flat.json
@@ -627,7 +616,7 @@ $ unzip mlperf.closed.image-classification.velociti.tensorrt.zip \
 ### Convert the results into the submission format
 
 ```bash
-$ ck run ck-mlperf:program:dump-repo-to-submission --dep_add_tags.python=v3.6 \
+$ ck run ck-ml:program:dump-repo-to-submission --dep_add_tags.python=v3.6 \
 --env.CK_MLPERF_SUBMISSION_REPO=mlperf.closed.image-classification.velociti.tensorrt \
 --env.CK_MLPERF_SUBMISSION_ROOT=$HOME/mlperf-inference-unofficial-results.tensorrt
 ```
@@ -635,7 +624,7 @@ $ ck run ck-mlperf:program:dump-repo-to-submission --dep_add_tags.python=v3.6 \
 ### Convert from the submission format to the dashboard format
 
 ```bash
-$ ck run ck-mlperf:program:dump-submissions-to-dashboard --dep_add_tags.python=v3.6 \
+$ ck run ck-ml:program:dump-submissions-to-dashboard --dep_add_tags.python=v3.6 \
 --env.CK_MLPERF_SUBMISSION_ROOT=$HOME/mlperf-inference-unofficial-results.tensorrt \
 --env.CK_MLPERF_DASHBOARD_FILE=mlperf-inference-unofficial-results.tensorrt.zip \
 --env.CK_MLPERF_DASHBOARD_DIR=$HOME
@@ -670,19 +659,19 @@ $ ck rm  mlperf.closed.image-classification.velociti.tensorrt:experiment:dummy -
 $ unzip mlperf.closed.image-classification.velociti.tensorrt.zip \
 -d `ck find repo:mlperf.closed.image-classification.velociti.tensorrt`/experiment
 Archive:  mlperf.closed.image-classification.velociti.tensorrt.zip
-  inflating: /home/anton/CK_REPOS/mlperf.closed.image-classification.velociti.tensorrt/experiment/.cm/alias-u-892d289465870473
- extracting: /home/anton/CK_REPOS/mlperf.closed.image-classification.velociti.tensorrt/experiment/.cm/alias-a-mlperf.closed.image-classification.velociti.tensorrt.resnet.multistream.performance
-   creating: /home/anton/CK_REPOS/mlperf.closed.image-classification.velociti.tensorrt/experiment/mlperf.closed.image-classification.velociti.tensorrt.resnet.multistream.performance/
-  inflating: /home/anton/CK_REPOS/mlperf.closed.image-classification.velociti.tensorrt/experiment/mlperf.closed.image-classification.velociti.tensorrt.resnet.multistream.performance/ckp-3368d49d0824b41e.features.json
+  inflating: /home/ckuser/CK_REPOS/mlperf.closed.image-classification.velociti.tensorrt/experiment/.cm/alias-u-892d289465870473
+ extracting: /home/ckuser/CK_REPOS/mlperf.closed.image-classification.velociti.tensorrt/experiment/.cm/alias-a-mlperf.closed.image-classification.velociti.tensorrt.resnet.multistream.performance
+   creating: /home/ckuser/CK_REPOS/mlperf.closed.image-classification.velociti.tensorrt/experiment/mlperf.closed.image-classification.velociti.tensorrt.resnet.multistream.performance/
+  inflating: /home/ckuser/CK_REPOS/mlperf.closed.image-classification.velociti.tensorrt/experiment/mlperf.closed.image-classification.velociti.tensorrt.resnet.multistream.performance/ckp-3368d49d0824b41e.features.json
 ...
 ```
 ### Convert the results into the submission format
 
 ```bash
-$ docker run --env-file ${CK_REPOS}/ck-mlperf/docker/${CK_IMAGE}/env.list \
+$ docker run --env-file ${CK_REPOS}/ck-ml/docker/${CK_IMAGE}/env.list \
   --user=$(id -u):1500 --volume ${CK_EXPERIMENTS_DIR}:/home/dvdt/CK_REPOS/local/experiment \
   --rm ctuning/${CK_IMAGE} \
-  "ck run ck-mlperf:program:dump-repo-to-submission \
+  "ck run ck-ml:program:dump-repo-to-submission \
   --env.CK_MLPERF_SUBMISSION_REPO=local \
   --env.CK_MLPERF_SUBMISSION_ROOT=/home/dvdt/CK_REPOS/local/experiment/SUBMISSION"
 ```
@@ -695,17 +684,19 @@ It should do so only when object detection is needed, i.e. not for this image.
 
 ### Locate the dashboard plugin
 
-The dashboard plugin directory contains the official MLPerf Inference v0.5 results in a custom ([pickle](https://docs.python.org/3/library/pickle.html)d [pandas.DataFrame](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html)) format:
+The dashboard plugin directory contains the official MLPerf Inference v0.5 results 
+in a custom ([pickle](https://docs.python.org/3/library/pickle.html)d 
+[pandas.DataFrame](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html)) format:
 
 ```bash
-$ ls -la `ck find ck-mlperf:module:mlperf.inference`
+$ ls -la `ck find ck-ml:module:mlperf.inference`
 total 56
-drwxrwxr-x 3 anton dvdt  4096 Mar 29 20:01 .
-drwxrwxr-x 6 anton dvdt  4096 Nov 25 12:27 ..
-drwxrwxr-x 2 anton dvdt  4096 Dec 19 11:55 .cm
--rw-rw-r-- 1 anton dvdt    59 Nov 25 12:27 .gitignore
--rw-rw-r-- 1 anton dvdt 21873 Dec 19 11:55 mlperf-inference-v0.5-results.zip
--rw-rw-r-- 1 anton dvdt  5649 Jan 24 12:47 module.py
+.
+..
+.cm
+.gitignore
+mlperf-inference-v0.5-results.zip
+module.py
 ```
 
 ### Copy your results to the dashboard plugin
@@ -716,14 +707,14 @@ Add your unofficial results there.
 
 ```bash
 $ scp -P <port> <hostname>:/home/<user>/mlperf-inference-unofficial-results.tensorrt.zip \
-  `ck find ck-mlperf:module:mlperf.inference`
+  `ck find ck-ml:module:mlperf.inference`
 ```
 
 #### From a local machine
 
 ```bash
 $ cp mlperf-inference-unofficial-results.tensorrt.zip \
-   `ck find ck-mlperf:module:mlperf.inference`
+   `ck find ck-ml:module:mlperf.inference`
 ```
 
 ### Open the dashboard
