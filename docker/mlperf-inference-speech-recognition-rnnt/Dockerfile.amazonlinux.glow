@@ -58,6 +58,8 @@ RUN ${DUMMY_CK} ${CK_PYTHON} -m pip install ck --user
 
 # Pull CK repositories (including ck-env, ck-autotuning and ck-tensorflow).
 RUN ck pull repo:octoml@mlops
+RUN ck rm repo:ck-ml --all --force
+RUN ck pull repo:ai
 
 # Use generic Linux settings with dummy frequency setting scripts.
 RUN ck detect platform.os --platform_init_uoa=generic-linux-dummy

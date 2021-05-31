@@ -61,7 +61,7 @@ RUN ${DUMMY_CK} ${CK_PYTHON} -m pip install ck --user
 RUN ck create_entry --data_uoa=experiment --data_uid=bc0409fb61f0aa82 --path=${CK_REPOS}/local\
  && chmod -R g+w ${CK_REPOS}/local/experiment
 
-# Pull CK repositories (including ck-mlperf, ck-env, ck-autotuning, ck-tensorflow, ck-docker).
+# Pull CK repositories
 RUN ck pull repo:ck-ml
 
 # Use generic Linux settings with dummy frequency setting scripts.
@@ -121,10 +121,9 @@ RUN ck detect soft:compiler.cuda --full_path=/usr/local/cuda-10.2/bin/nvcc \
  && ck detect soft:lib.cublas --full_path=/usr/lib/x86_64-linux-gnu/libcublas.so \
  && ck detect soft:lib.cudnn
 # Install TF build dependencies.
-RUN ck install ck-env:package:jdk-8u131-universal
-RUN ck install ck-env:package:tool-bazel-0.27.1-linux
+RUN ck install package:jdk-8u131-universal
+RUN ck install package:tool-bazel-0.27.1-linux
 # Build TF from sources with TensorRT support. Remove the Bazel cache (~16 GB) once done.
-RUN ck pull repo:ck-env
 RUN ck install package --tags=lib,tensorflow,vsrc,vcuda,v2.1.0 \
 --env.CK_TF_NEED_TENSORRT=YES --cus.version=2.1.0\
  && rm -rf ~/.cache/bazel

@@ -64,7 +64,7 @@ RUN ${DUMMY_CK} ${CK_PYTHON} -m pip install ck --user
 RUN ck create_entry --data_uoa=experiment --data_uid=bc0409fb61f0aa82 --path=${CK_REPOS}/local\
  && chmod -R g+w ${CK_REPOS}/local/experiment
 
-# Pull CK repositories (including ck-mlperf, ck-env, ck-autotuning, ck-tensorflow, ck-docker).
+# Pull CK repositories
 RUN ck pull repo:ck-ml
 
 # Use generic Linux settings with dummy frequency setting scripts.
