@@ -1,0 +1,15 @@
+{
+  "backup_data_uid": "2197c661d8d4b2c9",
+  "backup_module_uid": "88eef0cd8c43b68a",
+  "backup_module_uoa": "docker",
+  "control": {
+    "engine": "CK",
+    "iso_datetime": "2021-05-31T09:04:42.116605",
+    "version": [
+      "2",
+      "5",
+      "2"
+    ]
+  },
+  "data_name": "ck-ai"
+}
