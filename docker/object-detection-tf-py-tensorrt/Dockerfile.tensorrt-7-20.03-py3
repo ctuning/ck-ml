@@ -154,7 +154,7 @@ RUN ck install package --tags=tool,coco,api
 #-----------------------------------------------------------------------------#
 # Install TF model API, but remove useless API files to free up space.
 RUN ck detect soft --tags=cmake --full_path=/usr/local/bin/cmake
-RUN ck install package --tags=model,tensorflow,api\
+RUN ck install package --tags=model,tensorflow,api,r1.13.0\
  && ck virtual env --tags=model,tensorflow,api --shell_cmd=\
 'cd $CK_ENV_TENSORFLOW_MODELS;\
  mv object_detection ..;\
@@ -188,7 +188,7 @@ RUN ck install package --tags=yolo-v3
 # (Some have already been installed.)
 RUN ck install package --tags=lib,python-package,cv2,opencv-python-headless
 # Allow the program create tmp files when running under an external user.
-RUN chmod -R g+rwx ${CK_REPOS}/ck-tensorflow/program/object-detection-tf-py/
+RUN chmod -R g+rwx ${CK_REPOS}/ai/program/object-detection-tf-py/
 #-----------------------------------------------------------------------------#
 
 
