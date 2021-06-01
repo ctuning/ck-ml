@@ -168,16 +168,16 @@ RUN ck install package --tags=model,tensorflow,api,r1.13.0\
  rm .git -rf'
 
 RUN ck install package --tags=rcnn,nas,lowproposals,vcoco
-RUN ck install package --tags=rcnn,resnet50,lowproposals\
-RUN ck install package --tags=rcnn,resnet101,lowproposals\
-RUN ck install package --tags=rcnn,inception-resnet-v2,lowproposals\
-RUN ck install package --tags=rcnn,inception-v2\
-RUN ck install package --tags=ssd,inception-v2\
-RUN ck install package --tags=ssd,mobilenet-v1,non-quantized,mlperf,tf\
-RUN ck install package --tags=ssd,mobilenet-v1,quantized,mlperf,tf\
-RUN ck install package --tags=ssd,mobilenet-v1,fpn\
-RUN ck install package --tags=ssd,resnet50,fpn\
-RUN ck install package --tags=ssdlite,mobilenet-v2,vcoco\
+RUN ck install package --tags=rcnn,resnet50,lowproposals
+RUN ck install package --tags=rcnn,resnet101,lowproposals
+RUN ck install package --tags=rcnn,inception-resnet-v2,lowproposals
+RUN ck install package --tags=rcnn,inception-v2
+RUN ck install package --tags=ssd,inception-v2
+RUN ck install package --tags=ssd,mobilenet-v1,non-quantized,mlperf,tf,from-zenodo
+RUN ck install package --tags=ssd,mobilenet-v1,quantized,mlperf,tf,from-zenodo
+RUN ck install package --tags=ssd,mobilenet-v1,fpn
+RUN ck install package --tags=ssd,resnet50,fpn
+RUN ck install package --tags=ssdlite,mobilenet-v2,vcoco
 RUN ck install package --tags=yolo-v3
 #-----------------------------------------------------------------------------#
 
