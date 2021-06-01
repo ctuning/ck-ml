@@ -2,9 +2,9 @@ FROM nvcr.io/nvidia/tensorrt:20.03-py3
 
 # News:
 #  * 20210525: Grigori updated this container to support the latest CK framework
-#              with the latest CK components from ctuning@ai repo
-LABEL maintainer="Grigori Fursin <grigori@octoml.ai>"
-LABEL maintainer="Anton Lokhmotov <anton@dividiti.com>"
+#              with the latest CK components from ctuning@ai repo.
+#              Works with AWS: Deep Learning AMI (Ubuntu 18.04) Version 44.0 - ami-0e5406a90a38f0b79
+#              g4dn.xlarge
 
 # Use the Bash shell.
 SHELL ["/bin/bash", "-c"]
